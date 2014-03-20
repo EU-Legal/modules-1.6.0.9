@@ -1,4 +1,4 @@
-legal
+modules
 =====
 
-Module legal certainty for PrestaShop, get ready for german law requirements
+german / legal: Module legal certainty for PrestaShop, get ready for german law requirements
