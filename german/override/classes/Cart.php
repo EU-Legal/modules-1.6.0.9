@@ -7,9 +7,15 @@ class Cart extends CartCore
 	{
 		
 		/*
-		| GC German 1.5.6.0 | 20131022
-		| Alternative Methode zur Berechnung der MwSt. anhand Produkte im Warenkorb (GC_GERMAN_SHIPTAXMETH)
+		* German 0.0.1 | 20140320
+		* Alternative Methode zur Berechnung der MwSt. (GC_GERMAN_SHIPTAXMETH)
 		*/
+		
+		/*
+		* Art der MwSt-Berechnung: Entweder nach Gewichtung der Steueranteile (GC_GERMAN_TAXMETH=0 -> parent) oder nach Hauptsteueranteil (GC_GERMAN_TAXMETH=1)
+		*/
+		if(!Configuration::get('GC_GERMAN_TAXMETH'))
+			parent::getTaxesAverageUsed($id_cart);
 		
 		$cart = new Cart((int)$id_cart);
 		if (!Validate::isLoadedObject($cart))
@@ -56,42 +62,15 @@ class Cart extends CartCore
 		
 	}
 	
-	public function getGiftWrappingPrice($with_taxes = true, $id_address = null)
-	{
-		
-		/*
-		| GC German 1.5.6.0 | 20131104
-		| Berechnung der MwSt. anhand der produkte im Warenkorb (GC_GERMAN_SHIPTAXMETH)
-		*/
-		
-		if(!Configuration::get('GC_GERMAN_SHIPTAXMETH'))
-			parent::getGiftWrappingPrice($with_taxes, $id_address);
-		
-		static $address = null;
-
-		if ($id_address === null)
-			$id_address = (int)$this->{Configuration::get('PS_TAX_ADDRESS_TYPE')};
-
-		if ($address === null)
-			$address = Address::initialize($id_address);
-
-		$wrapping_fees = (float)Configuration::get('PS_GIFT_WRAPPING_PRICE');
-		if ($with_taxes && $wrapping_fees > 0)
-		{
-			$tax_rate = Cart::getTaxesAverageUsed((int)($this->id_cart));
-			$wrapping_fees = $wrapping_fees * (1 + ($tax_rate / 100));
-		}
-
-		return $wrapping_fees;
-	}
+	
 	
 	public function getProducts($refresh = false, $id_product = false, $id_country = null)
 	{
 		
 		/*
-		| GC German 1.5.6.0 | 20131022
-		| Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen
-		| Standard-Verfügbarkeit den Produkten zuordnen
+		* German 0.0.1 | 20140320
+		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen
+		* Standard-Verfügbarkeit den Produkten zuordnen
 		*/
 		
 		if (!$this->id)
@@ -115,12 +94,12 @@ class Cart extends CartCore
 
 		// Build SELECT
 		$sql->select('cp.`id_product_attribute`, cp.`id_product`, cp.`quantity` AS cart_quantity, cp.id_shop, pl.`name`, p.`is_virtual`,
-						pl.`description_short`, pl.`available_now`, pl.`available_later`, p.`id_product`, product_shop.`id_category_default`, p.`id_supplier`,
-						p.`id_manufacturer`, product_shop.`on_sale`, product_shop.`ecotax`, product_shop.`additional_shipping_cost`, 
+						pl.`description_short`, pl.`available_now`, pl.`available_later`, product_shop.`id_category_default`, p.`id_supplier`,
+						p.`id_manufacturer`, product_shop.`on_sale`, product_shop.`ecotax`, product_shop.`additional_shipping_cost`,
 						product_shop.`available_for_order`, product_shop.`price`, product_shop.`active`, product_shop.`unity`, product_shop.`unit_price_ratio`, 
-						stock.`quantity` AS quantity_available, p.`width`, p.`height`, p.`depth`, stock.`out_of_stock`, p.`weight`, 
+						stock.`quantity` AS quantity_available, p.`width`, p.`height`, p.`depth`, stock.`out_of_stock`, p.`weight`,
 						p.`date_add`, p.`date_upd`, IFNULL(stock.quantity, 0) as quantity, pl.`link_rewrite`, cl.`link_rewrite` AS category,
-						CONCAT(cp.`id_product`, IFNULL(cp.`id_product_attribute`, 0), IFNULL(cp.`id_address_delivery`, 0)) AS unique_id, cp.id_address_delivery,
+						CONCAT(LPAD(cp.`id_product`, 10, 0), LPAD(IFNULL(cp.`id_product_attribute`, 0), 10, 0), IFNULL(cp.`id_address_delivery`, 0)) AS unique_id, cp.id_address_delivery,
 						product_shop.`wholesale_price`, product_shop.advanced_stock_management, ps.product_supplier_reference supplier_reference');
 
 		// Build FROM
@@ -128,7 +107,7 @@ class Cart extends CartCore
 
 		// Build JOIN
 		$sql->leftJoin('product', 'p', 'p.`id_product` = cp.`id_product`');
-		$sql->innerJoin('product_shop', 'product_shop', '(product_shop.id_shop=cp.id_shop AND product_shop.id_product = p.id_product)');
+		$sql->innerJoin('product_shop', 'product_shop', '(product_shop.`id_shop` = cp.`id_shop` AND product_shop.`id_product` = p.`id_product`)');
 		$sql->leftJoin('product_lang', 'pl', '
 			p.`id_product` = pl.`id_product`
 			AND pl.`id_lang` = '.(int)$this->id_lang.Shop::addSqlRestrictionOnLang('pl', 'cp.id_shop')
@@ -139,7 +118,7 @@ class Cart extends CartCore
 			AND cl.`id_lang` = '.(int)$this->id_lang.Shop::addSqlRestrictionOnLang('cl', 'cp.id_shop')
 		);
 
-		$sql->leftJoin('product_supplier', 'ps', 'ps.id_product=cp.id_product AND ps.id_product_attribute=cp.id_product_attribute AND ps.id_supplier=p.id_supplier');
+		$sql->leftJoin('product_supplier', 'ps', 'ps.`id_product` = cp.`id_product` AND ps.`id_product_attribute` = cp.`id_product_attribute` AND ps.`id_supplier` = p.`id_supplier`');
 
 		// @todo test if everything is ok, then refactorise call of this method
 		$sql->join(Product::sqlStock('cp', 'cp'));
@@ -154,13 +133,13 @@ class Cart extends CartCore
 		$sql->groupBy('unique_id');
 
 		// Build ORDER BY
-		$sql->orderBy('p.id_product, cp.id_product_attribute, cp.date_add ASC');
+		$sql->orderBy('p.`id_product`, cp.`id_product_attribute`, cp.`date_add` ASC');
 
 		if (Customization::isFeatureActive())
 		{
 			$sql->select('cu.`id_customization`, cu.`quantity` AS customization_quantity');
 			$sql->leftJoin('customization', 'cu',
-				'p.`id_product` = cu.`id_product` AND cp.`id_product_attribute` = cu.id_product_attribute AND cu.id_cart='.(int)$this->id);
+				'p.`id_product` = cu.`id_product` AND cp.`id_product_attribute` = cu.`id_product_attribute` AND cu.`id_cart` = '.(int)$this->id);
 		}
 		else
 			$sql->select('NULL AS customization_quantity, NULL AS id_customization');
@@ -178,9 +157,9 @@ class Cart extends CartCore
 			');
 
 			$sql->leftJoin('product_attribute', 'pa', 'pa.`id_product_attribute` = cp.`id_product_attribute`');
-			$sql->leftJoin('product_attribute_shop', 'product_attribute_shop', '(product_attribute_shop.id_shop=cp.id_shop AND product_attribute_shop.id_product_attribute = pa.id_product_attribute)');
+			$sql->leftJoin('product_attribute_shop', 'product_attribute_shop', '(product_attribute_shop.`id_shop` = cp.`id_shop` AND product_attribute_shop.`id_product_attribute` = pa.`id_product_attribute`)');
 			$sql->leftJoin('product_attribute_image', 'pai', 'pai.`id_product_attribute` = pa.`id_product_attribute`');
-			$sql->leftJoin('image_lang', 'il', 'il.id_image = pai.id_image AND il.id_lang = '.(int)$this->id_lang);
+			$sql->leftJoin('image_lang', 'il', 'il.`id_image` = pai.`id_image` AND il.`id_lang` = '.(int)$this->id_lang);
 		}
 		else
 			$sql->select(
@@ -254,7 +233,7 @@ class Cart extends CartCore
 					(int)$row['id_product'],
 					true,
 					isset($row['id_product_attribute']) ? (int)$row['id_product_attribute'] : null,
-					6,
+					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
 					null,
 					false,
 					true,
@@ -271,6 +250,9 @@ class Cart extends CartCore
 
 				$tax_rate = Tax::getProductTaxRate((int)$row['id_product'], (int)$address_id);
 				
+				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				//$row['total_wt'] = Tools::ps_round($row['price'] * (float)$row['cart_quantity'] * (1 + (float)$tax_rate / 100), 2);
+				//$row['total'] = $row['price'] * (int)$row['cart_quantity'];
 				$row['total_wt'] = $row['price_wt'] * (int)$row['cart_quantity'];
 				$row['total'] = Tools::ps_round($row['price'] * (int)$row['cart_quantity'], 2);
 				
@@ -281,7 +263,7 @@ class Cart extends CartCore
 					(int)$row['id_product'],
 					false,
 					(int)$row['id_product_attribute'],
-					6,
+					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
 					null,
 					false,
 					true,
@@ -318,6 +300,8 @@ class Cart extends CartCore
 				// In case when you use QuantityDiscount, getPriceStatic() can be return more of 2 decimals
 				$row['price_wt'] = Tools::ps_round($row['price_wt'], 2);
 				$row['total_wt'] = $row['price_wt'] * (int)$row['cart_quantity'];
+				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				//$row['total'] = Tools::ps_round($row['price'] * (int)$row['cart_quantity'], 2);
 				$row['total'] = $row['price'] * (int)$row['cart_quantity'];
 			}
 
@@ -351,6 +335,7 @@ class Cart extends CartCore
 			if (array_key_exists($row['id_product_attribute'].'-'.$this->id_lang, self::$_attributesLists))
 				$row = array_merge($row, self::$_attributesLists[$row['id_product_attribute'].'-'.$this->id_lang]);
 			
+			/* Standard-Verfügbarkeit den Produkten zuordnen */
 			$row['available_now'] = !empty($row['available_now']) ? $row['available_now'] : Configuration::get('GC_AVAILABLE_NOW', $this->id_lang);
 			$row['available_later'] = !empty($row['available_later']) ? $row['available_later'] : Configuration::get('GC_AVAILABLE_LATER', $this->id_lang);
 			
@@ -628,6 +613,28 @@ class Cart extends CartCore
 			else
 				return (float)$order_total;
 		
+	}
+	
+	public function getGiftWrappingPrice($with_taxes = true, $id_address = null)
+	{
+		
+		/*
+		* German 0.0.1 | 20140320
+		* Alternative Methode zur Berechnung der MwSt. (GC_GERMAN_SHIPTAXMETH)
+		*/
+		
+		if(!Configuration::get('GC_GERMAN_SHIPTAXMETH'))
+			parent::getGiftWrappingPrice($with_taxes, $id_address);
+		
+
+		$wrapping_fees = (float)Configuration::get('PS_GIFT_WRAPPING_PRICE');
+		if ($with_taxes && $wrapping_fees > 0)
+		{
+			$tax_rate = Cart::getTaxesAverageUsed((int)($this->id_cart));
+			$wrapping_fees = $wrapping_fees * (1 + ($tax_rate / 100));
+		}
+
+		return $wrapping_fees;
 	}
 	
 	public function getPackageShippingCost($id_carrier = null, $use_tax = false, Country $default_country = null, $product_list = null, $id_zone = null)

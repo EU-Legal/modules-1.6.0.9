@@ -416,7 +416,12 @@ class German extends Module {
 					'GC_GERMAN_SHIPTAXMETH' => array(
 						'type'  => 'bool',
 						'title' => $this->l('Shipping tax method'),
-						'desc'  => $this->l('Calculates the average tax of all products for shipping.')
+						'desc'  => $this->l('Calculates the average tax of all products for shipping instead of a fixed tax value.')
+					),
+					'GC_GERMAN_TAXMETH' => array(
+						'type'  => 'bool',
+						'title' => $this->l('tax method'),
+						'desc'  => $this->l('Use average tax or most used tax of products in cart.')
 					),
 					'GC_CONDITIONS_INPUT' => array(
 						'type'  => 'bool',
