@@ -1,0 +1,5 @@
+Impressum
+Impressum, Anbieterkennzeichnung
+Impressum, Anbieterkennzeichnung
+impressum
+<h1>Impressum</h1><p><strong>[Shop]</strong></p><p>Inhaber: [Inhaber]</p><p>[Adresse]</p><p>Telefon: +49 [000 000 000]<br /> Telefax: +49 [000 000 000]<br /> Email: [email]</p><p>Umsatzsteuer-Identifikationsnummer: DE [0000000000]</p><p>Inhaltlich Verantwortlicher gemäß § 6 MDStV und Autor: [Verantwortlicher]</p><p>Gestaltung: [Webmaster]</p>

@@ -1,0 +1,5 @@
+Versandkosten
+Versandkosten
+Versandkosten
+versandkosten
+<h1>Versandkosten</h1><h2>Versandkosten nach Deutschland</h2><p>Die Versandkosten für Lieferungen innerhalb Deutschlands können Sie aus folgender Tabelle entnehmen:</p><table><tbody><tr><td>&nbsp;</td><td><strong>Standardversand<br />bis 100,00 € Warenwert</strong></td><td><strong>Standardversand<br />ab 100,00 € Warenwert<br /></strong></td><td><strong>24h Expressversand</strong></td></tr><tr><td><strong>DHL</strong></td><td>5,00 €<br />inkl. MwSt</td><td>fersandkostenfrei</td><td>15,00 €<br />inkl. MwSt.</td></tr><tr><td><strong>GLS</strong></td><td>5,00 €<br />inkl. MwSt.</td><td>fersandkostenrei</td><td><p>20,00 €<br />inkl. MwSt.</p></td></tr></tbody></table>

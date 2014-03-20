@@ -1,0 +1,24 @@
+<?php
+$_ERRORS['059d29a2088bcf0b9bae76a11f3a07e3'] = 'Überprüfung der Steuernummer nicht möglich';
+$_ERRORS['05f89c31663a09912af64c539524588f'] = 'Ungültige Steuernummer';
+$_ERRORS['123b188b921de4e588e6479fd48c5e4c'] = 'Die Lieferidentifikations Nr. ist nicht korrekt oder wurde schon verwendet.';
+$_ERRORS['2820ede59111aaa42f16581f35089151'] = 'Sie müssen einen Staat der Lieferadresse angeben.';
+$_ERRORS['33666a52024dc5e857a22547c914357b'] = 'Sie müssen eine Bezahlmethode auswählen.';
+$_ERRORS['367cff6e64cd67b345fc1e32bb9c081b'] = 'Sie können keinen Gastaccount estellen.';
+$_ERRORS['39916f579f264041641c122e68e545d5'] = 'Sie müssen mindestens eine Telefonnummer angeben.';
+$_ERRORS['6f89d5bc3c94e885d4a3716accc12983'] = 'Die Konstante %1$s in der Klasse %2$s ist bereits vorhanden.';
+$_ERRORS['790198fa9161355e1d60a6c42104e430'] = 'Es ist bereits ein Konto mit dieser Email Adresse vorhanden. Bitte loggen Sie sich ein.';
+$_ERRORS['7b4d0d1a8caf55ca3273dd2a340ef65e'] = 'Bitte akzeptieren Sie die Datenschutzerklärung';
+$_ERRORS['7c35f5beee619d9244ee3f3d7acfed6b'] = 'Bitte wählen sie eine Bezahlmethode aus.';
+$_ERRORS['80549c4f5d09451a6c3de7a4cb18f2d2'] = 'Sie müssen einen Staat der Rechnungsadresse angeben.';
+$_ERRORS['898e86c98d478a49b76c60b2d65266c0'] = 'Bitte wählen Sie eine Liefermethode aus.';
+$_ERRORS['997edfc129bdd9b7ebfdcd2d04a77633'] = 'Template (%s) existiert bereits.';
+$_ERRORS['af0f5bdc5be121b9307687aeeae38c17'] = 'Lieferadresse';
+$_ERRORS['be732f7841055203b8e06557195bed9a'] = 'Die PLZ ist nicht gültig. Sie müssen folgendes Format angeben: %s';
+$_ERRORS['c9560c4083b5217a5e14e03d6cf373bb'] = 'Sie müssen die AGB akzeptieren.';
+$_ERRORS['cc15db22ef644600212c74b29c1ccf59'] = 'Bitte wählen sie eine Bezahlmethode aus.';
+$_ERRORS['ce053e3cb814880c6997e963c0c57731'] = 'Sie müssen die AGB akzeptieren.';
+$_ERRORS['da07b51b9ec0cdc448967a0cd6bacd62'] = 'Bitte wählen Sie Ihre Adresse aus.';
+$_ERRORS['deec1d85e431dfa0f76e48cfd764f8d5'] = 'Steuernummer nicht gefunden';
+$_ERRORS['e4def6854bc0def276577c7356c6906e'] = 'Land der Lieferadresse kann nicht geladen werden';
+$_ERRORS['f872281f035e53f732b58c058a797f30'] = 'Es ist ein Mindesbetrag von %d füe eine Bestellung erforderlich.';
