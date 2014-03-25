@@ -19,11 +19,11 @@ class FrontController extends FrontControllerCore
 		
 		$content_links = array(
 			'contitions'   => array('cms_id_conditions',    'PS_CONDITIONS_CMS_ID',    'link_conditions'),
-			'shipping'     => array('cms_id_shipping',      'GC_CMS_ID_SHIPPING',      'link_shipping'),
-			'legal'        => array('cms_id_legal',         'GC_CMS_ID_LEGAL',         'link_legal'),
-			'revocation'   => array('cms_id_revocation',    'GC_CMS_ID_REVOCATION',    'link_revocation'),
-			'privacy'      => array('cms_id_privacy',       'GC_CMS_ID_PRIVACY',       'link_privacy'),
-			'enviromental' => array('cms_id_environmental', 'GC_CMS_ID_ENVIRONMENTAL', 'link_enviromental')
+			'shipping'     => array('cms_id_shipping',      'LEGAL_CMS_ID_SHIPPING',      'link_shipping'),
+			'legal'        => array('cms_id_legal',         'LEGAL_CMS_ID_LEGAL',         'link_legal'),
+			'revocation'   => array('cms_id_revocation',    'LEGAL_CMS_ID_REVOCATION',    'link_revocation'),
+			'privacy'      => array('cms_id_privacy',       'LEGAL_CMS_ID_PRIVACY',       'link_privacy'),
+			'enviromental' => array('cms_id_environmental', 'LEGAL_CMS_ID_ENVIRONMENTAL', 'link_enviromental')
 		);
 		
 		foreach($content_links as $a) {

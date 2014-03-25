@@ -24,19 +24,20 @@ class Mail extends MailCore
 		/*
 		* Legal 0.0.1 | 20140320
 		* CMS Seiten für alle Emails verfügbar machen, sowohl als HTML als auch als TXT
+		* Duplizieren der Bestellbestätigung (LEGAL_OCMAILDBL)
 		*/
 		
-		$gc_german_additional_cms = array(
+		$additional_cms = array(
 			'conditions'    => 'PS_CONDITIONS_CMS_ID',    // GC German: AGB
-			'revocation'    => 'GC_CMS_ID_REVOCATION',    // GC German: Widerrufsrecht
-			'privacy'       => 'GC_CMS_ID_PRIVACY',       // GC German: Datenschutz
-			'environmental' => 'GC_CMS_ID_ENVIRONMENTAL', // GC German: Umweltverordnung
-			'legal'         => 'GC_CMS_ID_LEGAL' // GC German: Impressum
+			'revocation'    => 'LEGAL_CMS_ID_REVOCATION',    // GC German: Widerrufsrecht
+			'privacy'       => 'LEGAL_CMS_ID_PRIVACY',       // GC German: Datenschutz
+			'environmental' => 'LEGAL_CMS_ID_ENVIRONMENTAL', // GC German: Umweltverordnung
+			'legal'         => 'LEGAL_CMS_ID_LEGAL' // GC German: Impressum
 		);
 		
 		$type = Configuration::get('PS_MAIL_TYPE');
 		
-		foreach($gc_german_additional_cms as $key => $row) {
+		foreach($additional_cms as $key => $row) {
 			
 			$html = CMS::getContentFromId(Configuration::get($row), (int)$id_lang);
 			
@@ -47,6 +48,15 @@ class Mail extends MailCore
 			
 		}
 		
+		/* Duplizieren der Bestellbestätigung (LEGAL_OCMAILDBL) */
+		if($template == 'order_conf' and $email = Configuration::get('LEGAL_OCMAILDBL') and Validate::isEmail($email)) {
+			if(empty($bcc))
+				$bcc = $email;
+			elseif(is_array($bcc))
+				$bcc = array_merge($bcc, array($email));
+			else
+				$bcc = array_merge(array($bcc), array($email));
+		}
 		
 		return parent::Send(
 			$id_lang, 

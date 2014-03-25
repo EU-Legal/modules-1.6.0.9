@@ -6,7 +6,7 @@
 * 
 * @version       : 0.0.1
 * @date          : 2014 03 20
-* @author        : Markus Engel @ Onlineshop-Module.de | Julia Bengiev @ Silbersaiten.de
+* @author        : Markus Engel @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
@@ -14,7 +14,10 @@
 * @changelog     : see changelog.txt
 * @compatibility : PS >= 1.6.0.5
 */
- 
+
+// TODO:
+// Copy controllers/admin/templates/ override from module to ps
+
 // no direct access to this module
 if (!defined('_PS_VERSION_'))
 	exit;
@@ -25,97 +28,56 @@ class Legal extends Module {
 	/*******************************************************************************************************************
 	*
 	* Module vars and constants
+	* (for source comments see __construct()
 	*
 	*******************************************************************************************************************/
 	
-	// available languages
 	public $languages = array();            
-	
-	// default shop language
 	public $default_language_id = 1;               
-	
-	// supportet theme
-	// [theme name => theme title]
-	public $theme = array(           
-		'bootstrap-legal' => 'Bootstrap Legal', 
-	);
-	
-	// default delivery 'now'
+	public $theme = array();
 	public $deliveryNowDefault = '';  
-	
-	// default delivery 'later'
 	public $deliveryLaterDefault = ''; 
-	
-	// new hooks to install
-	public $hooks = array(
-		// reorder hook
-		'displayReorder' => array(
-			'name' => 'Reorder',
-			'templates' => array(
-				'history.tpl'
-			),
-		),
-		// product delivery hook
-		'displayProductAvailability' => array(
-			'name' => 'Product Availability',
-			'templates' => array(
-				'product.tpl', 
-				'product-list.tpl', 
-				'products-comparison.tpl', 
-				'shopping-cart-product-line.tpl'
-			),
-		),
-		// product price hook
-		'displayProductPriceBlock' => array(
-			'name' => 'Product Price Display',
-			'templates' => array(
-				'product.tpl', 
-				'product-list.tpl', 
-				'products-comparison.tpl'
-			),
-		),
-	);
-	
-	// modules not compatible with legal
-	public $modules_not_compatible = array(
-		'bankwire',
-		'cheque',
-		'blockcart',
-	);
-	
-	// modules must install 
-	public $modules_must_install = array(
-		'blockcustomerprivacy',
-	);
-	
-	// supported modules, delivered with German
-	public $modules = array(           
-		'gc_ganalytics' => 'Google Analytics',
-		'gc_newsletter' => 'Newsletter',
-		'gc_blockcart'  => 'Warenkorb Block',
-	);
+	public $hooks = array();
+	public $modules_not_compatible = array();
+	public $modules_must_install = array();
+	public $modules = array();
+	public $cms_pages = array();
+	public $config_prefix = '';
 	
 	// Cache
 	private static $_cms_pages = array();
 	
 	/*******************************************************************************************************************
 	*
-	* Construct
+	* Construct // Module configuration
 	*
 	*******************************************************************************************************************/
 	
 	public function __construct() {
 		
-	 	$this->name                   = 'legal';                // module name
-	 	$this->tab                    = 'administration';       // module backoffice tab
-	 	$this->version                = '0.0.1';                // version
-		$this->author                 = 'Onlineshop-Module.de & Silbersaiten'; // author
-		$this->need_instance          = 0;                      // instance? No
-		$this->ps_versions_compliancy = array(                  // module compliancy
+		// module name, must be same as class name and modul directory name
+	 	$this->name = 'legal';                
+	 	
+		// module backoffice tab, maybe an other one?
+		$this->tab = 'administration';       
+	 	
+		// version: major, minor, bugfix
+		$this->version = '0.0.1';                
+		
+		// author
+		$this->author = 'Onlineshop-Module.de & Silbersaiten'; 
+		
+		// instance? No
+		$this->need_instance = 0;                      
+		
+		// module compliancy: only for exactly one PS version
+		$this->ps_versions_compliancy = array(                  
 			'min' => '1.6.0.4',
 			'max' => '1.6.0.5'
 		);
-	 	$this->bootstrap              = true;                   // bootstrap bo functionality
+	 	
+		// bootstrap baqckoffice functionality
+		$this->bootstrap = true;                   
 		
 		parent::__construct();
 		
@@ -133,9 +95,78 @@ class Legal extends Module {
 			else
 				$this->languages[$key]['is_default'] = false;
 		
+		// supportet theme
+		// [theme name => theme title]
+		$this->theme = array(           
+			'bootstrap-legal' => $this->l('Bootstrap Legal'), 
+		);
+		
 		// default values for delivery informations
-		$this->deliveryNowDefault = $this->l('1-3 Workdays');
+		$this->deliveryNowDefault   = $this->l('1-3 Workdays');
 		$this->deliveryLaterDefault = $this->l('7-10 Workdays');
+		
+		// new hooks to install
+		$this->hooks = array(
+			// reorder hook
+			'displayReorder' => array(
+				'name' => 'Reorder',
+				'templates' => array(
+					'history.tpl'
+				),
+			),
+			// product delivery hook
+			'displayProductAvailability' => array(
+				'name' => 'Product Availability',
+				'templates' => array(
+					'product.tpl', 
+					'product-list.tpl', 
+					'products-comparison.tpl', 
+					'shopping-cart-product-line.tpl'
+				),
+			),
+			// product price hook
+			'displayProductPriceBlock' => array(
+				'name' => 'Product Price Display',
+				'templates' => array(
+					'product.tpl', 
+					'product-list.tpl', 
+					'products-comparison.tpl'
+				),
+			),
+		);
+		
+		// modules not compatible with legal
+		$this->modules_not_compatible = array(
+			'bankwire',
+			'cheque',
+			'blockcart',
+		);
+		
+		// modules must install 
+		$this->modules_must_install = array(
+			'blockcustomerprivacy',
+		);
+		
+		// supported modules, delivered with German
+		$this->modules = array(           
+			'gc_ganalytics' => 'Google Analytics',
+			'gc_newsletter' => 'Newsletter',
+			'gc_blockcart'  => 'Warenkorb Block',
+		);
+		
+		// available cms pages
+		// [filename => configuration]
+		$this->cms_pages = array(
+			array('name' => 'legalnotice',   'config' => 'LEGAL_CMS_ID_LEGAL',         'title' => $this->l('Legal Notice')),
+			array('name' => 'conditions',    'config' => 'PS_CONDITIONS_CMS_ID',       'title' => $this->l('Conditions')),
+			array('name' => 'revocation',    'config' => 'LEGAL_CMS_ID_REVOCATION',    'title' => $this->l('Revocation')),
+			array('name' => 'privacy',       'config' => 'LEGAL_CMS_ID_PRIVACY',       'title' => $this->l('Privacy')),
+			array('name' => 'environmental', 'config' => 'LEGAL_CMS_ID_ENVIRONMENTAL', 'title' => $this->l('Envorimental')),
+			array('name' => 'shipping',      'config' => 'LEGAL_CMS_ID_SHIPPING',      'title' => $this->l('Shipping')),
+		);
+		
+		// prefix for config vars
+		$this->config_prefix = 'LEGAL_';
 		
 	}
 	
@@ -173,37 +204,23 @@ class Legal extends Module {
 		$return &= Configuration::updateValue('PS_TAX_DISPLAY', true);
 		$return &= Configuration::updateValue('LEGAL_SHIPTAXMETH', true);
 		$return &= Configuration::updateValue('LEGAL_TAXMETH', false);
+		$return &= Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1);
 		
-		if(!Configuration::updateValue('GC_CONDITIONS_INPUT', 1)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': GC_CONDITIONS_INPUT';
-		}
-		
-		foreach($this->languages as $language) {
+		$values = array();
+		foreach($this->languages as $language)
 			$values[$language['id_lang']] = $this->deliveryNowDefault;
-		}
+		Configuration::updateValue('LEGAL_DELIVERY_NOW', $values);
 		
-		if(!Configuration::updateValue('GC_DELIVERY_NOW', $values)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': GC_DELIVERY_NOW';
-		}
 		
 		$values = array(); 
-		
-		foreach($this->languages as $language) {
+		foreach($this->languages as $language)
 			$values[$language['id_lang']] = $this->deliveryLaterDefault;
-		}
+		Configuration::updateValue('LEGAL_DELIVERY_LATER', $values);
 		
-		if(!Configuration::updateValue('GC_DELIVERY_LATER', $values)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': GC_DELIVERY_LATER';
-		}
-		
-		$return &= Configuration::updateValue('GC_CMS_ID_LEGAL', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_REVOCATION', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_PRIVACY', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_ENVIRONMENTAL', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_SHIPPING', 0);
+		// set config vars for cms pages
+		foreach($this->cms_pages as $cms_page)
+			if(strpos($cms_page['config'], $this->config_prefix) === 0)
+				$return &= Configuration::updateValue($cms_page['config'], 0);
 		
 		// add error translations
 		if(is_file(_PS_TRANSLATIONS_DIR_.'de/errors.php')) {
@@ -325,14 +342,13 @@ class Legal extends Module {
 		// shop specific configuration
 		$return &= Configuration::deleteByName('LEGAL_SHIPTAXMETH');
 		$return &= Configuration::deleteByName('LEGAL_TAXMETH');
-		$return &= Configuration::deleteByName('GC_CONDITIONS_INPUT');
-		$return &= Configuration::deleteByName('GC_DELIVERY_NOW');
-		$return &= Configuration::deleteByName('GC_DELIVERY_LATER');
-		$return &= Configuration::deleteByName('GC_CMS_ID_LEGAL');
-		$return &= Configuration::deleteByName('GC_CMS_ID_REVOCATION');
-		$return &= Configuration::deleteByName('GC_CMS_ID_PRIVACY');
-		$return &= Configuration::deleteByName('GC_CMS_ID_ENVIRONMENTAL');
-		$return &= Configuration::deleteByName('GC_CMS_ID_SHIPPING');
+		$return &= Configuration::deleteByName('LEGAL_CONDITIONS_INPUT');
+		$return &= Configuration::deleteByName('LEGAL_DELIVERY_NOW');
+		$return &= Configuration::deleteByName('LEGAL_DELIVERY_LATER');
+		
+		foreach($this->cms_pages as $cms_page)
+			if(strpos($cms_page['config'], $this->config_prefix) === 0)
+				$return &= Configuration::deleteByName($config);
 		
 		// delete all delivery notes
 		$configuration_ids = DB::getInstance()->executeS("
@@ -373,15 +389,15 @@ class Legal extends Module {
 		$return &= Configuration::updateValue('PS_TAX_DISPLAY', true);
 		$return &= Configuration::updateValue('LEGAL_SHIPTAXMETH', true);
 		$return &= Configuration::updateValue('LEGAL_TAXMETH', false);
-		$return &= Configuration::updateValue('GC_CONDITIONS_INPUT', 1);
+		$return &= Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1);
 		
 		foreach($this->languages as $language) {
 			$values[$language['id_lang']] = $this->deliveryNowDefault;
 		}
 		
-		if(!Configuration::updateValue('GC_DELIVERY_NOW', $values)) {
+		if(!Configuration::updateValue('LEGAL_DELIVERY_NOW', $values)) {
 			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': GC_DELIVERY_NOW';
+			$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_NOW';
 		}
 		
 		$values = array(); 
@@ -390,16 +406,14 @@ class Legal extends Module {
 			$values[$language['id_lang']] = $this->deliveryLaterDefault;
 		}
 		
-		if(!Configuration::updateValue('GC_DELIVERY_LATER', $values)) {
+		if(!Configuration::updateValue('LEGAL_DELIVERY_LATER', $values)) {
 			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': GC_DELIVERY_LATER';
+			$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_LATER';
 		}
 		
-		$return &= Configuration::updateValue('GC_CMS_ID_LEGAL', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_REVOCATION', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_PRIVACY', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_ENVIRONMENTAL', 0);
-		$return &= Configuration::updateValue('GC_CMS_ID_SHIPPING', 0);
+		foreach($this->cms_pages as $cms_page)
+			if(strpos($cms_page['config'], $this->config_prefix) === 0)
+				$return &= Configuration::updateValue($cms_page['config'], 0);
 		
 		return (bool)$return;
 		
@@ -464,6 +478,18 @@ class Legal extends Module {
 	// general settings form
 	private function displayFormSettings() {
 		
+		$cms_pages = array();
+		
+		foreach($this->cms_pages as $cms_page) {
+			$cms_pages[$cms_page['config']] = array(
+				'type'       => 'select',
+				'list'       => $this->getCMSPages(),
+				'identifier' => 'id_cms',
+				'title'      => $cms_page['title'],
+			);
+		}
+		
+		
 		$helper = new HelperOptions();
 		
 		// Helper Options
@@ -526,7 +552,7 @@ class Legal extends Module {
 						'title' => $this->l('Tax in block cart'),
 						'desc'  => $this->l('Show the tax in your cart.')
 					),
-					'GC_CONDITIONS_INPUT' => array(
+					'LEGAL_CONDITIONS_INPUT' => array(
 						'type'  => 'bool',
 						'title' => $this->l('Conditions input'),
 						'desc'  => $this->l('Shows the checkbox for conditions in the last order step.')
@@ -545,12 +571,12 @@ class Legal extends Module {
 							'1' => $this->l('most used tax'),
 						),
 					),
-					'GC_DELIVERY_NOW' => array(
+					'LEGAL_DELIVERY_NOW' => array(
 						'type'  => 'textLang',
 						'title' => $this->l('Availabiliy "in stock"'),
 						'desc'  => $this->l('Displayed text when in-stock default value. E.g.').' '.$this->deliveryNowDefault,
 					),
-					'GC_DELIVERY_LATER' => array(
+					'LEGAL_DELIVERY_LATER' => array(
 						'type'  => 'textLang',
 						'title' => $this->l('Availabiliy "back-ordered"'),
 						'desc'  => $this->l('Displayed text when allowed to be back-ordered default value. E.g.').' '.$this->deliveryLaterDefault,
@@ -565,44 +591,7 @@ class Legal extends Module {
 				'title' => $this->l('CMS Pages'),
 				'info' => $this->l('Assign your CMS pages. Below you can add cms templates to your shop if they dont exists.'),
 				'icon' => 'icon-pencil',
-				'fields' => array(
-					'GC_CMS_ID_LEGAL' => array(
-						'type'       => 'select',
-						'list'       => $this->getCMSPages(),
-						'identifier' => 'id_cms',
-						'title'      => $this->l('Legal notice'),
-					),
-					'PS_CONDITIONS_CMS_ID' => array(
-						'type'       => 'select',
-						'list'       => $this->getCMSPages(),
-						'identifier' => 'id_cms',
-						'title'      => $this->l('Conditions'),
-					),
-					'GC_CMS_ID_REVOCATION' => array(
-						'type'       => 'select',
-						'list'       => $this->getCMSPages(),
-						'identifier' => 'id_cms',
-						'title'      => $this->l('Revocation'),
-					),
-					'GC_CMS_ID_PRIVACY' => array(
-						'type'       => 'select',
-						'list'       => $this->getCMSPages(),
-						'identifier' => 'id_cms',
-						'title'      => $this->l('Privacy policy'),
-					),
-					'GC_CMS_ID_ENVIRONMENTAL' => array(
-						'type'       => 'select',
-						'list'       => $this->getCMSPages(),
-						'identifier' => 'id_cms',
-						'title'      => $this->l('Environmental'),
-					),
-					'GC_CMS_ID_SHIPPING' => array(
-						'type'       => 'select',
-						'list'       => $this->getCMSPages(),
-						'identifier' => 'id_cms',
-						'title'      => $this->l('Delivery'),
-					),
-				),
+				'fields' => $cms_pages,
 				'buttons' => array(
 					array(
 						'title' => $this->l('Add CMS Pages'),
@@ -975,46 +964,46 @@ class Legal extends Module {
 			if(!Configuration::updateValue('LEGAL_TAXMETH', (bool)Tools::getValue('LEGAL_TAXMETH'))) 
 				$this->_errors[] = $this->l('Could not update').': LEGAL_TAXMETH';
 				
-			if(!Configuration::updateValue('GC_CONDITIONS_INPUT', (int)Tools::getValue('GC_CONDITIONS_INPUT'))) 
-				$this->_errors[] = $this->l('Could not update').': GC_CONDITIONS_INPUT';
+			if(!Configuration::updateValue('LEGAL_CONDITIONS_INPUT', (int)Tools::getValue('LEGAL_CONDITIONS_INPUT'))) 
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CONDITIONS_INPUT';
 			
 			// Produktverfügbarkeit
 			$values = array(); 
 			
 			foreach($this->languages as $language) {
-				$values[$language['id_lang']] = Tools::getValue('GC_DELIVERY_NOW_'.$language['id_lang']);
+				$values[$language['id_lang']] = Tools::getValue('LEGAL_DELIVERY_NOW_'.$language['id_lang']);
 			}
 			
-			if(!Configuration::updateValue('GC_DELIVERY_NOW', $values))
-				$this->_errors[] = $this->l('Could not update').': GC_DELIVERY_NOW';
+			if(!Configuration::updateValue('LEGAL_DELIVERY_NOW', $values))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_NOW';
 			
 			$values = array(); 
 			
 			foreach($this->languages as $language) {
-				$values[$language['id_lang']] = Tools::getValue('GC_DELIVERY_LATER_'.$language['id_lang']);
+				$values[$language['id_lang']] = Tools::getValue('LEGAL_DELIVERY_LATER_'.$language['id_lang']);
 			}
 			
-			if(!Configuration::updateValue('GC_DELIVERY_LATER', $values))
-				$this->_errors[] = $this->l('Could not update').': GC_DELIVERY_LATER';
+			if(!Configuration::updateValue('LEGAL_DELIVERY_LATER', $values))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_LATER';
 			
 			// CMS IDs festlegen
-			if(!Configuration::updateValue('GC_CMS_ID_LEGAL', (int)Tools::getValue('GC_CMS_ID_LEGAL')))
-				$this->_errors[] = $this->l('Could not update').': GC_CMS_ID_LEGAL';
+			if(!Configuration::updateValue('LEGAL_CMS_ID_LEGAL', (int)Tools::getValue('LEGAL_CMS_ID_LEGAL')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_LEGAL';
 			
 			if(!Configuration::updateValue('PS_CONDITIONS_CMS_ID', (int)Tools::getValue('PS_CONDITIONS_CMS_ID')))
 				$this->_errors[] = $this->l('Could not update').': PS_CONDITIONS_CMS_ID';
 			
-			if(!Configuration::updateValue('GC_CMS_ID_REVOCATION', (int)Tools::getValue('GC_CMS_ID_REVOCATION')))
-				$this->_errors[] = $this->l('Could not update').': GC_CMS_ID_REVOCATION';
+			if(!Configuration::updateValue('LEGAL_CMS_ID_REVOCATION', (int)Tools::getValue('LEGAL_CMS_ID_REVOCATION')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_REVOCATION';
 			
-			if(!Configuration::updateValue('GC_CMS_ID_PRIVACY', (int)Tools::getValue('GC_CMS_ID_PRIVACY')))
-				$this->_errors[] = $this->l('Could not update').': GC_CMS_ID_PRIVACY';
+			if(!Configuration::updateValue('LEGAL_CMS_ID_PRIVACY', (int)Tools::getValue('LEGAL_CMS_ID_PRIVACY')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_PRIVACY';
 			
-			if(!Configuration::updateValue('GC_CMS_ID_ENVIRONMENTAL', (int)Tools::getValue('GC_CMS_ID_ENVIRONMENTAL')))
-				$this->_errors[] = $this->l('Could not update').': GC_CMS_ID_ENVIRONMENTAL';
+			if(!Configuration::updateValue('LEGAL_CMS_ID_ENVIRONMENTAL', (int)Tools::getValue('LEGAL_CMS_ID_ENVIRONMENTAL')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_ENVIRONMENTAL';
 			
-			if(!Configuration::updateValue('GC_CMS_ID_SHIPPING', (int)Tools::getValue('GC_CMS_ID_SHIPPING')))
-				$this->_errors[] = $this->l('Could not update').': GC_CMS_ID_SHIPPING';
+			if(!Configuration::updateValue('LEGAL_CMS_ID_SHIPPING', (int)Tools::getValue('LEGAL_CMS_ID_SHIPPING')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_SHIPPING';
 			
 			// Panikmodus und Bestellstatus ID Auftragsbestätigung
 			if(!Configuration::updateGlobalValue('LEGAL_PANIC_MODE', (bool)Tools::getValue('LEGAL_PANIC_MODE')))
@@ -1036,58 +1025,46 @@ class Legal extends Module {
 		
 		elseif (Tools::isSubmit('submitAddCMSPages')) {
 			
-			//$files = Tools::getValue('cms');
-			$files = array(
-				'legalnotice',
-				'conditions',
-				'revocation',
-				'privacy',
-				'environmental',
-				'shipping',
-			);
-			
-			foreach($files as $name) {
+			// install all cms pages
+			foreach($this->cms_pages as $cms_page) {
 				
-				if($content = @file($this->local_path.'cms/'.$name.'.txt')) {
+				if($content = @file_get_contents($this->local_path.'cms/'.$cms_page['name'].'.txt')) {
 					
 					$cms = new CMS();
 					$cms->active = true;
 					$cms->id_cms_category = 1;
 					
-					$content[4] = preg_replace('#src="(.*)"#u', 'src="'.Context::getContext()->shop->getBaseURL().'\\1"', $content[4]);
+					$content = preg_replace('#src="(.*)"#u', 'src="'.Context::getContext()->shop->getBaseURL().'\\1"', $content);
 					
 					foreach($this->languages as $language) {
 						
-						$cms->meta_title[$language['id_lang']]       = trim($content[0]);
-						$cms->meta_description[$language['id_lang']] = trim($content[1]);
-						$cms->meta_keywords[$language['id_lang']]    = trim($content[2]);
-						$cms->link_rewrite[$language['id_lang']]     = trim($content[3]);
-						$cms->content[$language['id_lang']]          = trim($content[4]);
+						$cms->meta_title[$language['id_lang']]       = $cms_page['title'];
+						$cms->meta_description[$language['id_lang']] = $cms_page['title'];
+						$cms->meta_keywords[$language['id_lang']]    = $cms_page['title'];
+						$cms->link_rewrite[$language['id_lang']]     = Tools::link_rewrite($cms_page['title']);
+						$cms->content[$language['id_lang']]          = trim($content);
 						
 					}
 					
 					if(!$cms->add())
-						$this->_errors[] = $this->l('Could not add new cms page').': '.$name;
+						$this->_errors[] = $this->l('Could not add new cms page').': '.$cms_page['name'];
 					
-					if($name == 'legalnotice')   Configuration::updateValue('GC_CMS_ID_LEGAL',         $cms->id);
-					if($name == 'conditions')    Configuration::updateValue('PS_CONDITIONS_CMS_ID',    $cms->id);
-					if($name == 'revocation')    Configuration::updateValue('GC_CMS_ID_REVOCATION',    $cms->id);
-					if($name == 'privacy')       Configuration::updateValue('GC_CMS_ID_PRIVACY',       $cms->id);
-					if($name == 'environmental') Configuration::updateValue('GC_CMS_ID_ENVIRONMENTAL', $cms->id);
-					if($name == 'shipping')      Configuration::updateValue('GC_CMS_ID_SHIPPING',      $cms->id);
-				
+					Configuration::updateValue($cms_page['config'], $cms->id);
+					
+					$_POST[$cms_page['config']] = $cms->id;
+					
 				}
 				else
-					$this->_errors[] = $this->l('Could not open file').': cms/'.$name.'.txt';
-				
+					$this->_errors[] = $this->l('Could not open file').': cms/'.$cms_page['name'].'.txt';
 				
 			}
 			
+			// copy cms images
 			try {
-				$this->rcopy('modules/'.$this->name.'/img/batterieverordnung.jpg', 'img/cms/batterieverordnung.jpg', array('root' => _PS_ROOT_DIR_));
+				$this->rcopy('modules/'.$this->name.'/img/cms/', 'img/cms/', array('root' => _PS_ROOT_DIR_));
 			}
 			catch(Exception $e) {
-				$this->_errors[] = $this->l('Could not copy').': /img/batterieverordnung.jpg';
+				$this->_errors[] = $this->l('Could not copy').': /img/cms/';
 			}
 			
 			if(count($this->_errors) <= 0)
@@ -1128,7 +1105,9 @@ class Legal extends Module {
 			
 			$dir = dirname(__FILE__).'/themes/';
 			
-			if(!is_dir(_PS_ALL_THEMES_DIR_.$theme_name) and !Tools::ZipExtract($dir.$theme_name.'.zip', _PS_ALL_THEMES_DIR_))
+			if(is_dir(_PS_ALL_THEMES_DIR_.$theme_name))
+				$this->_errors[] = $this->l('There is already a theme').' '.$theme_name;
+			elseif(!Tools::ZipExtract($dir.$theme_name.'.zip', _PS_ALL_THEMES_DIR_))
 				$this->_errors[] = $this->l('Could not extract file').': '.$theme_name.'.zip';
 			else {
 				$theme                       = new Theme();
@@ -1759,18 +1738,16 @@ class Legal extends Module {
 		else
 			$product = new Product((int)$params['id_product'], true, $this->context->cookie->id_lang);
 		
-		// TODO: Weiteres Feld Datenbakn für Lieferzeitangaben. Aktuelles Feld wird missbraucht.
-		
 		$this->smarty->assign(array(
 			'product' => $product,  
 			'allow_oosp' => $product->isAvailableWhenOutOfStock((int)$product->out_of_stock),
 		));
 		
-		// return $this->display(__FILE__, 'displayProductAvailability.tpl');
+		return $this->display(__FILE__, 'displayProductAvailability.tpl');
 		
 	}
 	
-	public function displayProductPriceBlock($params) {
+	public function hookDisplayProductPriceBlock($params) {
 		
 		/* wird noch nicht benötigt */
 		//if($params['id_product'] instanceof Product)
@@ -1780,7 +1757,8 @@ class Legal extends Module {
 		
 		$this->smarty->assign(array(
 			'tax_enabled'       => Configuration::get('PS_TAX'),  
-			'cms_id_shipping'   => Configuration::get('GC_CMS_ID_SHIPPING'),
+			'cms_id_shipping'   => Configuration::get('LEGAL_CMS_ID_SHIPPING'),
+			'template_type'     => $params['type']
 		));
 		
 		return $this->display(__FILE__, 'displayProductPriceBlock.tpl');

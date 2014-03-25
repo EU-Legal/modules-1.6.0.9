@@ -29,8 +29,8 @@ class Product extends ProductCore
 		
 		if ($full && $this->id)
 		{
-			$this->delivery_now   = !empty($this->delivery_now)   ? $this->delivery_now   : Configuration::get('GC_DELIVERY_NOW',   (int)$id_lang);
-			$this->delivery_later = !empty($this->delivery_later) ? $this->delivery_later : Configuration::get('GC_DELIVERY_LATER', (int)$id_lang);
+			$this->delivery_now   = !empty($this->delivery_now)   ? $this->delivery_now   : Configuration::get('LEGAL_DELIVERY_NOW',   (int)$id_lang);
+			$this->delivery_later = !empty($this->delivery_later) ? $this->delivery_later : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
 		}
 	}
 	
@@ -506,8 +506,8 @@ class Product extends ProductCore
 		$row = Product::getTaxesInformations($row, $context);
 		
 		/* Standard Lieferzeit aus Datenbank ermitteln */
-		$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('GC_DELIVERY_NOW',   (int)$id_lang);
-		$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('GC_DELIVERY_LATER', (int)$id_lang);
+		$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW',   (int)$id_lang);
+		$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
 		
 		self::$producPropertiesCache[$cache_key] = $row;
 		return self::$producPropertiesCache[$cache_key];

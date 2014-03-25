@@ -339,8 +339,8 @@ class Cart extends CartCore
 				$row = array_merge($row, self::$_attributesLists[$row['id_product_attribute'].'-'.$this->id_lang]);
 			
 			/* Standard-Verfügbarkeit den Produkten zuordnen */
-			$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('GC_DELIVERY_NOW', $this->id_lang);
-			$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('GC_DELIVERY_LATER', $this->id_lang);
+			$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW', $this->id_lang);
+			$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', $this->id_lang);
 			
 			$row = Product::getTaxesInformations($row, $cart_shop_context);
 
