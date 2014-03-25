@@ -6,7 +6,7 @@
 		{if $allow_oosp}
 			{$product->delivery_later}
 		{else}
-			{l s='This product is no longer in stock' mod='gc_german'}
+			{l s='This product is no longer in stock' mod='legal'}
 		{/if}
 	{else}
 		{$product->delivery_now}
