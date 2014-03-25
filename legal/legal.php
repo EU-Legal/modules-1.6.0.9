@@ -1101,7 +1101,7 @@ class Legal extends Module {
 		elseif(Tools::isSubmit('submitAddTheme')) {
 			
 			$theme_name = key($this->theme);
-			$theme_title = $theme_title[$theme_name];
+			$theme_title = $this->theme[$theme_name];
 			
 			$dir = dirname(__FILE__).'/themes/';
 			
