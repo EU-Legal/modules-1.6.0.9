@@ -92,3 +92,6 @@ $_MODULE['<{legal}prestashop>legal_570ab7d1af9ddaf527d6b66d3583239b'] = 'Kann Th
 $_MODULE['<{legal}prestashop>legal_ffd678672da8ec25dca4859aa3c412ef'] = 'Theme installiert';
 $_MODULE['<{legal}prestashop>legal_22ef42dc2a0bd173a2b5c89ef273b785'] = 'Lieferzusatz gelöscht';
 $_MODULE['<{legal}prestashop>legal_b970be76c5abf687d1e953120a04844e'] = '-- bitte wählen Sie eine CMS Seite --';
+$_MODULE['<{legal}prestashop>displayproductavailability_065ab3a28ca4f16f55f103adc7d0226f'] = 'Lieferzeit';
+$_MODULE['<{legal}prestashop>displayproductpriceblock_6a1d74bd59d28d765e00e3b6d175d02a'] = 'vorher';
+$_MODULE['<{legal}prestashop>displayproductpriceblock_b253d3cdc13dcea51ded533464d7531c'] = 'Grundpreis';
