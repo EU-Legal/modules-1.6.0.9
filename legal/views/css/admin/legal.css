@@ -1,0 +1,28 @@
+#legal_info {
+	color: #31B0D5;
+	border: solid 1px #C5E9F3;
+	background-color: #F8FCFE;
+	padding: 30px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+}
+
+#legal_info .img-responsive {
+	display: inline-block;
+}
+
+#legal_info h1, #legal_info h1 small {
+	color: #055f7a;
+}
+
+#legal_info h1 {
+	font-size: 50px;
+}
+
+#legal_info .link {
+	text-decoration: underline;
+}
+
+#legal_info hr {
+	border-top-color: #C5E9F3;
+}

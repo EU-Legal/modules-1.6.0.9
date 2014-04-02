@@ -1,0 +1,30 @@
+#legal_info {
+	
+	color: #31B0D5;
+	border: solid 1px #C5E9F3;
+	background-color: #F8FCFE;
+	padding: 30px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	
+	.img-responsive {
+		display: inline-block;
+	}
+	
+	h1, h1 small {
+		color: #055f7a;
+	}
+	
+	h1 {
+		font-size: 50px;
+	}
+	
+	.link {
+		text-decoration: underline;
+	}
+	
+	hr {
+		border-top-color: #C5E9F3;
+	}
+	
+}

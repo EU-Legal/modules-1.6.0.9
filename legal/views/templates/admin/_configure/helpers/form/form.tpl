@@ -17,6 +17,8 @@
 				</label>
 			</div>
 		{/foreach}
+	{elseif $input.type == 'hr'}
+		<hr>
 	{else}
 		{$smarty.block.parent}
 	{/if}
