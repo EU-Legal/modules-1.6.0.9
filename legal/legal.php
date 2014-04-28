@@ -533,6 +533,14 @@ class Legal extends Module {
 				'info' => $this->l('Global Settings for all shops'),
 				'icon' => 'icon-globe',
 				'fields' => array(
+					'PS_EU_PAYMENT_API' => array(
+						'type'  => 'bool',
+						'title' => $this->l('EU Payment API Mode'),
+						'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
+						'auto_value' => false,
+						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
+						'no_multishop_checkbox' => true,
+					),
 					'LEGAL_OCMAILDBL' => array(
 						'type'  => 'text',
 						'title' => $this->l('Order confirmation duplicator'),
@@ -1032,6 +1040,9 @@ class Legal extends Module {
 			// Panikmodus und Bestellstatus ID Auftragsbestätigung
 			if(!Configuration::updateGlobalValue('LEGAL_PANIC_MODE', (bool)Tools::getValue('LEGAL_PANIC_MODE')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_PANIC_MODE';
+				
+			if(!Configuration::updateGlobalValue('PS_EU_PAYMENT_API', (bool)Tools::getValue('PS_EU_PAYMENT_API')))
+				$this->_errors[] = $this->l('Could not update').': PS_EU_PAYMENT_API';
 			
 			$email = Tools::getValue('LEGAL_OCMAILDBL');
 			
