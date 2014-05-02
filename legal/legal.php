@@ -4,15 +4,15 @@
 * Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.1
-* @date          : 2014 03 20
+* @version       : 0.0.2
+* @date          : 2014 05 02
 * @author        : Markus Engel @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
 * @license       : http://opensource.org/licenses/osl-3.0.php
 * @changelog     : see changelog.txt
-* @compatibility : PS >= 1.6.0.5
+* @compatibility : PS >= 1.6.0.6
 */
 
 // no direct access to this module
@@ -59,7 +59,7 @@ class Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.1';                
+		$this->version = '0.0.2';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -70,7 +70,7 @@ class Legal extends Module {
 		// module compliancy: only for exactly one PS version
 		$this->ps_versions_compliancy = array(                  
 			'min' => '1.6.0.4',
-			'max' => '1.6.0.5'
+			'max' => '1.6.0.6'
 		);
 	 	
 		// bootstrap baqckoffice functionality
@@ -310,7 +310,7 @@ class Legal extends Module {
 			
 			$new_hook = new Hook();
 			$new_hook->name = $hook_name;
-			$new_hook->title = $hook['title'];
+			$new_hook->title = $hook['name'];
 			$new_hook->position = true;
 			$new_hook->live_edit = false;
 			
