@@ -541,22 +541,6 @@ class Legal extends Module {
 						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
 						'no_multishop_checkbox' => true,
 					),
-					'LEGAL_OCMAILDBL' => array(
-						'type'  => 'text',
-						'title' => $this->l('Order confirmation duplicator'),
-						'desc'  => $this->l('Email address. Sends the order confirmation mail to this specific email address.'),
-						'auto_value' => false,
-						'value' => Configuration::getGlobalValue('LEGAL_OCMAILDBL'),
-						'no_multishop_checkbox' => true,
-					),
-					'LEGAL_PANIC_MODE' => array(
-						'type'  => 'bool',
-						'title' => $this->l('Silentmode'),
-						'desc'  => $this->l('With this mode your PrestaShop wont connect to Prestashop.com'),
-						'auto_value' => false,
-						'value' => Configuration::getGlobalValue('LEGAL_OCMAILDBL'),
-						'no_multishop_checkbox' => true,
-					),
 				),
 				'submit' => array(
 					'title' => $this->l('Save global options'),
@@ -568,34 +552,10 @@ class Legal extends Module {
 				'info' => $this->l('General settings for your shop'),
 				'icon' => 'icon-cog',
 				'fields' => array(
-					'PS_TAX' => array(
-						'type'  => 'bool',
-						'title' => $this->l('Tax'),
-						'desc'  => $this->l('Activate the tax for your store.')
-					),
-					'PS_TAX_DISPLAY' => array(
-						'type'  => 'bool',
-						'title' => $this->l('Tax in block cart'),
-						'desc'  => $this->l('Show the tax in your cart.')
-					),
-					'LEGAL_CONDITIONS_INPUT' => array(
-						'type'  => 'bool',
-						'title' => $this->l('Conditions input'),
-						'desc'  => $this->l('Shows the checkbox for conditions in the last order step.')
-					),
 					'LEGAL_SHIPTAXMETH' => array(
 						'type'  => 'bool',
 						'title' => $this->l('Shipping tax method'),
 						'desc'  => $this->l('Calculates the average tax of all products for shipping instead of a fixed tax value.')
-					),
-					'LEGAL_TAXMETH' => array(
-						'type'  => 'radio',
-						'title' => $this->l('tax method'),
-						'desc'  => $this->l('Use average tax or most used tax of products in cart.'),
-						'choices' => array(
-							'0' => $this->l('average tax'),
-							'1' => $this->l('most used tax'),
-						),
 					),
 					'LEGAL_DELIVERY_NOW' => array(
 						'type'  => 'textLang',
@@ -697,7 +657,7 @@ class Legal extends Module {
 						'icon' => 'icon-puzzle-piece'
 					),
 					'input' => array(
-						array(
+						/*array(
 							'type' => 'checkbox_module',
 							'label' => $this->l('Must have modules'),
 							'name' => 'modules',
@@ -708,7 +668,7 @@ class Legal extends Module {
 								'name'     => 'title',
 								'disabled' => 'installed',
 							),
-						),
+						),*/
 						array(
 							'type'  => 'html',
 							'id'    => 'modules_not_compatible',
@@ -760,15 +720,6 @@ class Legal extends Module {
 						'title' => $this->l('Template Settings'),
 						'icon' => 'icon-picture-o'
 					),
-					'input' => array(
-						array(
-							'type' => 'html',
-							'label' => $this->l('Install Theme'),
-							'id'    => 'themes',
-							'name' => '<input type="submit" name="submitAddTheme" value="'.$this->l('install theme').'" class="btn btn-primary" />',
-							'desc'  => $this->l('The theme is the optical addition to Legal. After the installation please activate it for your stores.'),
-						),
-					),
 				),
 			),
 		);
@@ -794,11 +745,6 @@ class Legal extends Module {
 			}
 			
 			$missing_hooks .= '</ul>';
-			
-			$fields_form[0]['form']['input'][] = array(
-				'type' => 'hr',
-				'name' => 'hr',
-			);
 			
 			$fields_form[0]['form']['input'][] = array(
 				'type'  => 'html',
