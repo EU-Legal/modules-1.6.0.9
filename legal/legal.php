@@ -5,8 +5,8 @@
 * Better security for german merchants.
 * 
 * @version       : 0.0.2
-* @date          : 2014 05 02
-* @author        : Markus Engel @ Onlineshop-Module.de | George June @ Silbersaiten.de
+* @date          : 2014 05 07
+* @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
@@ -196,14 +196,11 @@ class Legal extends Module {
 		$return &= $this->installRegisterHooks();
 		
 		// global configuration values
-		$return &= Configuration::updateGlobalValue('LEGAL_OCMAILDBL', Configuration::get('PS_SHOP_EMAIL')); 
-		$return &= Configuration::updateGlobalValue('LEGAL_PANIC_MODE', true); 
 		
 		// shop specific configuration values
 		$return &= Configuration::updateValue('PS_TAX', true);
 		$return &= Configuration::updateValue('PS_TAX_DISPLAY', true);
 		$return &= Configuration::updateValue('LEGAL_SHIPTAXMETH', true);
-		$return &= Configuration::updateValue('LEGAL_TAXMETH', false);
 		$return &= Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1);
 		
 		$values = array();
@@ -350,12 +347,9 @@ class Legal extends Module {
 		$return &= parent::uninstall();
 		
 		// global configuration
-		$return &= Configuration::deleteByName('LEGAL_OCMAILDBL');
-		$return &= Configuration::deleteByName('LEGAL_PANIC_MODE');
 		
 		// shop specific configuration
 		$return &= Configuration::deleteByName('LEGAL_SHIPTAXMETH');
-		$return &= Configuration::deleteByName('LEGAL_TAXMETH');
 		$return &= Configuration::deleteByName('LEGAL_CONDITIONS_INPUT');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_NOW');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_LATER');
@@ -397,14 +391,11 @@ class Legal extends Module {
 		$return = true;
 		
 		// global configuration
-		$return &= Configuration::updateGlobalValue('LEGAL_OCMAILDBL', Configuration::get('PS_SHOP_EMAIL')); 
-		$return &= Configuration::updateGlobalValue('LEGAL_PANIC_MODE', true); 
 		
 		// shop specific configuration
 		$return &= Configuration::updateValue('PS_TAX', true);
 		$return &= Configuration::updateValue('PS_TAX_DISPLAY', true);
 		$return &= Configuration::updateValue('LEGAL_SHIPTAXMETH', true);
-		$return &= Configuration::updateValue('LEGAL_TAXMETH', false);
 		$return &= Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1);
 		
 		foreach($this->languages as $language) {
@@ -930,17 +921,9 @@ class Legal extends Module {
 		if (Tools::isSubmit('submitSaveOptions')) {
 			
 			// Generelle Einstellungen
-			if(!Configuration::updateValue('PS_TAX', (bool)Tools::getValue('PS_TAX')))
-				$this->_errors[] = $this->l('Could not update').': PS_TAX';
-			
-			if(!Configuration::updateValue('PS_TAX_DISPLAY', (bool)Tools::getValue('PS_TAX_DISPLAY'))) 
-				$this->_errors[] = $this->l('Could not update').': PS_TAX_DISPLAY';
 			
 			if(!Configuration::updateValue('LEGAL_SHIPTAXMETH', (bool)Tools::getValue('LEGAL_SHIPTAXMETH'))) 
 				$this->_errors[] = $this->l('Could not update').': LEGAL_SHIPTAXMETH';
-			
-			if(!Configuration::updateValue('LEGAL_TAXMETH', (bool)Tools::getValue('LEGAL_TAXMETH'))) 
-				$this->_errors[] = $this->l('Could not update').': LEGAL_TAXMETH';
 				
 			if(!Configuration::updateValue('LEGAL_CONDITIONS_INPUT', (int)Tools::getValue('LEGAL_CONDITIONS_INPUT'))) 
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CONDITIONS_INPUT';
@@ -983,21 +966,8 @@ class Legal extends Module {
 			if(!Configuration::updateValue('LEGAL_CMS_ID_SHIPPING', (int)Tools::getValue('LEGAL_CMS_ID_SHIPPING')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_SHIPPING';
 			
-			// Panikmodus und Bestellstatus ID Auftragsbestätigung
-			if(!Configuration::updateGlobalValue('LEGAL_PANIC_MODE', (bool)Tools::getValue('LEGAL_PANIC_MODE')))
-				$this->_errors[] = $this->l('Could not update').': LEGAL_PANIC_MODE';
-				
 			if(!Configuration::updateGlobalValue('PS_EU_PAYMENT_API', (bool)Tools::getValue('PS_EU_PAYMENT_API')))
 				$this->_errors[] = $this->l('Could not update').': PS_EU_PAYMENT_API';
-			
-			$email = Tools::getValue('LEGAL_OCMAILDBL');
-			
-			if($email == '' or Validate::isEmail($email)) {
-				if(!Configuration::updateGlobalValue('LEGAL_OCMAILDBL', $email))
-					$this->_errors[] = $this->l('Could not update').': LEGAL_OCMAILDBL';
-			}
-			elseif($email != '' )
-				$this->_errors[] = $this->l('this is no valid email address for the orderconfirmation mail duplicator');
 			
 			if(count($this->_errors) <= 0)
 				return $this->displayConfirmation($this->l('Settings updated'));
@@ -1050,62 +1020,6 @@ class Legal extends Module {
 			
 			if(count($this->_errors) <= 0)
 				return $this->displayConfirmation($this->l('CMS Pages created'));
-			
-		}
-		
-		elseif (Tools::isSubmit('submitAddModules')) {
-			
-			$modules = Tools::getValue('modules');
-			$dir = dirname(__FILE__).'/modules/';
-			
-			foreach($modules as $module) {
-				
-				if(!is_dir(_PS_MODULE_DIR_.$module) and !Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
-					$this->_errors[] = $this->l('Could not extract file').': '.$module.'.zip';
-					continue;
-				}
-				
-				if(!$instance = self::getInstanceByName($module) or !$instance->install()) {
-					
-					if(is_array($instance->_errors))
-						$this->_errors = array_merge($this->_errors, $instance->_errors);
-					
-				}
-				
-			}
-			
-			if(count($this->_errors) <= 0)
-				return $this->displayConfirmation($this->l('Modules installed'));
-			
-		}
-		
-		elseif(Tools::isSubmit('submitAddTheme')) {
-			
-			$theme_name = key($this->theme);
-			$theme_title = $this->theme[$theme_name];
-			
-			$dir = dirname(__FILE__).'/themes/';
-			
-			if(is_dir(_PS_ALL_THEMES_DIR_.$theme_name))
-				$this->_errors[] = $this->l('There is already a theme').' '.$theme_name;
-			elseif(!Tools::ZipExtract($dir.$theme_name.'.zip', _PS_ALL_THEMES_DIR_))
-				$this->_errors[] = $this->l('Could not extract file').': '.$theme_name.'.zip';
-			else {
-				$theme                       = new Theme();
-				$theme->name                 = $theme_title;
-				$theme->directory            = $theme_name;
-				$theme->responsive           = true;
-				$theme->default_left_column  = true;
-				$theme->default_right_column = false;
-				$theme->product_per_page     = 12;
-				
-				if(!$theme->add())
-					$this->_errors[] = $this->l('Could not install theme').': '.$theme_name;
-				
-			}
-			
-			if(count($this->_errors) <= 0)
-				return $this->displayConfirmation($this->l('Theme installed'));
 			
 		}
 		
