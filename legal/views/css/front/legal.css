@@ -1,1 +1,40 @@
- 
+ul.product_list.grid .left-block .tax-shipping-info {
+	display: block;
+}
+
+ul.product_list.grid .right-block .tax-shipping-info {
+	display: none;
+}
+
+ul.product_list.grid .left-block .tax-shipping-info a {
+	color: white;
+	text-decoration: underline;
+}
+
+ul.product_list.grid  > li .product-container .content_price > .price-percent-reduction {
+	display: none;
+}
+
+ul.product_list.grid .content_price .old-price {
+	display: block;
+}
+
+ul.product_list.grid .content_price .old-price.product-price {
+	display: none;
+}
+
+ul.product_list.grid .left-block .unit-price {
+	display: block;
+}
+
+ul.product_list.grid .right-block .unit-price {
+	display: none;
+}
+
+ul.product_list.grid .right-block .delivery-info {
+	display: none;
+}
+
+ul.product_list.grid > li.hovered .right-block .delivery-info {
+	display: block;
+}
