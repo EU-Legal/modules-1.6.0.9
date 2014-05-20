@@ -71,7 +71,14 @@ class Supplier extends SupplierCore
 		/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
 		$sql = 'SELECT p.*, product_shop.*, stock.out_of_stock,
 					IFNULL(stock.quantity, 0) as quantity,
-					pl.*,
+					pl.`description`,
+					pl.`description_short`,
+					pl.`link_rewrite`,
+					pl.`meta_description`,
+					pl.`meta_keywords`,
+					pl.`meta_title`,
+					pl.`name`,
+					pl.`delivery_now`, pl.`delivery_later`,
 					MAX(image_shop.`id_image`) id_image,
 					il.`legend`,
 					s.`name` AS supplier_name,
@@ -114,5 +121,6 @@ class Supplier extends SupplierCore
 
 		return Product::getProductsProperties($id_lang, $result);
 	}
+	
 }
 

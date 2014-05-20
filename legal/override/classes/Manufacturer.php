@@ -3,18 +3,8 @@
 class Manufacturer extends ManufacturerCore
 {
 
-	public static function getProducts(
-		$id_manufacturer, 
-		$id_lang, 
-		$p, 
-		$n, 
-		$order_by = null, 
-		$order_way = null, 
-		$get_total = false, 
-		$active = true, 
-		$active_category = true, 
-		Context $context = null
-	)
+	public static function getProducts($id_manufacturer, $id_lang, $p, $n, $order_by = null, $order_way = null,
+		$get_total = false, $active = true, $active_category = true, Context $context = null)
 	{
 		
 		/*
@@ -86,7 +76,8 @@ class Manufacturer extends ManufacturerCore
 		
 		/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
 		$sql = 'SELECT p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, MAX(product_attribute_shop.`id_product_attribute`) id_product_attribute,
-					pl.*, MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
+					pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`,
+					pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`, MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
 					DATEDIFF(
 						product_shop.`date_add`,
 						DATE_SUB(
@@ -134,5 +125,5 @@ class Manufacturer extends ManufacturerCore
 
 		return Product::getProductsProperties($id_lang, $result);
 	}
-}
 
+}

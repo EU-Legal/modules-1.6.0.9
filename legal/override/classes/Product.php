@@ -33,16 +33,8 @@ class Product extends ProductCore
 			$this->delivery_later = !empty($this->delivery_later) ? $this->delivery_later : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
 		}
 	}
-	
-	public static function getNewProducts(
-		$id_lang, 
-		$page_number = 0, 
-		$nb_products = 10,
-		$count = false, 
-		$order_by = null, 
-		$order_way = null, 
-		Context $context = null
-	)
+
+	public static function getNewProducts($id_lang, $page_number = 0, $nb_products = 10, $count = false, $order_by = null, $order_way = null, Context $context = null)
 	{
 		
 		/*
@@ -103,8 +95,8 @@ class Product extends ProductCore
 		
 		/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
 		$sql->select(
-			'p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, pl.*,
-			MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
+			'p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`,
+			pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`, MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
 			product_shop.`date_add` > "'.date('Y-m-d', strtotime('-'.(Configuration::get('PS_NB_DAYS_NEW_PRODUCT') ? (int)Configuration::get('PS_NB_DAYS_NEW_PRODUCT') : 20).' DAY')).'" as new'
 		);
 
@@ -155,7 +147,6 @@ class Product extends ProductCore
 			$products_ids[] = $row['id_product'];
 		// Thus you can avoid one query per product, because there will be only one query for all the products of the cart
 		Product::cacheFrontFeatures($products_ids, $id_lang);
-
 		return Product::getProductsProperties((int)$id_lang, $result);
 	}
 	
@@ -211,7 +202,8 @@ class Product extends ProductCore
 				return false;
 			
 			/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
-			$sql = 'SELECT p.*, product_shop.*, stock.`out_of_stock` out_of_stock, pl.*,
+			$sql = 'SELECT p.*, product_shop.*, stock.`out_of_stock` out_of_stock, pl.`description`, pl.`description_short`,
+						pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`,
 						p.`ean13`, p.`upc`, MAX(image_shop.`id_image`) id_image, il.`legend`,
 						DATEDIFF(product_shop.`date_add`, DATE_SUB(NOW(),
 						INTERVAL '.(Validate::isUnsignedInt(Configuration::get('PS_NB_DAYS_NEW_PRODUCT')) ? Configuration::get('PS_NB_DAYS_NEW_PRODUCT') : 20).'
@@ -241,17 +233,8 @@ class Product extends ProductCore
 			return false;
 	}
 	
-	public static function getPricesDrop(
-		$id_lang, 
-		$page_number = 0, 
-		$nb_products = 10, 
-		$count = false,
-		$order_by = null, 
-		$order_way = null, 
-		$beginning = false, 
-		$ending = false, 
-		Context $context = null
-	)
+	public static function getPricesDrop($id_lang, $page_number = 0, $nb_products = 10, $count = false,
+		$order_by = null, $order_way = null, $beginning = false, $ending = false, Context $context = null)
 	{
 		
 		/*
@@ -320,9 +303,10 @@ class Product extends ProductCore
 
 		$sql = '
 		SELECT
-			p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, pl.*, 
+			p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, pl.`description`, pl.`description_short`,
 			MAX(product_attribute_shop.id_product_attribute) id_product_attribute,
-			MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
+			pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`, pl.`meta_title`,
+			pl.`name`, pl.`delivery_now`, pl.`delivery_later`, MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
 			DATEDIFF(
 				p.`date_add`,
 				DATE_SUB(
@@ -373,144 +357,15 @@ class Product extends ProductCore
 		
 		if (!$row['id_product'])
 			return false;
-
-		if ($context == null)
-			$context = Context::getContext();
-
-		// Product::getDefaultAttribute is only called if id_product_attribute is missing from the SQL query at the origin of it:
-		// consider adding it in order to avoid unnecessary queries
-		$row['allow_oosp'] = Product::isAvailableWhenOutOfStock($row['out_of_stock']);
-		if (Combination::isFeatureActive() && (!isset($row['id_product_attribute']) || !$row['id_product_attribute'])
-			&& ((isset($row['cache_default_attribute']) && ($ipa_default = $row['cache_default_attribute']) !== null)
-				|| ($ipa_default = Product::getDefaultAttribute($row['id_product'], !$row['allow_oosp']))))
-			$row['id_product_attribute'] = $ipa_default;
-		if (!Combination::isFeatureActive() || !isset($row['id_product_attribute']))
-			$row['id_product_attribute'] = 0;
-
-		// Tax
-		$usetax = Tax::excludeTaxeOption();
-
-		$cache_key = $row['id_product'].'-'.$row['id_product_attribute'].'-'.$id_lang.'-'.(int)$usetax;
-		if (isset($row['id_product_pack']))
-			$cache_key .= '-pack'.$row['id_product_pack'];
-
-		if (isset(self::$producPropertiesCache[$cache_key]))
-			return array_merge($row, self::$producPropertiesCache[$cache_key]);
-
-		// Datas
-		$row['category'] = Category::getLinkRewrite((int)$row['id_category_default'], (int)$id_lang);
-		$row['link'] = $context->link->getProductLink((int)$row['id_product'], $row['link_rewrite'], $row['category'], $row['ean13']);
-
-		$row['attribute_price'] = 0;
-		if (isset($row['id_product_attribute']) && $row['id_product_attribute'])
-			$row['attribute_price'] = (float)Product::getProductAttributePrice($row['id_product_attribute']);
-
-		$row['price_tax_exc'] = Product::getPriceStatic(
-			(int)$row['id_product'],
-			false,
-			((isset($row['id_product_attribute']) && !empty($row['id_product_attribute'])) ? (int)$row['id_product_attribute'] : null),
-			(self::$_taxCalculationMethod == PS_TAX_EXC ? 2 : 6)
-		);
-
-		if (self::$_taxCalculationMethod == PS_TAX_EXC)
-		{
-			$row['price_tax_exc'] = Tools::ps_round($row['price_tax_exc'], 2);
-			$row['price'] = Product::getPriceStatic(
-				(int)$row['id_product'],
-				true,
-				((isset($row['id_product_attribute']) && !empty($row['id_product_attribute'])) ? (int)$row['id_product_attribute'] : null),
-				6
-			);
-			$row['price_without_reduction'] = Product::getPriceStatic(
-				(int)$row['id_product'],
-				false,
-				((isset($row['id_product_attribute']) && !empty($row['id_product_attribute'])) ? (int)$row['id_product_attribute'] : null),
-				2,
-				null,
-				false,
-				false
-			);
-		}
-		else
-		{
-			$row['price'] = Tools::ps_round(
-				Product::getPriceStatic(
-					(int)$row['id_product'],
-					true,
-					((isset($row['id_product_attribute']) && !empty($row['id_product_attribute'])) ? (int)$row['id_product_attribute'] : null),
-					2
-				),
-				2
-			);
-
-			$row['price_without_reduction'] = Product::getPriceStatic(
-				(int)$row['id_product'],
-				true,
-				((isset($row['id_product_attribute']) && !empty($row['id_product_attribute'])) ? (int)$row['id_product_attribute'] : null),
-				6,
-				null,
-				false,
-				false
-			);
-		}
-
-		$row['reduction'] = Product::getPriceStatic(
-			(int)$row['id_product'],
-			(bool)$usetax,
-			(int)$row['id_product_attribute'],
-			6,
-			null,
-			true,
-			true,
-			1,
-			true,
-			null,
-			null,
-			null,
-			$specific_prices
-		);
-
-		$row['specific_prices'] = $specific_prices;
-
-		$row['quantity'] = Product::getQuantity(
-			(int)$row['id_product'],
-			0,
-			isset($row['cache_is_pack']) ? $row['cache_is_pack'] : null
-		);
-
-		$row['quantity_all_versions'] = $row['quantity'];
-
-		if ($row['id_product_attribute'])
-			$row['quantity'] = Product::getQuantity(
-				(int)$row['id_product'],
-    			$row['id_product_attribute'],
-			   isset($row['cache_is_pack']) ? $row['cache_is_pack'] : null
-			);
-
-		$row['id_image'] = Product::defineProductImage($row, $id_lang);
-		$row['features'] = Product::getFrontFeaturesStatic((int)$id_lang, $row['id_product']);
-
-		$row['attachments'] = array();
-		if (!isset($row['cache_has_attachments']) || $row['cache_has_attachments'])
-			$row['attachments'] = Product::getAttachmentsStatic((int)$id_lang, $row['id_product']);
-
-		$row['virtual'] = ((!isset($row['is_virtual']) || $row['is_virtual']) ? 1 : 0);
-
-		// Pack management
-		$row['pack'] = (!isset($row['cache_is_pack']) ? Pack::isPack($row['id_product']) : (int)$row['cache_is_pack']);
-		$row['packItems'] = $row['pack'] ? Pack::getItemTable($row['id_product'], $id_lang) : array();
-		$row['nopackprice'] = $row['pack'] ? Pack::noPackPrice($row['id_product']) : 0;
-		if ($row['pack'] && !Pack::isInStock($row['id_product']))
-			$row['quantity'] = 0;
-
-		$row = Product::getTaxesInformations($row, $context);
+		
+		$row = parent::getProductProperties($id_lang, $row, $context);
 		
 		/* Standard Lieferzeit aus Datenbank ermitteln */
 		$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW',   (int)$id_lang);
 		$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
 		
-		self::$producPropertiesCache[$cache_key] = $row;
-		return self::$producPropertiesCache[$cache_key];
+		return $row;
+		
 	}
 	
 }

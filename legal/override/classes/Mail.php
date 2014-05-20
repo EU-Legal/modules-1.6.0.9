@@ -48,16 +48,6 @@ class Mail extends MailCore
 			
 		}
 		
-		/* Duplizieren der Bestellbestätigung (LEGAL_OCMAILDBL) */
-		if($template == 'order_conf' and $email = Configuration::get('LEGAL_OCMAILDBL') and Validate::isEmail($email)) {
-			if(empty($bcc))
-				$bcc = $email;
-			elseif(is_array($bcc))
-				$bcc = array_merge($bcc, array($email));
-			else
-				$bcc = array_merge(array($bcc), array($email));
-		}
-		
 		return parent::Send(
 			$id_lang, 
 			$template, 
