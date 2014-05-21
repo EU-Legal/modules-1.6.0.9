@@ -335,7 +335,7 @@ class EU_Legal extends Module {
 			$this->_errors[] = $this->l('Could not create admin template dir.');
 		}
 		
-		if($return and !@copy($this->local_path.'controllers/admin/templates/customers/helpers/view/view.tpl', _PS_OVERRIDE_DIR_.'controllers/admin/templates/customers/helpers/view/view.tpl')) {
+		if($return and !@copy($this->local_path.'override/controllers/admin/templates/customers/helpers/view/view.tpl', _PS_OVERRIDE_DIR_.'controllers/admin/templates/customers/helpers/view/view.tpl')) {
 			$this->_errors[] = $this->l('Could not copy admin templates.');
 			$return &= false;
 		}
