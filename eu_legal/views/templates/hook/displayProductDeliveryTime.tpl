@@ -1,14 +1,14 @@
 {if $is_object}
 <span class="delivery-info">
 	<span class="delivery-label">
-		{l s='Delivery' mod='legal'}:
+		{l s='Delivery' mod='eu_legal'}:
 	</span>
 	<span class="delivery-value">
 		{if $product->quantity <= 0}
 			{if $product->allow_oosp}
 				{$product->delivery_later}
 			{else}
-				{l s='This product is no longer in stock' mod='legal'}
+				{l s='This product is no longer in stock' mod='eu_legal'}
 			{/if}
 		{else}
 			{$product->delivery_now}
@@ -18,14 +18,14 @@
 {else}
 <span class="delivery-info">
 	<span class="delivery-label">
-		{l s='Delivery' mod='legal'}:
+		{l s='Delivery' mod='eu_legal'}:
 	</span>
 	<span class="delivery-value">
 		{if $product.quantity <= 0}
 			{if $product.allow_oosp}
 				{$product.delivery_later}
 			{else}
-				{l s='This product is no longer in stock' mod='legal'}
+				{l s='This product is no longer in stock' mod='eu_legal'}
 			{/if}
 		{else}
 			{$product.delivery_now}

@@ -16,7 +16,7 @@
 	</div>
 	<hr>
 	<p class="text-center">
-		<a href="{$_path}licence.html" target="_blank" class="link">{l s='Please consider our license disclaimer.' mod='legal'}</a><br>
-		<a href="https://github.com/EU-Legal" target="_blank" class="link"><i class="icon-github"></i> {l s='Visit this project on GitHub' mod='legal'}</a>
+		<a href="{$_path}licence.html" target="_blank" class="link">{l s='Please consider our license disclaimer.' mod='eu_legal'}</a><br>
+		<a href="https://github.com/EU-Legal" target="_blank" class="link"><i class="icon-github"></i> {l s='Visit this project on GitHub' mod='eu_legal'}</a>
 	</p>
 </div>
