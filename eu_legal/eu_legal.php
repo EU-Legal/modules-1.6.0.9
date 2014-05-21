@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.2
-* @date          : 2014 05 07
+* @version       : 0.0.3
+* @date          : 2014 05 21
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.2';                
+		$this->version = '0.0.3';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -105,8 +105,8 @@ class EU_Legal extends Module {
 		// new hooks to install
 		$this->hooks = array(
 			// product delivery hook
-			'displayProductAvailability' => array(
-				'name' => 'Product Availability',
+			'displayProductDeliveryTime' => array(
+				'name' => 'Product Delivery Time',
 				'templates' => array(
 					'product.tpl', 
 					'product-list.tpl', 
@@ -1494,7 +1494,7 @@ class EU_Legal extends Module {
 		
 	}
 	
-	public function hookDisplayProductAvailability($params) {
+	public function hookDisplayProductDeliveryTime($params) {
 		
 		if(!isset($params['product']))
 			return;
@@ -1506,7 +1506,7 @@ class EU_Legal extends Module {
 			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
 		));
 		
-		return $this->display(__FILE__, 'displayProductAvailability.tpl');
+		return $this->display(__FILE__, 'displayProductDeliveryTime.tpl');
 		
 	}
 	
