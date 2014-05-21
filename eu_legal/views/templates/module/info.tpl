@@ -1,5 +1,5 @@
 <div id="legal_info">
-	<h1 class="text-center">Legal<br><small>PrestaShop Modul für verbesserte Rechtsicherheit in der EU</small></h1>
+	<h1 class="text-center">EU Legal<br><small>PrestaShop Modul für verbesserte Rechtsicherheit in der EU</small></h1>
 	<div class="row">
 		<div class="col-md-6 text-center">
 			<a target="_blank" href="http://www.onlineshop-module.de">

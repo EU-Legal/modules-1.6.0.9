@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Legal
+* EU Legal
 * Better security for german merchants.
 * 
 * @version       : 0.0.2
@@ -20,7 +20,7 @@ if (!defined('_PS_VERSION_'))
 	exit;
 	
 // main class
-class Legal extends Module {
+class EU_Legal extends Module {
 	
 	/*******************************************************************************************************************
 	*
@@ -53,7 +53,7 @@ class Legal extends Module {
 	public function __construct() {
 		
 		// module name, must be same as class name and modul directory name
-	 	$this->name = 'legal';                
+	 	$this->name = 'eu_legal';                
 	 	
 		// module backoffice tab, maybe an other one?
 		$this->tab = 'administration';       
@@ -78,8 +78,8 @@ class Legal extends Module {
 		
 		parent::__construct();
 		
-		$this->displayName      = $this->l('Legal');
-		$this->description      = $this->l('Better security for german merchants.');
+		$this->displayName      = $this->l('EU Legal');
+		$this->description      = $this->l('Better security for european merchants.');
 		$this->confirmUninstall = $this->l('Are you sure you want to delete your details?');
 		
 		// collect all available languages and default language
@@ -104,13 +104,6 @@ class Legal extends Module {
 		
 		// new hooks to install
 		$this->hooks = array(
-			// reorder hook
-			'displayReorder' => array(
-				'name' => 'Reorder',
-				'templates' => array(
-					'history.tpl'
-				),
-			),
 			// product delivery hook
 			'displayProductAvailability' => array(
 				'name' => 'Product Availability',
@@ -136,7 +129,7 @@ class Legal extends Module {
 			),
 		);
 		
-		// modules not compatible with legal
+		// modules not compatible with EU Legal
 		$this->modules_not_compatible = array(
 			'bankwire',
 			'cheque',
@@ -148,7 +141,7 @@ class Legal extends Module {
 			'blockcustomerprivacy',
 		);
 		
-		// supported modules, delivered with Legal
+		// supported modules, delivered with EU Legal
 		$this->modules = array(           
 			'gc_ganalytics' => 'Google Analytics',
 			'gc_newsletter' => 'Newsletter',
@@ -217,6 +210,10 @@ class Legal extends Module {
 		if($return and !Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_CONDITIONS_INPUT';
+		}
+		if($return and !Configuration::updateValue('LEGAL_SHOW_WEIGHTS', 1)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_WEIGHTS';
 		}
 		
 		$values = array();
@@ -333,6 +330,16 @@ class Legal extends Module {
 			$return &= false;
 		}
 		
+		if($return and !is_dir(_PS_OVERRIDE_DIR_.'controllers/admin/templates/customers/helpers/view') and !@mkdir(_PS_OVERRIDE_DIR_.'controllers/admin/templates/customers/helpers/view', 0755, true)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not create admin template dir.');
+		}
+		
+		if($return and !@copy($this->local_path.'controllers/admin/templates/customers/helpers/view/view.tpl', _PS_OVERRIDE_DIR_.'controllers/admin/templates/customers/helpers/view/view.tpl')) {
+			$this->_errors[] = $this->l('Could not copy admin templates.');
+			$return &= false;
+		}
+		
 		return $return;
 		
 	}
@@ -402,21 +409,11 @@ class Legal extends Module {
 		$return &= Configuration::deleteByName('LEGAL_CONDITIONS_INPUT');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_NOW');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_LATER');
+		$return &= Configuration::deleteByName('LEGAL_SHOW_WEIGHTS');
 		
 		foreach($this->cms_pages as $cms_page)
 			if(strpos($cms_page['config'], $this->config_prefix) === 0)
 				$return &= Configuration::deleteByName($cms_page['config']);
-		
-		// delete all delivery notes
-		$configuration_ids = DB::getInstance()->executeS("
-			SELECT c.`id_configuration` FROM `"._DB_PREFIX_."configuration` AS c
-			WHERE c.`name` LIKE 'LEGAL_DN_%'
-		");
-		
-		foreach($configuration_ids as $configuration_id) {
-			$configuration = new Configuration($configuration_id['id_configuration']);
-			$return &= $configuration->delete();
-		}
 		
 		// restore daatabase structure
 		if($return and $this->dbColumnExists('product_lang', 'delivery_now') and $this->dbColumnExists('product_lang', 'delivery_later') and !DB::getInstance()->execute("
@@ -490,11 +487,8 @@ class Legal extends Module {
 		
 		$this->context->controller->addCSS($this->_path.'views/css/admin/legal.css');
 		
-		if(!Tools::getIsset('addDeliverynote'))
-			$html .= $this->displayInfo();
-		
+		$html .= $this->displayInfo();
 		$html .= $this->postProcess();
-		
 		$html .= $this->displayForm();
 		
 		return $html;
@@ -520,17 +514,9 @@ class Legal extends Module {
 		
 		$html = '';
 		
-		// delivery note add / update
-		if(Tools::isSubmit('addDeliverynote') || Tools::isSubmit('updateDeliverynote')) {
-			$html .= $this->displayFormDeliverynotes();
-		}
-		// all other configuration
-		else {
-			$html .= $this->displayFormSettings();
-			$html .= $this->displayFormModules();
-			$html .= $this->displayFormTheme();
-			$html .= $this->displayListDeliverynotes();
-		}
+		$html .= $this->displayFormSettings();
+		$html .= $this->displayFormModules();
+		$html .= $this->displayFormTheme();
 		
 		return $html;
 		
@@ -613,92 +599,6 @@ class Legal extends Module {
 		
 	}
 	
-	// delivery notes list
-	protected function displayListDeliverynotes() {
-		
-		$helper = new HelperList();
-		
-		// Helper List
-		$helper->shopLinkType = '';
-		$helper->actions = array('edit', 'delete');
-		$helper->toolbar_btn['new'] = array(
-			'href' => AdminController::$currentIndex.'&configure='.$this->name.'&amp;token='.Tools::getAdminTokenLite('AdminModules').'&amp;addDeliverynote=1',
-			'desc' => $this->l('Add'),
-		);
-		
-		// Add icon: fixed bug in 1.6.0.5, no icon in list helper assigned
-		Context::getContext()->smarty->assign(array('icon' => 'icon-truck'));
-		
-		// Helper
-		$helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
-		$helper->identifier = 'id_configuration';
-		$helper->table = 'Deliverynote';
-		$helper->token = Tools::getAdminTokenLite('AdminModules');
-		$helper->module = $this;
-		$helper->title = $this->l('Delivery Notes');
-		
-		$fields_list = array(
-			'carrier_name' => array(
-				'title' => $this->l('Carrier'),
-				
-			),
-			'module_name' => array(
-				'title' => $this->l('Module'),
-				
-			),
-			'zone_name' => array(
-				'title' => $this->l('Zone'),
-				
-			),
-			'note' => array(
-				'title' => $this->l('Note'),
-			),
-		);
-		
-		$list_values = $this->getDeliveryNotes();
-		
-		return $helper->generateList($list_values, $fields_list);
-		
-	}
-	
-	// delivery notes form
-	protected function displayFormDeliverynotes() {
-		
-		$helper = new HelperForm();
-		
-		// Helper Form
-		$helper->languages = $this->languages;
-		$helper->default_form_language = $this->default_language_id;
-		$helper->submit_action = 'updateDeliverynote';
-		
-		// Helper
-		$helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
-		$helper->table = '';
-		$helper->token = Tools::getAdminTokenLite('AdminModules');
-		$helper->module = $this;
-		$helper->title = null;
-		$helper->show_cancel_button = true;
-		$helper->back_url = AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules');
-		
-		if(Tools::isSubmit('id_configuration')) {
-			$helper->fields_value = $this->getDeliveryNotes((int)Tools::getValue('id_configuration'));
-		}
-		else {
-			$helper->fields_value = array(
-				'id_carrier'       => 0,
-				'id_module'        => 0,
-				'id_zone'          => 0,
-				'id_configuration' => 0,
-			);
-			foreach($this->languages as $language)
-				$helper->fields_value['note'][$language['id_lang']] = '';
-		}
-		
-		$this->getFormFieldsDeliverynote();
-		return $helper->generateForm($this->form_fields_deliverynote);
-		
-	}
-	
 	protected function getOptionFieldsSettings() {
 		
 		$cms_pages = array();
@@ -751,6 +651,11 @@ class Legal extends Module {
 						'type'  => 'textLang',
 						'title' => $this->l('Availabiliy "back-ordered"'),
 						'desc'  => $this->l('Displayed text when allowed to be back-ordered default value. E.g.').' '.$this->deliveryLaterDefault,
+					),
+					'LEGAL_SHOW_WEIGHTS' => array(
+						'type'  => 'bool',
+						'title' => $this->l('Show product weights'),
+						'desc'  => $this->l('Shows the product weights at your product if weight higher than zero.'),
 					),
 				),
 				'submit' => array(
@@ -828,7 +733,7 @@ class Legal extends Module {
 							'type' => 'checkbox_module',
 							'label' => $this->l('Must have modules'),
 							'name' => 'modules',
-							'desc'  => $this->l('These are additional modules served with Legal. Please install them.'),
+							'desc'  => $this->l('These are additional modules served with EU Legal. Please install them.'),
 							'values' => array(
 								'query'    => $modules,
 								'id'       => 'name',
@@ -841,7 +746,7 @@ class Legal extends Module {
 							'id'    => 'modules_not_compatible',
 							'label' => $this->l('Modules not compatible'),
 							'name'  => (!empty($modules_not_compatible) ? '<div class="alert alert-warning">'.$modules_not_compatible.'</div>' : '<div class="alert alert-success">'.$this->l('There are no modules not compatible to Legal installed.').'</div>'),
-							'desc'  => $this->l('You have to uninstall some modules not compatible with Legal.'),
+							'desc'  => $this->l('You have to uninstall some modules not compatible with EU Legal.'),
 						),
 						array(
 							'type'  => 'html',
@@ -873,9 +778,9 @@ class Legal extends Module {
 					'input' => array(
 						array(
 							'type'  => 'switch',
-							'label' => $this->l('Legal CSS'),
+							'label' => $this->l('EU Legal CSS'),
 							'name'  => 'LEGAL_CSS',
-							'desc'  => $this->l('Activate the provides Legal CSS file for your theme.'),
+							'desc'  => $this->l('Activate the provides EU Legal CSS file for your theme.'),
 							'values' => array(
 								array(
 									'value' => 1,
@@ -921,87 +826,10 @@ class Legal extends Module {
 				'label' => sprintf($this->l('Hooks in theme "%s"'), $theme),
 				'id'    => 'missing_hooks',
 				'name'  => (!empty($missing_hooks) ? '<div class="alert alert-warning"><b>'.$this->l('There are some missing hooks!').'</b><br>'.$missing_hooks.'</div>' : '<div class="alert alert-success">'.$this->l('There are all hooks in your themes available.').'</div>'),
-				'desc'  => $this->l('Are all Legal hooks available in your themes?'),
+				'desc'  => $this->l('Are all EU Legal hooks available in your themes?'),
 			);
 			
 		}
-		
-	}
-	
-	protected function getFormFieldsDeliverynote() {
-		
-		$this->form_fields_deliverynote = array(
-			array(
-				'form' => array(
-					'legend' => array(
-						'title' => $this->l('Add Delivery Note'),
-						'icon' => 'icon-truck'
-					),
-					'input' => array(
-						array(
-							'type' => 'select',
-							'label' => $this->l('Carrier'),
-							'name' => 'id_carrier',
-							'options' => array(
-								'query'    => Carrier::getCarriers($this->context->cookie->id_lang),
-								'id'       => 'id_carrier',
-								'name'     => 'name',
-								'default' => array(
-									'value' => '0',
-									'label' => $this->l('-- Please select a carrier --'),
-								),
-							),
-							'required' => true,
-						),
-						array(
-							'type' => 'select',
-							'label' => $this->l('Module'),
-							'name' => 'id_module',
-							'options' => array(
-								'query'    => PaymentModule::getInstalledPaymentModules(),
-								'id'       => 'id_module',
-								'name'     => 'name',
-								'default' => array(
-									'value' => '0',
-									'label' => $this->l('-- Please select a module --'),
-								),
-							),
-							'required' => true,
-						),
-						array(
-							'type' => 'select',
-							'label' => $this->l('Zone'),
-							'name' => 'id_zone',
-							'options' => array(
-								'query'    => Zone::getZones(),
-								'id'       => 'id_zone',
-								'name'     => 'name',
-								'default' => array(
-									'value' => '0',
-									'label' => $this->l('-- Please select a zone --'),
-								),
-							),
-							'required' => true,
-						),
-						array(
-							'type' => 'textarea',
-							'label' => $this->l('Note'),
-							'name' => 'note',
-							'lang' => true,
-							'required' => true,
-						),
-						array(
-							'type' => 'hidden',
-							'name' => 'id_configuration',
-						),
-					),
-					'submit' => array(
-						'title' => $this->l('Save'),
-						'name' => 'submitAddDeliverynote',
-					)
-				),
-			),
-		);
 		
 	}
 	
@@ -1025,6 +853,9 @@ class Legal extends Module {
 				
 			if(!Configuration::updateValue('LEGAL_CONDITIONS_INPUT', (int)Tools::getValue('LEGAL_CONDITIONS_INPUT'))) 
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CONDITIONS_INPUT';
+			
+			if(!Configuration::updateValue('LEGAL_SHOW_WEIGHTS', (bool)Tools::getValue('LEGAL_SHOW_WEIGHTS'))) 
+				$this->_errors[] = $this->l('Could not update').': LEGAL_SHOW_WEIGHTS';
 			
 			// Produktverfügbarkeit
 			$values = array(); 
@@ -1128,48 +959,6 @@ class Legal extends Module {
 			
 			if(count($this->_errors) <= 0)
 				return $this->displayConfirmation($this->l('Theme settings saved'));
-			
-		}
-		
-		elseif(Tools::isSubmit('submitAddDeliverynote')) {
-			
-			$notes = array();
-			
-			$id_carrier = (int)Tools::getValue('id_carrier');
-			$id_module  = (int)Tools::getValue('id_module');
-			$id_zone    = (int)Tools::getValue('id_zone');
-			
-			$id_configuration = (int)Tools::getValue('id_configuration');
-			
-			foreach($this->languages as $language) {
-				$notes[$language['id_lang']] = Tools::getValue('note_'.$language['id_lang']);
-			}
-			
-			if($id_configuration) {
-				
-				$configuration = new Configuration($id_configuration);
-				$configuration->delete();
-				
-			}
-			
-			if(!Configuration::updateValue('LEGAL_DN_'.$id_carrier.'_'.$id_module.'_'.$id_zone, $notes))
-				$this->_errors[] = $this->l('Could not update').': LEGAL_DN_'.$id_carrier.'_'.$id_module.'_'.$id_zone;
-			
-			if(count($this->_errors) <= 0)
-				Tools::redirectAdmin(AdminController::$currentIndex.'&configure='.$this->name.'&token='.Tools::getAdminTokenLite('AdminModules'));
-			
-		}
-		
-		elseif(Tools::isSubmit('deleteDeliverynote')) {
-			
-			$id_configuration = (int)Tools::getValue('id_configuration');
-			$configuration = new Configuration($id_configuration);
-			
-			if(Validate::isLoadedObject($configuration))
-				$configuration->delete();
-			
-			if(count($this->_errors) <= 0)
-				return $this->displayConfirmation($this->l('Delivery note deleted'));
 			
 		}
 		
@@ -1360,92 +1149,6 @@ class Legal extends Module {
 		}
 		
 		return true;
-		
-	}
-	
-	private function getDeliveryNotes($id_configuration = false) {
-		
-		$return = array();
-		
-		$id_configuration = (int)$id_configuration;
-		
-		if($id_configuration)
-			$sql = "
-				SELECT c.`id_configuration` FROM `"._DB_PREFIX_."configuration` AS c
-				WHERE c.`id_configuration` = '".$id_configuration."'
-			";
-		else
-			$sql = "
-				SELECT c.`id_configuration` FROM `"._DB_PREFIX_."configuration` AS c
-				WHERE c.`name` LIKE 'LEGAL_DN_%'
-			";
-		
-		$configuration_ids = DB::getInstance()->executeS($sql);
-		
-		foreach($configuration_ids as $configuration_id) {
-			
-			$configuration = new Configuration($configuration_id['id_configuration']);
-			
-			if(!$configuration)
-				continue;
-			
-			$m = array();
-			
-			if(preg_match('#LEGAL_DN_([0-9]+)_([0-9]+)_([0-9]+)#', $configuration->name, $m)) {
-				
-				$carrier = new Carrier($m[1], $this->context->cookie->id_lang);
-				$module  = Module::getInstanceById($m[2]);
-				$zone    = new Zone($m[3]);
-				
-				if(Validate::isLoadedObject($carrier))
-					$carrier_name = $carrier->name;
-				else
-					$carrier_name = '*';
-				
-				if(Validate::isLoadedObject($module))
-					$module_name = $module->displayName;
-				else
-					$module_name = '*';
-				
-				if($id_configuration) {
-					
-					$return = array(
-						'id_configuration' => $configuration->id,
-						'id_carrier'       => $m[1],
-						'carrier_name'     => $carrier_name,
-						'id_module'        => $module->id,
-						'module_name'      => $module_name,
-						'id_zone'          => $m[2],
-						'zone_name'        => $zone->name,
-					);
-					
-					foreach($this->languages as $language)
-						if(isset($configuration->value[$language['id_lang']]))
-							$return['note'][$language['id_lang']] = $configuration->value[$language['id_lang']];
-						else
-							$return['note'][$language['id_lang']] = '';
-					
-				}
-				else {
-					
-					$return[$configuration->id] = array(
-						'id_configuration' => $configuration->id,
-						'id_carrier'       => $m[1],
-						'carrier_name'     => $carrier_name,
-						'id_module'        => $module->id,
-						'module_name'      => $module_name,
-						'id_zone'          => $m[2],
-						'zone_name'        => $zone->name,
-						'note'             => $configuration->value[$this->default_language_id],
-					);
-					
-				}
-				
-			}
-			
-		}
-		
-		return $return;
 		
 	}
 	
@@ -1778,7 +1481,10 @@ class Legal extends Module {
 	public function hookDisplayHeader($params) {
 		
 		if(Configuration::get('LEGAL_CSS'))
-			$this->context->controller->addCss($this->_path.'views/css/front/legal.css');
+			$this->context->controller->addCSS($this->_path.'views/css/front/legal.css');
+		
+		if($this->context->controller->php_self == 'product')
+			$this->context->controller->addJS($this->_path.'views/js/legal.js');
 		
 		$this->assignCMSPages();
 		
@@ -1788,18 +1494,13 @@ class Legal extends Module {
 		
 	}
 	
-	public function hookDisplayReorder($params) {
-		
-		return $this->display(__FILE__, 'displayReorder.tpl');
-		
-	}
-	
 	public function hookDisplayProductAvailability($params) {
 		
 		if(!isset($params['product']))
 			return;
 		
 		$this->smarty->assign(array(
+			'is_object'             => (bool)($params['product'] instanceof Product),
 			'product'               => $params['product'],
 			'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
 			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
@@ -1814,14 +1515,36 @@ class Legal extends Module {
 		if(!isset($params['product']))
 			return;
 		
+		$weight = 0;
+		$combination_weight = 0;
+		
+		if($params['product'] instanceof Product) {
+			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']->id);
+			$weight = (float)$params['product']->weight;
+		}
+		else {
+			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']['id_product']);
+			$weight = (float)$params['product']['weight'];
+		}
+		
+		if($id_product_attribute) {
+			$combination = new Combination($id_product_attribute);
+			$combination_weight = $combination->weight;
+		}
+		
 		$this->smarty->assign(array(
+			'is_object'             => (bool)($params['product'] instanceof Product),
 			'product'               => $params['product'],
+			'weight'                => $weight,
+			'combination_weight'    => $combination_weight,
 			'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
 			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
 			'php_self'              => $this->context->controller->php_self,
 			'tax_enabled'           => Configuration::get('PS_TAX'),  
 			'cms_id_shipping'       => Configuration::get('LEGAL_CMS_ID_SHIPPING'),
-			'template_type'         => $params['type']
+			'template_type'         => $params['type'],
+			'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
+			'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
 		));
 		
 		return $this->display(__FILE__, 'displayProductPriceBlock.tpl');
