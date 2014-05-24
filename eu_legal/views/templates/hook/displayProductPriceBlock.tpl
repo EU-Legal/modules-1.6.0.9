@@ -91,8 +91,8 @@
 	{/if}
 
 {elseif $template_type == 'weight'}
-	
-	{if $show_weights and $weight > 0 and $combination_weight > 0}
+
+	{if $show_weights and ($weight > 0 or $combination_weight > 0)}
 		{addJsDef product_weight=$weight}
 		{if $is_object}
 			<p class="weight-info">
