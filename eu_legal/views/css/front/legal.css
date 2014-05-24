@@ -79,3 +79,9 @@ ul.product_list.list .right-block-content .content_price .old-price.product-pric
 	font-size: 17px;
 	font-style: italic;
 }
+
+/* shopping-cart */
+#cart_summary .delivery-info {
+	display:block;
+	margin:6px 0 0
+}
