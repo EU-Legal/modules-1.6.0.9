@@ -1,3 +1,4 @@
+/* product-list grid-view */
 ul.product_list.grid .left-block .tax-shipping-info {
 	display: block;
 }
@@ -37,4 +38,44 @@ ul.product_list.grid .right-block .delivery-info {
 
 ul.product_list.grid > li.hovered .right-block .delivery-info {
 	display: block;
+}
+
+/* product-list list-view */
+ul.product_list.list  > li .product-container .right-block-content .content_price > .price-percent-reduction {
+	display: none;
+}
+
+ul.product_list.list .right-block-content .content_price .old-price.product-price {
+	display: none;
+}
+
+#page ul.product_list.list > li .right-block .right-block-content .content_price .old-price {
+	text-decoration:none;
+	margin-right:4px;
+	margin-bottom: 0
+}
+#page ul.product_list.list > li .right-block .right-block-content .content_price span {
+	margin-bottom:5px
+}
+.old-price-display {
+	text-decoration:line-through
+}
+.tax-shipping-info, 
+.unit-price {
+	font-size: 85%;
+	line-height: 1em;
+	margin: 0 !important;
+}
+
+/* product-comparison */
+#product_comparison .old-price.product-price,
+#product_comparison .price-percent-reduction,
+#product_comparison .comparison_unit_price {
+	display: none;
+}
+#product_comparison .unit-price {
+	color: #333333;
+	font-family: "Open Sans",sans-serif;
+	font-size: 17px;
+	font-style: italic;
 }
