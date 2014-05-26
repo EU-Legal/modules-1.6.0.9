@@ -20,7 +20,7 @@
 {if $template_type == 'price'}
 	
 	{if $is_object}
-		<p class="tax-shipping-info">
+		<span class="tax-shipping-info eu-legal">
 			{if $tax_enabled  && ((isset($display_tax_label) && $display_tax_label == 1) || !isset($display_tax_label))}
 			<span class="tax_info">
 				{if $priceDisplay == 1}{l s='tax excl.' mod='eu_legal'}{else}{l s='tax incl.' mod='eu_legal'}{/if}
@@ -29,9 +29,9 @@
 			<span class="shipping_info">
 				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)}">{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
 			</span>
-		</p>
+		</span>
 	{else}
-		<span class="tax-shipping-info">
+		<span class="tax-shipping-info eu-legal">
 			{if $tax_enabled  && ((isset($display_tax_label) && $display_tax_label == 1) || !isset($display_tax_label))}
 			<span class="tax_info">
 				{if $priceDisplay == 1}{l s='tax excl.' mod='eu_legal'}{else}{l s='tax incl.' mod='eu_legal'}{/if}
@@ -46,18 +46,17 @@
 
 {elseif $template_type == 'old_price'}
 	
-	
 		{if $is_object}
-			<p class="old-price">
+			<span class="old-price eu-legal">
 				<span class="old-price-label">
 					{l s='previously' mod='eu_legal'}
 				</span>
 				<span class="old-price-display">
 					{displayWtPrice p=$productPriceWithoutReduction}
 				</span>
-			</p>
+			</span>
 		{else}
-			<span class="old-price">
+			<span class="old-price eu-legal">
 				<span class="old-price-label">
 					{l s='previously' mod='eu_legal'}
 				</span>
@@ -75,7 +74,7 @@
 	{if $is_object}
 		{if !empty($product->unity) && $product->unit_price_ratio > 0.000000}
 			{math equation="pprice / punit_price"  pprice=$productPrice  punit_price=$product->unit_price_ratio assign=unit_price}
-			<p class="unit-price">
+			<p class="unit-price eu-legal">
 				<span class="unit-price-label">{l s='unit price' mod='eu_legal'}:</span>
 				<span id="unit_price_display">{convertPrice price=$unit_price}</span> {l s='per' mod='eu_legal'} {$product->unity|escape:'html':'UTF-8'}
 			</p>
@@ -83,7 +82,7 @@
 	{else}
 		{if !empty($product.unity) && $product.unit_price_ratio > 0.000000}
 		{math equation="pprice / punit_price"  pprice=$productPrice  punit_price=$product.unit_price_ratio assign=unit_price}
-		<span class="unit-price">
+		<span class="unit-price eu-legal">
 			<span class="unit-price-label">{l s='unit price' mod='eu_legal'}:</span>
 			<span id="unit-price-display">{convertPrice price=$unit_price}</span> {l s='per' mod='eu_legal'} {$product.unity|escape:'html':'UTF-8'}
 		</span>
@@ -95,12 +94,12 @@
 	{if $show_weights and ($weight > 0 or $combination_weight > 0)}
 		{addJsDef product_weight=$weight}
 		{if $is_object}
-			<p class="weight-info">
+			<p class="weight-info eu-legal">
 				<span class="weight-label">{l s='Weight' mod='eu_legal'}:</span>
 				<span class="weight-display"><span class="weight-value">{($weight+$combination_weight)|round:2}</span> {$weight_unit|escape:'html':'UTF-8'}</span>
 			</p>
 		{else}
-			<span class="weight-info">
+			<span class="weight-info eu-legal">
 				<span class="weight-label">{l s='Weight' mod='eu_legal'}:</span>
 				<span class="weight-display"><span class="weight-value">{($weight+$combination_weight)|round:2}</span> {$weight_unit|escape:'html':'UTF-8'}</span>
 			</span>
