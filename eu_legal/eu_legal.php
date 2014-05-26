@@ -1300,7 +1300,7 @@ class EU_Legal extends Module {
 			// Check if none of the methods already exists in the override class
 			foreach ($module_class->getMethods() as $method)
 				if ($override_class->hasMethod($method->getName()))
-					throw new Exception(sprintf(Tools::displayError('The method %1$s in the class %2$s is already overriden.'), $method->getName(), $classname));
+					throw new Exception(sprintf(Tools::displayError('The method %1$s in the class %2$s is already overridden.'), $method->getName(), $classname));
 
 			// Check if none of the properties already exists in the override class
 			foreach ($module_class->getProperties() as $property)
@@ -1349,11 +1349,11 @@ class EU_Legal extends Module {
 		$override_path = _PS_ROOT_DIR_.'/'.PrestaShopAutoload::getInstance()->getClassPath($classname);
 		if (!is_writable($override_path))
 			return false;
-		
+
 		// Get a uniq id for the class, because you can override a class (or remove the override) twice in the same session and we need to avoid redeclaration
 		do $uniq = uniqid();
 		while (class_exists($classname.'OverrideOriginal_remove'.$uniq, false));
-		
+			
 		// Make a reflection of the override class and the module override class
 		$override_file = file($override_path);
 		eval(preg_replace(array('#^\s*<\?php#', '#class\s+'.$classname.'\s+extends\s+([a-z0-9_]+)(\s+implements\s+([a-z0-9_]+))?#i'), array('', 'class '.$classname.'OverrideOriginal_remove'.$uniq), implode('', $override_file)));
@@ -1426,6 +1426,9 @@ class EU_Legal extends Module {
 		}
 		file_put_contents($override_path, $code);
 
+		// Re-generate the class index
+		PrestaShopAutoload::getInstance()->generateIndex();
+
 		return true;
 	}
 	
@@ -1482,8 +1485,7 @@ class EU_Legal extends Module {
 		
 		if(Configuration::get('LEGAL_CSS'))
 			$this->context->controller->addCSS($this->_path.'views/css/front/legal.css');
-		
-		if($this->context->controller->php_self == 'product')
+		if(in_array($this->context->controller->php_self, array('index', 'product', 'category')))
 			$this->context->controller->addJS($this->_path.'views/js/legal.js');
 		
 		$this->assignCMSPages();
