@@ -70,7 +70,7 @@ class EU_Legal extends Module {
 		// module compliancy: only for exactly one PS version
 		$this->ps_versions_compliancy = array(                  
 			'min' => '1.6.0.4',
-			'max' => '1.6.0.6'
+			'max' => '1.6.0.7'
 		);
 	 	
 		// bootstrap baqckoffice functionality
@@ -1553,4 +1553,33 @@ class EU_Legal extends Module {
 		
 	}
 	
+	/*******************************************************************************************************************
+	*
+	* Theme helper methods
+	*
+	*******************************************************************************************************************/
+	public function getCurrentThemeDir() {
+	    $theme = Context::getContext()->theme;
+	    $path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme->name . '/';
+
+	    if (is_dir($path)) {
+		return $path;
+	    }
+	    
+	    return false;
+	}
+	
+	public function getThemeOverride($template_file) {
+	    if(!Validate::isTplName($template_file)) {
+		throw new Exception(Tools::displayError('Invalid template name'));
+	    }
+	    
+	    $path = $this->getCurrentThemeDir();
+	    
+	    if ($path && file_exists($path . $template_file . '.tpl')) {
+		return $path . $template_file . '.tpl';
+	    }
+	    
+	    return false;
+	}
 }
