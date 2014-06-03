@@ -127,6 +127,14 @@ class EU_Legal extends Module {
 				'name' => 'display Header',
 				'templates' => array(),
 			),
+			'displayBeforeShoppingCartBlock' => array(
+			    'name' => 'display before Shopping cart block',
+			    'templates' => array()
+			),
+			'displayShoppingCartFooter' => array(
+			    'name' => 'display after Shopping cart block',
+			    'templates' => array()
+			)
 		);
 		
 		// modules not compatible with EU Legal
@@ -618,14 +626,24 @@ class EU_Legal extends Module {
 				'info' => $this->l('Global Settings for all shops'),
 				'icon' => 'icon-globe',
 				'fields' => array(
-					'PS_EU_PAYMENT_API' => array(
-						'type'  => 'bool',
-						'title' => $this->l('EU Payment API Mode'),
-						'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
-						'auto_value' => false,
-						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
-						'no_multishop_checkbox' => true,
-					),
+				    'PS_EU_PAYMENT_API' => array(
+					'type'  => 'bool',
+					'title' => $this->l('EU Payment API Mode'),
+					'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
+					'auto_value' => false,
+					'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
+					'no_multishop_checkbox' => true,
+				    ),
+				    'SHOPPING_CART_TEXT_BEFORE' => array(
+					'type'  => 'textareaLang',
+					'title' => $this->l('Shopping cart text'),
+					'desc'  => $this->l('This text is displayed before the shopping cart block.'),
+				    ),
+				    'SHOPPING_CART_TEXT_AFTER' => array(
+					'type'  => 'textareaLang',
+					'title' => $this->l('Shopping cart text'),
+					'desc'  => $this->l('This text is displayed after the shopping cart block.'),
+				    ),
 				),
 				'submit' => array(
 					'title' => $this->l('Save global options'),
@@ -875,6 +893,24 @@ class EU_Legal extends Module {
 			
 			if(!Configuration::updateValue('LEGAL_DELIVERY_LATER', $values))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_LATER';
+				
+			$values = array(); 
+			
+			foreach($this->languages as $language) {
+				$values[$language['id_lang']] = Tools::getValue('SHOPPING_CART_TEXT_BEFORE_'.$language['id_lang']);
+			}
+			
+			if(!Configuration::updateValue('SHOPPING_CART_TEXT_BEFORE', $values))
+				$this->_errors[] = $this->l('Could not update').': SHOPPING_CART_TEXT_BEFORE';
+				
+			$values = array(); 
+			
+			foreach($this->languages as $language) {
+				$values[$language['id_lang']] = Tools::getValue('SHOPPING_CART_TEXT_AFTER_'.$language['id_lang']);
+			}
+			
+			if(!Configuration::updateValue('SHOPPING_CART_TEXT_AFTER', $values))
+				$this->_errors[] = $this->l('Could not update').': SHOPPING_CART_TEXT_AFTER';
 			
 			// CMS IDs festlegen
 			if(!Configuration::updateValue('LEGAL_CMS_ID_LEGAL', (int)Tools::getValue('LEGAL_CMS_ID_LEGAL')))
@@ -1553,19 +1589,49 @@ class EU_Legal extends Module {
 		
 	}
 	
+	public function hookDisplayBeforeShoppingCartBlock($params) {
+	    $cart_text = Configuration::get('SHOPPING_CART_TEXT_BEFORE', $this->context->language->id);
+	    
+	    if ($cart_text && Configuration::get('PS_EU_PAYMENT_API')) {
+		$this->context->smarty->assign('cart_text', $cart_text);
+		
+		return $this->display(__FILE__, 'displayShoppingCartBeforeBlock.tpl');
+	    }
+	}
+	
+	public function hookDisplayShoppingCartFooter($params) {
+	    $cart_text = Configuration::get('SHOPPING_CART_TEXT_AFTER', $this->context->language->id);
+
+	    if ($cart_text && Configuration::get('PS_EU_PAYMENT_API')) {
+		$this->context->smarty->assign('cart_text', $cart_text);
+		
+		return $this->display(__FILE__, 'displayShoppingCartAfterBlock.tpl');
+	    }
+	}
+	
 	/*******************************************************************************************************************
 	*
 	* Theme helper methods
 	*
 	*******************************************************************************************************************/
-	public function getCurrentThemeDir() {
-	    $theme = Context::getContext()->theme;
-	    $path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme->name . '/';
+	public function getCurrentThemeDir($theme_name = false) {
+	    if ( ! $theme_name) {
+		$theme_name = Context::getContext()->theme->name;
+	    }
+	    
+	    $default_theme = 'default-bootstrap';
+
+	    $path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme_name . '/';
 
 	    if (is_dir($path)) {
 		return $path;
 	    }
+	    else if ($theme_name != $default_theme) {
+		// In case a theme-specific template wasn't found, try to return the template for default theme.
+		return $this->getCurrentThemeDir($default_theme);
+	    }
 	    
+	    // maybe should return the path to native theme, tests needed
 	    return false;
 	}
 	

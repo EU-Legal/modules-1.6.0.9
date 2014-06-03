@@ -2,6 +2,7 @@ var legal = {
     paymentChosen: '',
     
     tosApproved: false,
+    revocationTermsApproved: true,
     
     init: function(){
 	$('[data-hide-if-js]').hide();
@@ -9,6 +10,10 @@ var legal = {
 	$('[data-remove-if-js]').remove();
 	
 	this.bindPaymentOptionClick();
+	
+	if (is_partially_virtual) {
+	    this.revocationTermsApproved = false;
+	}
 	
 	if (this.localStorageEnabled()) {
 	    var pref = localStorage.getItem('preferredPaymentMethod');
@@ -27,6 +32,11 @@ var legal = {
 	
 	$(document).on('change', '#cgv', function(){
 	    legal.tosApproved = $(this).is(':checked');
+	    legal.updateConfirmButton();
+	});
+	
+	$(document).on('change', '#revocation_terms_aggreed', function(){
+	    legal.revocationTermsApproved = $(this).is(':checked');
 	    legal.updateConfirmButton();
 	});
     },
@@ -68,7 +78,7 @@ var legal = {
     },
     
     confirmOrder: function() {
-	if (this.paymentChosen && this.tosApproved) {
+	if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
 	    $('#' + this.paymentChosen + '_payment form').submit();
 	}
     },
@@ -92,7 +102,7 @@ var legal = {
     },
     
     updateConfirmButton: function() {
-	if (this.paymentChosen && this.tosApproved) {
+	if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
 	    $('#confirmOrder').removeAttr('disabled');
 	}
 	else {

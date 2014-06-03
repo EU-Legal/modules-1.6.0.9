@@ -50,7 +50,13 @@ class OrderController extends OrderControllerCore {
 			$this->processAddress();
 		$this->autoStep();
 		$this->_assignCarrier();
-		$this->setTemplate(_PS_THEME_DIR_.'order-carrier.tpl');
+		
+		if ($this->_legal && $tpl = $this->_legal->getThemeOverride('order-carrier')) {
+		    $this->setTemplate($tpl);
+		}
+		else {
+		    $this->setTemplate(_PS_THEME_DIR_.'order-carrier.tpl');
+		}
 	    break;
 
 	    case 3:

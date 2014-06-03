@@ -36,6 +36,7 @@
 {/if}
 
 {addJsDef PS_EU_PAYMENT_API=isset($PS_EU_PAYMENT_API) && $PS_EU_PAYMENT_API}
+{addJsDef is_partially_virtual=$is_partially_virtual|intval}
 
 {if !$opc}
 	{assign var='current_step' value='payment'}
@@ -65,15 +66,30 @@
 				
 				
 				{if isset($PS_EU_PAYMENT_API) and $PS_EU_PAYMENT_API}
-					{if $conditions AND $cms_id}
-						<div {if !$opc}style="display:none" data-show-if-js{/if}>
-							<p class="carrier_title">{l s='Terms of service'}</p>
-							<p class="checkbox">
-								<input type="checkbox" name="cgv" id="cgv" value="1"/>
-								<label for="cgv">{l s='I agree to the terms of service and will adhere to them unconditionally.'}</label>
-								<a href="{$link_conditions|escape:'html':'UTF-8'}" class="iframe" rel="nofollow">{l s='(Read the Terms of Service)'}</a>
-							</p>
-						</div>
+					<div {if !$opc}style="display:none" data-show-if-js{/if}>
+						<p class="carrier_title">{l s='Terms of service'}</p>
+						<p class="checkbox">
+							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
+							<input type="checkbox" name="cgv" id="cgv" value="1"/>
+							{/if}
+							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
+							   <label for="cgv">{l s='I agree to the' mod='eu_legal'}</label> <a href="{$PS_CONDITIONS_CMS_ID_LINK}" class="iframe">{l s='terms of service' mod='germanext'}</a>
+							{/if}
+							{if isset($LEGAL_CMS_ID_REVOCATION) && $LEGAL_CMS_ID_REVOCATION}
+							   <label>{l s='and' mod='germanext'}</label> <a href="{$LEGAL_CMS_ID_REVOCATION_LINK}" class="iframe">{l s='terms of revocation' mod='germanext'}</a> {l s='adhire to them unconditionally.' mod='germanext'}
+							{/if}
+						</p>
+					</div>
+					{if $is_partially_virtual}
+					<div {if !$opc}style="display:none" data-show-if-js{/if}>
+						<p class="carrier_title">{l s='Revocation'}</p>
+						<p class="checkbox">
+							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
+							<input type="checkbox" name="revocation_terms_aggreed" id="revocation_terms_aggreed" value="1"/>
+							{/if}
+							<label for="cgv">{l s='I agree that the digital products in my cart can not be returned or refunded due to the nature of such products.' mod='eu_legal'}</label>
+						</p>
+					</div>
 					{/if}
 					{include file="$legal_theme_dir/order-summary.tpl"}
 					{include file="$legal_theme_dir/order-confirm.tpl"}

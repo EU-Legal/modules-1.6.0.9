@@ -260,3 +260,4 @@
 		{/if}
 	</table>
 </div> <!-- end order-detail-content -->
+<div id="HOOK_SHOPPING_CART">{$HOOK_SHOPPING_CART}</div>

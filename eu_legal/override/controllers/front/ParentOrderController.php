@@ -19,7 +19,33 @@ class ParentOrderController extends ParentOrderControllerCore {
     public function init() {
 	parent::init();
 	
+	$cms = array(
+	    'PS_CONDITIONS_CMS_ID', 'LEGAL_CMS_ID_REVOCATION'
+	);
+	
+	foreach ($cms as $config) {
+	    if ($id_cms = Configuration::get($config)) {
+		$cms = new CMS((int)$id_cms, $this->context->language->id);
+		
+		if (Validate::isLoadedObject($cms)) {
+		    $this->context->smarty->assign($config, new CMS((int)$id_cms, $this->context->language->id));
+		    
+		    $link = $this->context->link->getCMSLink($cms);
+
+		    if ( ! strpos($link, '?')) {
+			$link.= '?content_only=1';
+		    }
+		    else {
+			$link.= '&content_only=1';
+		    }
+		    
+		    $this->context->smarty->assign($config . '_LINK', $link);
+		}
+	    }
+	}
+	
 	$this->context->smarty->assign(array(
+	    'is_partially_virtual' => $this->context->cart->containsVirtualProducts(),
 	    'PS_EU_PAYMENT_API' => Configuration::get('PS_EU_PAYMENT_API'),
 	    'legal_theme_dir' => $this->_legal ? $this->_legal->getCurrentThemeDir() : false
 	));

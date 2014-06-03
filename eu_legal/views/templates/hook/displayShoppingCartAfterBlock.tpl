@@ -1,0 +1,1 @@
+<p>{$cart_text}</p>

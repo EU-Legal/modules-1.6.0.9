@@ -48,11 +48,11 @@
 			<!-- END Create account / Guest account / Login block -->
 		{/if}
 		<!-- Carrier -->
-		{include file="$tpl_dir./order-carrier.tpl"}
+		{include file="$legal_theme_dir./order-carrier.tpl"}
 		<!-- END Carrier -->
 	
 		<!-- Payment -->
-		{include file="$tpl_dir./order-payment.tpl"}
+		{include file="$legal_theme_dir./order-payment.tpl"}
 		<!-- END Payment -->
 	{else}
 		{capture name=path}{l s='Your shopping cart'}{/capture}
