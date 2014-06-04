@@ -1,7 +1,5 @@
 <?php
 class ParentOrderController extends ParentOrderControllerCore {
-    protected $_legal = false;
-    
     public function __construct() {
 	parent::__construct();
 	
@@ -97,7 +95,13 @@ class ParentOrderController extends ParentOrderControllerCore {
 	$payment_options = sizeof($payment_options) ? $payment_options : false;
 
 	$this->context->smarty->assign('payment_options', $payment_options);
-	$payment_options_html = $this->context->smarty->fetch(_PS_ALL_THEMES_DIR_ . '/' . $this->context->theme->directory . '/order-payment-eu.tpl');
+	
+	if ($this->_legal && $tpl = $this->_legal->getThemeOverride('order-payment-eu')) {
+	    $payment_options_html = $this->context->smarty->fetch($tpl);
+	}
+	else {
+	    $payment_options_html = $this->context->smarty->fetch(_PS_ALL_THEMES_DIR_ . '/' . $this->context->theme->directory . '/order-payment.tpl');
+	}
 	
 	return $payment_options_html;
     }

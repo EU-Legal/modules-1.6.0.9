@@ -63,9 +63,11 @@
 				{else}
 					<p class="alert alert-warning">{l s='No payment modules have been installed.'}</p>
 				{/if}
-				
-				
+
 				{if isset($PS_EU_PAYMENT_API) and $PS_EU_PAYMENT_API}
+					{if ! $opc}
+					{include file="$legal_theme_dir/order-address.tpl"}
+					{/if}
 					<div {if !$opc}style="display:none" data-show-if-js{/if}>
 						<p class="carrier_title">{l s='Terms of service'}</p>
 						<p class="checkbox">

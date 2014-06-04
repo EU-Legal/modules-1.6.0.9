@@ -11,6 +11,8 @@ var legal = {
 	
 	this.bindPaymentOptionClick();
 	
+	is_partially_virtual = typeof(is_partially_virtual) != 'undefined' ? is_partially_virtual : false;
+	
 	if (is_partially_virtual) {
 	    this.revocationTermsApproved = false;
 	}
@@ -39,6 +41,8 @@ var legal = {
 	    legal.revocationTermsApproved = $(this).is(':checked');
 	    legal.updateConfirmButton();
 	});
+	
+	this.bindAjaxHandlers();
     },
     
     bindPaymentOptionClick: function() {
@@ -108,6 +112,44 @@ var legal = {
 	else {
 	    $('#confirmOrder').attr('disabled', 'disabled');
 	}
+    },
+    
+    bindAjaxHandlers: function(){
+	$(document).ajaxSuccess(function(event, jqXHR, ajaxOptions, data){
+	    var ajaxOpts = {},
+		temp;
+	    
+	    if (typeof(ajaxOptions) != 'undefined' && typeof(ajaxOptions.data) != 'undefined') {
+		temp = ajaxOptions.data.split('&');
+		
+		if (temp.length) {
+		    for (var i in temp) {
+			if (temp[i].split('=')[0] == 'SubmitLogin') {
+			    legal.onLogin();
+			}
+		    }
+		}
+	    }
+	});
+    },
+    
+    onLogin: function(){
+	$('#opc_payment_methods-overlay').fadeIn('slow', function(){
+	    $.ajax({
+		type: 'POST',
+		headers: { "cache-control": "no-cache" },
+		url: orderOpcUrl + '?rand=' + new Date().getTime(),
+		async: true,
+		cache: false,
+		dataType : "json",
+		data: 'ajax=true&method=getCartSummary&checked=' + legal.tosApproved + '&token=' + static_token,
+		success: function(json) {
+		    $('#opc_payment_methods #orderSummaryWrapper').replaceWith(json.summary)
+		}
+	    });
+	    
+	    $(this).fadeOut('slow');		
+	});
     }
 }
 

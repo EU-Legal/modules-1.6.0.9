@@ -134,6 +134,10 @@ class EU_Legal extends Module {
 			'displayShoppingCartFooter' => array(
 			    'name' => 'display after Shopping cart block',
 			    'templates' => array()
+			),
+			'displayShippingPrice' => array(
+			    'name' => 'display shipping price in cart',
+			    'templates' => array()
 			)
 		);
 		
@@ -490,7 +494,6 @@ class EU_Legal extends Module {
 	
 	// module configuration
 	public function getContent() {
-		
 		$html  = '';
 		
 		$this->context->controller->addCSS($this->_path.'views/css/admin/legal.css');
@@ -1607,6 +1610,44 @@ class EU_Legal extends Module {
 		
 		return $this->display(__FILE__, 'displayShoppingCartAfterBlock.tpl');
 	    }
+	}
+	
+	// Purely temporary
+	public function hookDisplayShippingPrice($params) {
+	    $with_tax = Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer);
+	    
+	    $shipping_price = $this->context->cart->getOrderTotal($with_tax, Cart::ONLY_SHIPPING);
+	    $no_address_selected = ! $this->context->cart->id_address_delivery;
+	    $default_country = false;
+	    $shipping_link = false;
+	    
+	    if ($no_address_selected) {
+		$country = new Country(Configuration::get('PS_COUNTRY_DEFAULT'), $this->context->language->id);
+		
+		$default_country = $country->name;
+		
+		$cms = new CMS(Configuration::get('LEGAL_CMS_ID_SHIPPING'));
+		
+		if (Validate::isLoadedObject($cms)) {
+		    $shipping_link = $this->context->link->getCMSLink($cms);
+
+		    if ( ! strpos($shipping_link, '?')) {
+			$shipping_link.= '?content_only=1';
+		    }
+		    else {
+			$shipping_link.= '&content_only=1';
+		    }
+		}
+	    }
+	    
+	    $this->context->smarty->assign(array(
+		'shipping_price' => $shipping_price,
+		'no_address_selected' => $no_address_selected,
+		'default_country' => $default_country,
+		'shipping_link' => $shipping_link
+	    ));
+	    
+	    return $this->display(__FILE__, 'displayShippingPrice.tpl');
 	}
 	
 	/*******************************************************************************************************************

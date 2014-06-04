@@ -1,0 +1,1 @@
+{displayPrice price=$shipping_price} {if $no_address_selected}{l s='Shipping to' mod='eu_legal'} {$default_country} {if $shipping_link}<a href="{$shipping_link}" class="iframe">{l s='further shipping costs' mod='eu_legal'}</a>{else}{l s='further shipping costs' mod='eu_legal'}{/if}{/if}

@@ -608,5 +608,60 @@ class Cart extends CartCore
 
 		return self::$_isPartlyVirtualCart[$this->id];
 	}
+	
+	public function getTaxDetails($products = false) {
+		if ( ! is_array($products) || ! sizeof($products)) {
+			$products = $this->getProducts();
+		}
+		
+		$context = Context::getContext();
+
+		if (Configuration::get('PS_TAX_ADDRESS_TYPE') == 'id_address_invoice') {
+			$address = Address::initialize((int)$this->id_address_invoice);
+		}
+		else {
+			$address = Address::initialize((int)$this->id_address_delivery);
+		}
+
+		if ( ! sizeof($products)) {
+			return false;
+		}
+		
+		$prepared_taxes = array();
+		$total_products_price = 0;
+		
+		foreach ($products as $product) {
+			$id_tax_rules = (int)Product::getIdTaxRulesGroupByIdProduct((int)$product['id_product'], $context);
+			$tax_manager = TaxManagerFactory::getManager($address, $id_tax_rules);
+			$tax_calculator = $tax_manager->getTaxCalculator();
+	    
+			$product_taxes = $tax_calculator->getTaxData($product['price']);
+			$total_products_price+= (float)$product['total_wt'];
+	    
+			foreach ($product_taxes as $tax_id => $tax_data) {
+				if ( ! array_key_exists($tax_id, $prepared_taxes)) {
+					$prepared_taxes[$tax_id] = $tax_data + array(
+						'total' => (float)$product['total_wt'] - (float)$product['total'],
+						'total_net' => (float)$product['total'],
+						'total_vat' => (float)$product['total_wt'],
+						'percentage' => 0
+					);
+				}
+				else {
+					$prepared_taxes[$tax_id]['total']+= ((float)$product['total_wt'] - (float)$product['total']);
+					$prepared_taxes[$tax_id]['total_net']+= (float)$product['total'];
+					$prepared_taxes[$tax_id]['total_vat']+= (float)$product['total_wt'];
+				}
+			}
+		}
+		
+		foreach ($prepared_taxes as &$tax) {
+			if ($total_products_price > 0 && $tax['total_vat'] > 0) {
+				$tax['percentage'] = 100 / ($total_products_price / $tax['total_vat']);	
+			}
+		}
+		
+		return sizeof($prepared_taxes) ? $prepared_taxes : false;
+	}
 }
 
