@@ -1593,12 +1593,14 @@ class EU_Legal extends Module {
 	}
 	
 	public function hookDisplayBeforeShoppingCartBlock($params) {
-	    $cart_text = Configuration::get('SHOPPING_CART_TEXT_BEFORE', $this->context->language->id);
-	    
-	    if ($cart_text && Configuration::get('PS_EU_PAYMENT_API')) {
-		$this->context->smarty->assign('cart_text', $cart_text);
+	    if ($this->context->controller instanceof OrderOpcController || property_exists($this->context->controller, 'step') && $this->context->controller->step == 3) {
+		$cart_text = Configuration::get('SHOPPING_CART_TEXT_BEFORE', $this->context->language->id);
 		
-		return $this->display(__FILE__, 'displayShoppingCartBeforeBlock.tpl');
+		if ($cart_text && Configuration::get('PS_EU_PAYMENT_API')) {
+		    $this->context->smarty->assign('cart_text', $cart_text);
+		    
+		    return $this->display(__FILE__, 'displayShoppingCartBeforeBlock.tpl');
+		}
 	    }
 	}
 	
@@ -1611,10 +1613,9 @@ class EU_Legal extends Module {
 		return $this->display(__FILE__, 'displayShoppingCartAfterBlock.tpl');
 	    }
 	}
-	
-	// Purely temporary
+
 	public function hookDisplayShippingPrice($params) {
-	    $with_tax = Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer);
+	    $with_tax = Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer) == 0;
 	    
 	    $shipping_price = $this->context->cart->getOrderTotal($with_tax, Cart::ONLY_SHIPPING);
 	    $no_address_selected = ! $this->context->cart->id_address_delivery;

@@ -42,6 +42,14 @@ var legal = {
 	    legal.updateConfirmButton();
 	});
 	
+	if (!!$.prototype.fancybox){
+	    $('a.iframe').fancybox({
+		'type': 'iframe',
+		'width': 600,
+		'height': 600
+	    });
+	}
+	
 	this.bindAjaxHandlers();
     },
     
