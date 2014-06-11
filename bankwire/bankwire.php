@@ -76,7 +76,7 @@ class BankWire extends PaymentModule
 
 	public function install()
 	{
-		if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('paymentEU') || !$this->registerHook('paymentReturn'))
+		if (!parent::install() || !$this->registerHook('displayPayment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('displayPaymentReturn'))
 			return false;
 		return true;
 	}
@@ -138,7 +138,7 @@ class BankWire extends PaymentModule
 		return $this->_html;
 	}
 
-	public function hookPayment($params)
+	public function hookDisplayPayment($params)
 	{
 		if (!$this->active)
 			return;
@@ -154,7 +154,7 @@ class BankWire extends PaymentModule
 		return $this->display(__FILE__, 'payment.tpl');
 	}
 	
-	public function hookPaymentEU($params)
+	public function hookDisplayPaymentEU($params)
 	{
 		if (!$this->active)
 			return;
@@ -170,7 +170,7 @@ class BankWire extends PaymentModule
 		);
 	}
 
-	public function hookPaymentReturn($params)
+	public function hookDisplayPaymentReturn($params)
 	{
 		if (!$this->active)
 			return;

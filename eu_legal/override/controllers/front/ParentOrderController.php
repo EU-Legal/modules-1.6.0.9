@@ -65,7 +65,7 @@ class ParentOrderController extends ParentOrderControllerCore {
 	$this->context->smarty->assign('payment_option', Tools::getValue('payment_option'));
 
 	// Get available payment modules
-	$payment_options_raw = Hook::exec('paymentEU', array(), null, true, true, false, null);
+	$payment_options_raw = Hook::exec('displayPaymentEU', array(), null, true, true, false, null);
 
 	$payment_options = array();
 	
