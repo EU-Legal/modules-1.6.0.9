@@ -29,7 +29,12 @@ class OrderController extends OrderControllerCore {
 	{
 	    case -1;
 		$this->context->smarty->assign('empty', 1);
-		$this->setTemplate(_PS_THEME_DIR_.'shopping-cart.tpl');
+		if ($this->_legal && $tpl = $this->_legal->getThemeOverride('shopping-cart')) {
+		    $this->setTemplate($tpl);
+		}
+		else {
+		    $this->setTemplate(_PS_THEME_DIR_.'shopping-cart.tpl');
+		}
 	    break;
 
 	    case 1:
@@ -118,7 +123,12 @@ class OrderController extends OrderControllerCore {
 
 	    default:
 		$this->_assignSummaryInformations();
-		$this->setTemplate(_PS_THEME_DIR_.'shopping-cart.tpl');
+		if ($this->_legal && $tpl = $this->_legal->getThemeOverride('shopping-cart')) {
+		    $this->setTemplate($tpl);
+		}
+		else {
+		    $this->setTemplate(_PS_THEME_DIR_.'shopping-cart.tpl');
+		}
 		break;
 	}
 
