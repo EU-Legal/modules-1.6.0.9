@@ -36,6 +36,7 @@
 {else}
 	{if $productNumber}
 		<!-- Shopping Cart -->
+		{* eu-legal: hide if EU API enabled *}
 		{if !isset($PS_EU_PAYMENT_API) or !$PS_EU_PAYMENT_API}
 		{include file="$tpl_dir./shopping-cart.tpl"}
 		{/if}
