@@ -1656,22 +1656,21 @@ class EU_Legal extends Module {
 	*
 	*******************************************************************************************************************/
 	public function getCurrentThemeDir($theme_name = false) {
-	    if ( ! $theme_name) {
-		$theme_name = Context::getContext()->theme->name;
-	    }
-	    
-	    $default_theme = 'default-bootstrap';
+		if(!$theme_name)
+			$theme_name = Context::getContext()->theme->directory;
+		
+		// first look in theme directory
+		$path = _PS_ALL_THEMES_DIR_ . $theme_name . '/modules/' . $this->name . '/views/templates/themes/';
+		
+		if (is_dir($path))
+			return $path;
+		
+		// then look in module directory
+		$path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/';
 
-	    $path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme_name . '/';
-
-	    if (is_dir($path)) {
-		return $path;
-	    }
-	    else if ($theme_name != $default_theme) {
-		// In case a theme-specific template wasn't found, try to return the template for default theme.
-		return $this->getCurrentThemeDir($default_theme);
-	    }
-	    
+		if (is_dir($path))
+			return $path;
+		
 	    // maybe should return the path to native theme, tests needed
 	    return false;
 	}
