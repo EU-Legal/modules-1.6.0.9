@@ -1,0 +1,13 @@
+Widerrufsformular
+Widerrufsformular
+Widerrufsformular
+Widerrufsformular
+<h2>Muster-Widerrufsformular</h2>
+<p>(Wenn Sie den Vertrag widerrufen wollen, dann f&uuml;llen Sie bitte dieses Formular aus und senden Sie es zur&uuml;ck.)<br />An [hier ist der Name, die Anschrift und gegebenenfalls die Telefaxnummer und E-Mail-Adresse des Unternehmers durch den Unternehmer einzuf&uuml;gen]:</p>
+<p>Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag &uuml;ber den Kauf der folgenden<br />Waren (*)/die Erbringung der folgenden Dienstleistung (*)</p>
+<p><br />Bestellt am (*)/erhalten am (*)</p>
+<p><br />Name des/der Verbraucher(s)</p>
+<p><br />Anschrift des/der Verbraucher(s)</p>
+<p><br />Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)</p>
+<p><br />Datum</p>
+<p><br />(*) Unzutreffendes streichen.</p>
