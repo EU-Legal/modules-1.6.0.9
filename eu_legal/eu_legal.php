@@ -166,6 +166,7 @@ class EU_Legal extends Module {
 			array('name' => 'legalnotice',   'config' => 'LEGAL_CMS_ID_LEGAL',         'title' => $this->l('Legal Notice')),
 			array('name' => 'conditions',    'config' => 'PS_CONDITIONS_CMS_ID',       'title' => $this->l('Conditions')),
 			array('name' => 'revocation',    'config' => 'LEGAL_CMS_ID_REVOCATION',    'title' => $this->l('Revocation')),
+			array('name' => 'revocationform','config' => 'LEGAL_CMS_ID_REVOCATIONFORM','title' => $this->l('Revocation Form')),
 			array('name' => 'privacy',       'config' => 'LEGAL_CMS_ID_PRIVACY',       'title' => $this->l('Privacy')),
 			array('name' => 'environmental', 'config' => 'LEGAL_CMS_ID_ENVIRONMENTAL', 'title' => $this->l('Envorimental')),
 			array('name' => 'shipping',      'config' => 'LEGAL_CMS_ID_SHIPPING',      'title' => $this->l('Shipping')),
