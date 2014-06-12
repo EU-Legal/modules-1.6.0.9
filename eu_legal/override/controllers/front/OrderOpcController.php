@@ -1,5 +1,6 @@
 <?php
 class OrderOpcController extends OrderOpcControllerCore {
+    
     public function init()
     {
 	    ParentOrderController::init();

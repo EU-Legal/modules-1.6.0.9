@@ -1,6 +1,8 @@
 <?php
 class ParentOrderController extends ParentOrderControllerCore {
+	
 	protected $_legal = false;
+	
     public function __construct() {
 		
 		/*
