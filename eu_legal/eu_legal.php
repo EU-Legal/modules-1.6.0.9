@@ -693,12 +693,12 @@ class EU_Legal extends Module {
 				'fields' => array(
 					 'SHOPPING_CART_TEXT_BEFORE' => array(
 						'type'  => 'textareaLang',
-						'title' => $this->l('Shopping cart text'),
+						'title' => $this->l('Shopping cart text 1'),
 						'desc'  => $this->l('This text is displayed before the shopping cart block.'),
 				    ),
 				    'SHOPPING_CART_TEXT_AFTER' => array(
 						'type'  => 'textareaLang',
-						'title' => $this->l('Shopping cart text'),
+						'title' => $this->l('Shopping cart text 2'),
 						'desc'  => $this->l('This text is displayed after the shopping cart block.'),
 				    ),
 					'LEGAL_SHIPTAXMETH' => array(
@@ -1080,12 +1080,12 @@ class EU_Legal extends Module {
 				$this->_errors[] = $this->l('Please select a theme.');
 			else {
 				
-				if(!is_dir('themes/'.$theme.'/mails/de/') and !mkdir(_PS_ALL_THEMES_DIR_.$theme.'/mails/de/', 0755, true))
+				if(!is_dir(_PS_ALL_THEMES_DIR_.$theme.'/mails/de/') and !mkdir(_PS_ALL_THEMES_DIR_.$theme.'/mails/de/', 0755, true))
 					$this->_errors[] = $this->l('Could not create mail dir.');
 				else {
 					
 					try {
-						$this->rcopy('modules/'.$this->name.'/mails/de/', 'themes/'.$theme.'/', array('root' => _PS_ROOT_DIR_));
+						$this->rcopy('modules/'.$this->name.'/mails/de/', 'themes/'.$theme.'/mails/de/', array('root' => _PS_ROOT_DIR_));
 					}
 					catch(Exception $e) {
 						$this->_errors[] = $this->l('Could not copy').': modules/'.$this->name.'/mails/de/';
