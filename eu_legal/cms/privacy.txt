@@ -1,7 +1,3 @@
-Datenschutz
-Datenschutz
-Datenschutz
-datenschutz
 <p>*** Tragen Sie hier Ihre Datenschutzerklärung ein *** </p>
 <pre><a href="http://www.trustedshops.de/shop-info/musterformulierungen/" target="_blank">Aktuelle Mustertexte von TrustedShops finden Sie hier</a>
 Passwort: mustertexte</pre>

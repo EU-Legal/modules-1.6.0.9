@@ -1,7 +1,3 @@
-Versand & Zahlung
-Versand & Zahlung
-Versand & Zahlung
-Versand & Zahlung
 <p>*** Tragen Sie hier Ihre Versandkosten, Lieferbeschränkungen und Zahlungsarten ein *** </p>
 <pre><a href="http://www.trustedshops.de/shop-info/musterformulierungen/" target="_blank">Aktuelle Mustertexte von TrustedShops finden Sie hier</a>
 Passwort: mustertexte</pre>

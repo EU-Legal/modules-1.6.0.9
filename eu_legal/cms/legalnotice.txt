@@ -1,7 +1,3 @@
-Impressum
-Impressum, Anbieterkennzeichnung
-Impressum, Anbieterkennzeichnung
-impressum
 <p>*** Tragen Sie hier Ihr Impressum ein *** </p>
 <pre><a href="http://www.trustedshops.de/shop-info/musterformulierungen/" target="_blank">Aktuelle Mustertexte von TrustedShops finden Sie hier</a>
 Passwort: mustertexte</pre>
