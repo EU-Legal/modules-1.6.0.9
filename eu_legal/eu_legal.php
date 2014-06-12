@@ -145,12 +145,11 @@ class EU_Legal extends Module {
 		$this->modules_not_compatible = array(
 			'bankwire',
 			'cheque',
-			'blockcart',
 		);
 		
 		// modules must install 
 		$this->modules_must_install = array(
-			'blockcustomerprivacy',
+			/*'blockcustomerprivacy',*/
 		);
 		
 		// supported modules, delivered with EU Legal
