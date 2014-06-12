@@ -39,6 +39,11 @@
 			display:inline-block;
 			font-size:100%
 		}
+		
+		.left-block .delivery-info,
+		.left-block .weight-info {
+			display: none;
+		}
 	
 	}
 	
@@ -104,14 +109,6 @@
 				
 				.unit-price {
 					display: block;
-				}
-				
-				.delivery-info {
-					display: none;
-				}
-				
-				.weight-info {
-					display: none;
 				}
 				
 			}

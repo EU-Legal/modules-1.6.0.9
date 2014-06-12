@@ -1,6 +1,13 @@
 <?php
 class ParentOrderController extends ParentOrderControllerCore {
+	protected $_legal = false;
     public function __construct() {
+		
+		/*
+		* Legal 0.0.1 | 20140320
+		* EU Legal Modul instanziieren
+		*/
+		
 	parent::__construct();
 	
 	$instance = Module::getInstanceByName('eu_legal');
@@ -11,6 +18,13 @@ class ParentOrderController extends ParentOrderControllerCore {
     }
     
     private function getLegalInstance() {
+		
+		/*
+		* Legal 0.0.1 | 20140320
+		* EU Legal Modul instanziieren
+		* (wird zur Zeit noch nicht verwendet!)
+		*/
+		
 	return $this->_legal;
     }
     
@@ -18,7 +32,8 @@ class ParentOrderController extends ParentOrderControllerCore {
 	parent::init();
 	
 	$cms = array(
-	    'PS_CONDITIONS_CMS_ID', 'LEGAL_CMS_ID_REVOCATION'
+			'PS_CONDITIONS_CMS_ID', 
+			'LEGAL_CMS_ID_REVOCATION',
 	);
 	
 	foreach ($cms as $config) {

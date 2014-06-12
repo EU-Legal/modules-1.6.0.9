@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.3
-* @date          : 2014 05 21
+* @version       : 0.0.4
+* @date          : 2014 06 12
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.3';                
+		$this->version = '0.0.4';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -208,25 +208,30 @@ class EU_Legal extends Module {
 		// global configuration values
 		
 		// shop specific configuration values
-		if($return and !Configuration::updateValue('PS_TAX', true)) {
+		if($return and !Configuration::updateGlobalValue('PS_EU_PAYMENT_API', false)) {
 			$return &= false;
-			$this->_errors[] = $this->l('Could not update config value:').' PS_TAX';
+			$this->_errors[] = $this->l('Could not update config value:').' PS_EU_PAYMENT_API';
 		}
-		if($return and !Configuration::updateValue('PS_TAX_DISPLAY', true)) {
+		
+		$values = array();
+		foreach($this->languages as $language)
+			$values[$language['id_lang']] = '';
+		if($return and !Configuration::updateValue('SHOPPING_CART_TEXT_BEFORE', $values)) {
 			$return &= false;
-			$this->_errors[] = $this->l('Could not update config value:').' PS_TAX_DISPLAY';
+			$this->_errors[] = $this->l('Could not update config value:').' SHOPPING_CART_TEXT_BEFORE';
 		}
+		
+		$values = array();
+		foreach($this->languages as $language)
+			$values[$language['id_lang']] = '';
+		if($return and !Configuration::updateValue('SHOPPING_CART_TEXT_AFTER', $values)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not update config value:').' SHOPPING_CART_TEXT_AFTER';
+		}
+		
 		if($return and !Configuration::updateValue('LEGAL_SHIPTAXMETH', true)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHIPTAXMETH';
-		}
-		if($return and !Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_CONDITIONS_INPUT';
-		}
-		if($return and !Configuration::updateValue('LEGAL_SHOW_WEIGHTS', 1)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_WEIGHTS';
 		}
 		
 		$values = array();
@@ -244,6 +249,11 @@ class EU_Legal extends Module {
 		if($return and !Configuration::updateValue('LEGAL_DELIVERY_LATER', $values)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_DELIVERY_LATER';
+		}
+		
+		if($return and !Configuration::updateValue('LEGAL_SHOW_WEIGHTS', 1)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_WEIGHTS';
 		}
 		
 		// set config vars for cms pages
@@ -360,7 +370,12 @@ class EU_Legal extends Module {
 	// uninstall admin override templates
 	protected function uninstallAdminTemplates() {
 		
-		return @unlink(_PS_OVERRIDE_DIR_.'controllers/admin/templates/products/quantities.tpl');
+		$return = true;
+		
+		$return &= @unlink(_PS_OVERRIDE_DIR_.'controllers/admin/templates/products/quantities.tpl');
+		$return &= @unlink(_PS_OVERRIDE_DIR_.'controllers/admin/templates/customers/helpers/view/view.tpl');
+		
+		return $return;
 		
 	}
 	
@@ -418,8 +433,10 @@ class EU_Legal extends Module {
 		// global configuration
 		
 		// shop specific configuration
+		$return &= Configuration::deleteByName('PS_EU_PAYMENT_API');
+		$return &= Configuration::deleteByName('SHOPPING_CART_TEXT_BEFORE');
+		$return &= Configuration::deleteByName('SHOPPING_CART_TEXT_AFTER');
 		$return &= Configuration::deleteByName('LEGAL_SHIPTAXMETH');
-		$return &= Configuration::deleteByName('LEGAL_CONDITIONS_INPUT');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_NOW');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_LATER');
 		$return &= Configuration::deleteByName('LEGAL_SHOW_WEIGHTS');
@@ -452,32 +469,32 @@ class EU_Legal extends Module {
 		$return = true;
 		
 		// global configuration
+		$return &= Configuration::updateGlobalValue('PS_EU_PAYMENT_API', 0);
 		
 		// shop specific configuration
-		$return &= Configuration::updateValue('PS_TAX', true);
-		$return &= Configuration::updateValue('PS_TAX_DISPLAY', true);
-		$return &= Configuration::updateValue('LEGAL_SHIPTAXMETH', true);
-		$return &= Configuration::updateValue('LEGAL_CONDITIONS_INPUT', 1);
-		
-		foreach($this->languages as $language) {
-			$values[$language['id_lang']] = $this->deliveryNowDefault;
-		}
-		
-		if(!Configuration::updateValue('LEGAL_DELIVERY_NOW', $values)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_NOW';
-		}
+		$values = array(); 
+		foreach($this->languages as $language)
+			$values[$language['id_lang']] = '';
+		$return &= Configuration::updateValue('SHOPPING_CART_TEXT_BEFORE', $values);
 		
 		$values = array(); 
+		foreach($this->languages as $language)
+			$values[$language['id_lang']] = '';
+		$return &= Configuration::updateValue('SHOPPING_CART_TEXT_AFTER', $values);
 		
-		foreach($this->languages as $language) {
+		$return &= Configuration::updateValue('LEGAL_SHIPTAXMETH', true);
+		
+		$values = array(); 
+		foreach($this->languages as $language)
+			$values[$language['id_lang']] = $this->deliveryNowDefault;
+		$return &= Configuration::updateValue('LEGAL_DELIVERY_NOW', $values);
+		
+		$values = array(); 
+		foreach($this->languages as $language)
 			$values[$language['id_lang']] = $this->deliveryLaterDefault;
-		}
+		$return &= Configuration::updateValue('LEGAL_DELIVERY_LATER', $values);
 		
-		if(!Configuration::updateValue('LEGAL_DELIVERY_LATER', $values)) {
-			$return &= false;
-			$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_LATER';
-		}
+		$return &= Configuration::updateValue('LEGAL_SHOW_WEIGHTS', 1);
 		
 		foreach($this->cms_pages as $cms_page)
 			if(strpos($cms_page['config'], $this->config_prefix) === 0)
@@ -495,6 +512,7 @@ class EU_Legal extends Module {
 	
 	// module configuration
 	public function getContent() {
+		
 		$html  = '';
 		
 		$this->context->controller->addCSS($this->_path.'views/css/admin/legal.css');
@@ -631,22 +649,12 @@ class EU_Legal extends Module {
 				'icon' => 'icon-globe',
 				'fields' => array(
 				    'PS_EU_PAYMENT_API' => array(
-					'type'  => 'bool',
-					'title' => $this->l('EU Payment API Mode'),
-					'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
-					'auto_value' => false,
-					'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
-					'no_multishop_checkbox' => true,
-				    ),
-				    'SHOPPING_CART_TEXT_BEFORE' => array(
-					'type'  => 'textareaLang',
-					'title' => $this->l('Shopping cart text'),
-					'desc'  => $this->l('This text is displayed before the shopping cart block.'),
-				    ),
-				    'SHOPPING_CART_TEXT_AFTER' => array(
-					'type'  => 'textareaLang',
-					'title' => $this->l('Shopping cart text'),
-					'desc'  => $this->l('This text is displayed after the shopping cart block.'),
+						'type'  => 'bool',
+						'title' => $this->l('EU Payment API Mode'),
+						'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
+						'auto_value' => false,
+						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
+						'no_multishop_checkbox' => true,
 				    ),
 				),
 				'submit' => array(
@@ -659,6 +667,16 @@ class EU_Legal extends Module {
 				'info' => $this->l('General settings for your shop'),
 				'icon' => 'icon-cog',
 				'fields' => array(
+					 'SHOPPING_CART_TEXT_BEFORE' => array(
+						'type'  => 'textareaLang',
+						'title' => $this->l('Shopping cart text'),
+						'desc'  => $this->l('This text is displayed before the shopping cart block.'),
+				    ),
+				    'SHOPPING_CART_TEXT_AFTER' => array(
+						'type'  => 'textareaLang',
+						'title' => $this->l('Shopping cart text'),
+						'desc'  => $this->l('This text is displayed after the shopping cart block.'),
+				    ),
 					'LEGAL_SHIPTAXMETH' => array(
 						'type'  => 'bool',
 						'title' => $this->l('Shipping tax method'),
@@ -868,16 +886,30 @@ class EU_Legal extends Module {
 		// Generelle Einstellungen
 		if (Tools::isSubmit('submitSaveOptions')) {
 			
-			// Generelle Einstellungen
+			// Global Settings
+			if(!Configuration::updateGlobalValue('PS_EU_PAYMENT_API', (bool)Tools::getValue('PS_EU_PAYMENT_API')))
+				$this->_errors[] = $this->l('Could not update').': PS_EU_PAYMENT_API';
+			
+			$values = array(); 
+			
+			foreach($this->languages as $language) {
+				$values[$language['id_lang']] = Tools::getValue('SHOPPING_CART_TEXT_BEFORE_'.$language['id_lang']);
+			}
+			
+			if(!Configuration::updateValue('SHOPPING_CART_TEXT_BEFORE', $values))
+				$this->_errors[] = $this->l('Could not update').': SHOPPING_CART_TEXT_BEFORE';
+				
+			$values = array(); 
+			
+			foreach($this->languages as $language) {
+				$values[$language['id_lang']] = Tools::getValue('SHOPPING_CART_TEXT_AFTER_'.$language['id_lang']);
+			}
+			
+			if(!Configuration::updateValue('SHOPPING_CART_TEXT_AFTER', $values))
+				$this->_errors[] = $this->l('Could not update').': SHOPPING_CART_TEXT_AFTER';
 			
 			if(!Configuration::updateValue('LEGAL_SHIPTAXMETH', (bool)Tools::getValue('LEGAL_SHIPTAXMETH'))) 
 				$this->_errors[] = $this->l('Could not update').': LEGAL_SHIPTAXMETH';
-				
-			if(!Configuration::updateValue('LEGAL_CONDITIONS_INPUT', (int)Tools::getValue('LEGAL_CONDITIONS_INPUT'))) 
-				$this->_errors[] = $this->l('Could not update').': LEGAL_CONDITIONS_INPUT';
-			
-			if(!Configuration::updateValue('LEGAL_SHOW_WEIGHTS', (bool)Tools::getValue('LEGAL_SHOW_WEIGHTS'))) 
-				$this->_errors[] = $this->l('Could not update').': LEGAL_SHOW_WEIGHTS';
 			
 			// Produktverfügbarkeit
 			$values = array(); 
@@ -897,24 +929,9 @@ class EU_Legal extends Module {
 			
 			if(!Configuration::updateValue('LEGAL_DELIVERY_LATER', $values))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_DELIVERY_LATER';
-				
-			$values = array(); 
 			
-			foreach($this->languages as $language) {
-				$values[$language['id_lang']] = Tools::getValue('SHOPPING_CART_TEXT_BEFORE_'.$language['id_lang']);
-			}
-			
-			if(!Configuration::updateValue('SHOPPING_CART_TEXT_BEFORE', $values))
-				$this->_errors[] = $this->l('Could not update').': SHOPPING_CART_TEXT_BEFORE';
-				
-			$values = array(); 
-			
-			foreach($this->languages as $language) {
-				$values[$language['id_lang']] = Tools::getValue('SHOPPING_CART_TEXT_AFTER_'.$language['id_lang']);
-			}
-			
-			if(!Configuration::updateValue('SHOPPING_CART_TEXT_AFTER', $values))
-				$this->_errors[] = $this->l('Could not update').': SHOPPING_CART_TEXT_AFTER';
+			if(!Configuration::updateValue('LEGAL_SHOW_WEIGHTS', (bool)Tools::getValue('LEGAL_SHOW_WEIGHTS'))) 
+				$this->_errors[] = $this->l('Could not update').': LEGAL_SHOW_WEIGHTS';
 			
 			// CMS IDs festlegen
 			if(!Configuration::updateValue('LEGAL_CMS_ID_LEGAL', (int)Tools::getValue('LEGAL_CMS_ID_LEGAL')))
@@ -934,9 +951,6 @@ class EU_Legal extends Module {
 			
 			if(!Configuration::updateValue('LEGAL_CMS_ID_SHIPPING', (int)Tools::getValue('LEGAL_CMS_ID_SHIPPING')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_SHIPPING';
-			
-			if(!Configuration::updateGlobalValue('PS_EU_PAYMENT_API', (bool)Tools::getValue('PS_EU_PAYMENT_API')))
-				$this->_errors[] = $this->l('Could not update').': PS_EU_PAYMENT_API';
 			
 			if(count($this->_errors) <= 0)
 				return $this->displayConfirmation($this->l('Settings updated'));
@@ -1525,6 +1539,7 @@ class EU_Legal extends Module {
 		
 		if(Configuration::get('LEGAL_CSS'))
 			$this->context->controller->addCSS($this->_path.'views/css/front/legal.css');
+		
 		if(in_array($this->context->controller->php_self, array('index', 'product', 'category')))
 			$this->context->controller->addJS($this->_path.'views/js/legal.js');
 		
@@ -1657,37 +1672,46 @@ class EU_Legal extends Module {
 	* Theme helper methods
 	*
 	*******************************************************************************************************************/
+	
 	public function getCurrentThemeDir($theme_name = false) {
+		
 		if(!$theme_name)
 			$theme_name = Context::getContext()->theme->directory;
 		
 		// first look in theme directory
 		$path = _PS_ALL_THEMES_DIR_ . $theme_name . '/modules/' . $this->name . '/views/templates/themes/';
 		
-		if (is_dir($path))
+		if(is_dir($path))
 			return $path;
 		
 		// then look in module directory
 		$path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/';
 
-		if (is_dir($path))
+		if(is_dir($path))
 			return $path;
 		
-	    // maybe should return the path to native theme, tests needed
-	    return false;
+		// maybe should return the path to native theme, tests needed
+		return false;
+		
 	}
 	
 	public function getThemeOverride($template_file) {
-	    if(!Validate::isTplName($template_file)) {
-		throw new Exception(Tools::displayError('Invalid template name'));
-	    }
-	    
-	    $path = $this->getCurrentThemeDir();
-	    
-	    if ($path && file_exists($path . $template_file . '.tpl')) {
-		return $path . $template_file . '.tpl';
-	    }
-	    
-	    return false;
+		
+		if(!Validate::isTplName($template_file)) {
+			
+			throw new Exception(Tools::displayError('Invalid template name'));
+			
+		}
+		
+		$path = $this->getCurrentThemeDir();
+		
+		if($path && file_exists($path . $template_file . '.tpl')) {
+			
+			return $path . $template_file . '.tpl';
+			
+		}
+		
+		return false;
+		
 	}
 }

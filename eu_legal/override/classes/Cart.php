@@ -613,22 +613,32 @@ class Cart extends CartCore
 	
 	
 	public function containsVirtualProducts() {
+		
+		/*
+		* Legal 0.0.1 | 20140320
+		* ist mindestens ein virtuelles Produkt im Warenkorb?
+		*/
+		
 		if (!ProductDownload::isFeatureActive())
 			return false;
 		
 		if (!isset(self::$_isPartlyVirtualCart[$this->id])) {
+			
 			$products = $this->getProducts();
 			
 			if (!count($products))
 				return false;
-
+			
 			$is_partly_virtual = 0;
+			
 			foreach ($products as $product) {
 				if ($product['is_virtual']) {
 					$is_partly_virtual = 1;
 				}
 			}
+			
 			self::$_isPartlyVirtualCart[$this->id] = (int)$is_partly_virtual;
+			
 		}
 
 		return self::$_isPartlyVirtualCart[$this->id];
