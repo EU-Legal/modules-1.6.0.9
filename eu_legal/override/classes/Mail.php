@@ -28,11 +28,12 @@ class Mail extends MailCore
 		*/
 		
 		$additional_cms = array(
-			'conditions'    => 'PS_CONDITIONS_CMS_ID',    // GC German: AGB
-			'revocation'    => 'LEGAL_CMS_ID_REVOCATION',    // GC German: Widerrufsrecht
-			'privacy'       => 'LEGAL_CMS_ID_PRIVACY',       // GC German: Datenschutz
-			'environmental' => 'LEGAL_CMS_ID_ENVIRONMENTAL', // GC German: Umweltverordnung
-			'legal'         => 'LEGAL_CMS_ID_LEGAL' // GC German: Impressum
+			'conditions'    => 'PS_CONDITIONS_CMS_ID',    // Legal: AGB
+			'revocation'    => 'LEGAL_CMS_ID_REVOCATION',    // Legal: Widerrufsrecht
+			'revocationform'=> 'LEGAL_CMS_ID_REVOCATIONFORM',    // Legal: Widerrufsformular
+			'privacy'       => 'LEGAL_CMS_ID_PRIVACY',       // Legal: Datenschutz
+			'environmental' => 'LEGAL_CMS_ID_ENVIRONMENTAL', // Legal: Umweltverordnung
+			'legal'         => 'LEGAL_CMS_ID_LEGAL' // Legal: Impressum
 		);
 		
 		$type = Configuration::get('PS_MAIL_TYPE');
