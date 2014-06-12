@@ -61,7 +61,7 @@ var legal = {
 
 	    var val = $(this).val();
 	    if (val) {
-		paymentChosen = val;
+		legal.paymentChosen = val;
 		// Display form if there is one
 		legal.toggleChosenForm(true);
 
@@ -70,7 +70,7 @@ var legal = {
 		}
 	    }
 	    else {
-		paymentChosen = '';
+		legal.paymentChosen = '';
 	    }
 
 	    legal.updateConfirmButton();
@@ -97,6 +97,7 @@ var legal = {
     
     toggleChosenForm: function(show, undefined) {
 	if (this.paymentChosen) {
+	    this.setActiveState();
 	    var elt = $('#' + this.paymentChosen + '_form_container');
 	    
 	    if (elt.length && elt.attr('data-do-not-toggle') != 1) {
@@ -110,6 +111,14 @@ var legal = {
 		    elt.hide();
 		}
 	    }
+	}
+    },
+    
+    setActiveState: function() {
+	$('table.payment-summary tbody').removeClass('active');
+	
+	if (this.paymentChosen) {
+	    $('input:radio[name=payment_option][id=choose_' + this.paymentChosen + ']').parents('tbody:first').addClass('active');
 	}
     },
     
