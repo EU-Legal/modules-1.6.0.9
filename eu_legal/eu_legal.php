@@ -4,7 +4,7 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.4
+* @version       : 0.0.5
 * @date          : 2014 06 12
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.4';                
+		$this->version = '0.0.5';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -545,6 +545,7 @@ class EU_Legal extends Module {
 		
 		$html .= $this->displayFormSettings();
 		$html .= $this->displayFormModules();
+		$html .= $this->displayFormMails();
 		$html .= $this->displayFormTheme();
 		
 		return $html;
@@ -601,6 +602,30 @@ class EU_Legal extends Module {
 		
 		$this->getFormFieldsModules();
 		return $helper->generateForm($this->form_fields_modules);
+		
+	}
+	
+	// mail form
+	protected function displayFormMails() {
+		
+		$helper = new HelperForm();
+		
+		// Helper Form
+		$helper->languages = $this->languages;
+		$helper->default_form_language = $this->default_language_id;
+		$helper->submit_action = 'submitSaveMail';
+		
+		// Helper
+		$helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
+		$helper->table = 'configuration';
+		$helper->token = Tools::getAdminTokenLite('AdminModules');
+		$helper->module = $this;
+		$helper->title = null;
+		
+		$helper->fields_value['theme'] = '';
+		
+		$this->getFormFieldsMails();
+		return $helper->generateForm($this->form_fields_mails);
 		
 	}
 	
@@ -795,10 +820,54 @@ class EU_Legal extends Module {
 							'desc'  => $this->l('You have to install some required prestashop modules.'),
 						),
 					),
-					'submit' => array(
+					/*'submit' => array(
 						'title' => $this->l('Add Modules'),
 						'icon'  => 'process-icon-plus',
-					)
+					)*/
+				),
+			),
+		);
+		
+	}
+	
+	protected function getFormFieldsMails() {
+		
+		$templates = array();
+		
+		$files = scandir(_PS_ALL_THEMES_DIR_);
+		foreach($files as $file)
+			if(is_dir(_PS_ALL_THEMES_DIR_.'/'.$file) and !in_array($file, array('.', '..')))
+				$templates[] = array('id' => $file, 'name' => $file);
+		
+		$this->form_fields_mails = array(
+			array(
+				'form' => array(
+					'legend' => array(
+						'title' => $this->l('Email Settings'),
+						'icon' => 'icon-envelope-o'
+					),
+					'description' => $this->l('You can override your email templates with the email templates suppurtet by eu legal. Please be sure to backup your current email templates!'),
+					'input' => array(
+						array(
+							'type'    => 'select',
+							'name'    => 'theme',
+							'label'   => $this->l('Theme directory'),
+							'desc'    => $this->l('Select your theme directory from the list above.'),
+							'options' => array(
+								'default' => array(
+									'value' => '', 
+									'label' => $this->l('-- Select a Theme --'),
+								),
+								'query' => $templates,
+								'id'    => 'id',
+								'name'  => 'name',
+							),
+						),
+					),
+					'submit' => array(
+						'title' => $this->l('Add Email Templates'),
+						'icon'  => 'process-icon-plus',
+					),
 				),
 			),
 		);
@@ -883,7 +952,7 @@ class EU_Legal extends Module {
 		$this->_errors = array();
 		
 		// Generelle Einstellungen
-		if (Tools::isSubmit('submitSaveOptions')) {
+		if(Tools::isSubmit('submitSaveOptions')) {
 			
 			// Global Settings
 			if(!Configuration::updateGlobalValue('PS_EU_PAYMENT_API', (bool)Tools::getValue('PS_EU_PAYMENT_API')))
@@ -956,7 +1025,7 @@ class EU_Legal extends Module {
 			
 		}
 		
-		elseif (Tools::isSubmit('submitAddCMSPages')) {
+		elseif(Tools::isSubmit('submitAddCMSPages')) {
 			
 			// install all cms pages
 			foreach($this->cms_pages as $cms_page) {
@@ -1005,7 +1074,33 @@ class EU_Legal extends Module {
 			
 		}
 		
-		elseif (Tools::isSubmit('submitSaveTheme')) {
+		elseif(Tools::isSubmit('submitSaveMail')) {
+			
+			if(!$theme = Tools::getValue('theme'))
+				$this->_errors[] = $this->l('Please select a theme.');
+			else {
+				
+				if(!is_dir('themes/'.$theme.'/mails/de/') and !mkdir(_PS_ALL_THEMES_DIR_.$theme.'/mails/de/', 0755, true))
+					$this->_errors[] = $this->l('Could not create mail dir.');
+				else {
+					
+					try {
+						$this->rcopy('modules/'.$this->name.'/mails/de/', 'themes/'.$theme.'/', array('root' => _PS_ROOT_DIR_));
+					}
+					catch(Exception $e) {
+						$this->_errors[] = $this->l('Could not copy').': modules/'.$this->name.'/mails/de/';
+					}
+					
+				}
+				
+			}
+			
+			if(count($this->_errors) <= 0)
+				return $this->displayConfirmation($this->l('Mails saved'));
+			
+		}
+		
+		elseif(Tools::isSubmit('submitSaveTheme')) {
 			
 			if(!Configuration::updateValue('LEGAL_CSS', (bool)Tools::getValue('LEGAL_CSS')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CSS';

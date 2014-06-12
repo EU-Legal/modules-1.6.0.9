@@ -22,6 +22,7 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
+
 {capture name=path}{l s='Your shopping cart'}{/capture}
 
 <h1 id="cart_title" class="page-heading">{l s='Shopping-cart summary'}
