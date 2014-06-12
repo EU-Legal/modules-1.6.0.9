@@ -1,0 +1,17 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+Sie haben eine neue Nachricht zur folgenden Bestellung erhalten:
+{order_name}.
+
+KUNDE: {firstname} {lastname} ({email})
+
+{message} 		 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

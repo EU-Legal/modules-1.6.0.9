@@ -1,0 +1,20 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+Der Status Ihrer Bestellrücksendung Nr. {id_order_return} wurde
+geändert. Der neue Status ist: "{state_order_return}"
+
+IHRE NACHRICHT: {message} 		 
+
+Sie können diese Bestellung ansehen und Ihre Rechnung aus dem
+"Bestellverlauf" [{history_url}] Ihres Kontos
+downloaden, indem Sie auf unserer Webseite auf "Mein Konto"
+[{my_account_url}] klicken. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

@@ -1,0 +1,16 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+{employee} möchte Ihnen diese Diskussion weiterleiten. 
+
+<SPAN><STRONG>BISHERIGE BEITRÄGE:</STRONG></SPAN> {messages}
+
+{employee} hat "{comment}" hinzugefügt 		 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

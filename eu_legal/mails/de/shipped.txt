@@ -1,0 +1,21 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname},
+
+Vielen Dank für Ihre Bestellung bei {shop_name}! 
+
+Ihre Bestellung Nr. {order_name} wurde versendet.
+
+Sie erhalten in Kürze eine URL, auf die Sie klicken können, um den
+Lieferfortschritt Ihrer Sendung zu verfolgen. 		 
+
+Sie können nun Bestellungen auf unserer Webseite vornehmen: <a
+href="{shop_url}">{shop_name}</a>: {shop_name}
+[{shop_url}] 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

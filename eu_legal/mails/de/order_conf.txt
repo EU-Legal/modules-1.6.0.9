@@ -1,0 +1,81 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname},
+
+Vielen Dank für Ihre Bestellung bei {shop_name}! 
+
+BESTELLUNG: {order_name} vom {date}
+
+ZAHLUNG: {payment} 		 
+
+ARTIKELNR.
+
+PRODUKT
+
+STÜCKPREIS
+
+MENGE
+
+GESAMTPREIS
+
+{products} 
+
+{discounts} 
+
+PRODUKTE 
+
+{total_products} 
+
+RABATTE 
+
+{total_discounts} 
+
+GESCHENKVERPACKUNG 
+
+{total_wrapping} 
+
+VERSAND 
+
+{total_shipping} 
+
+STEUERN 
+
+{total_tax_paid} 
+
+GESAMT 
+
+{total_paid} 
+
+SPEDITEUR: {carrier}
+
+ZAHLUNG: {payment} 		 
+
+{delivery_block_html} 
+
+{invoice_block_html} 
+
+Sie können diese Bestellung ansehen und Ihre Rechnung aus dem
+"Bestellverlauf" [{history_url}] Ihres Kontos
+downloaden, indem Sie auf unserer Webseite auf "Mein Konto"
+[{my_account_url}] klicken. 
+
+Wenn Sie ein Gast-Konto haben, können Sie Ihre Bestellung im
+Abschnitt "Bestellverfolgung Gast"
+[{guest_tracking_url}?id_order={order_name}] auf
+unserer Webseite verfolgen. 
+
+{cms_conditions_txt}
+
+{cms_revocation_txt}
+
+{cms_privacy_txt}
+
+{cms_environmental_txt}
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+
+
