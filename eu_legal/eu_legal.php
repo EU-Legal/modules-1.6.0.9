@@ -4,7 +4,7 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.5
+* @version       : 0.0.6
 * @date          : 2014 06 12
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.5';                
+		$this->version = '0.0.6';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -131,10 +131,11 @@ class EU_Legal extends Module {
 			    'name' => 'display before Shopping cart block',
 			    'templates' => array()
 			),
-			'displayShoppingCartFooter' => array(
+			'displayAfterShoppingCartBlock' => array(
 			    'name' => 'display after Shopping cart block',
 			    'templates' => array()
 			),
+			
 			'displayShippingPrice' => array(
 			    'name' => 'display shipping price in cart',
 			    'templates' => array()
@@ -696,16 +697,16 @@ class EU_Legal extends Module {
 				'info' => $this->l('General settings for your shop'),
 				'icon' => 'icon-cog',
 				'fields' => array(
-					 'SHOPPING_CART_TEXT_BEFORE' => array(
+					'SHOPPING_CART_TEXT_BEFORE' => array(
 						'type'  => 'textareaLang',
 						'title' => $this->l('Shopping cart text 1'),
 						'desc'  => $this->l('This text is displayed before the shopping cart block.'),
-				    ),
-				    'SHOPPING_CART_TEXT_AFTER' => array(
+					),
+					'SHOPPING_CART_TEXT_AFTER' => array(
 						'type'  => 'textareaLang',
 						'title' => $this->l('Shopping cart text 2'),
 						'desc'  => $this->l('This text is displayed after the shopping cart block.'),
-				    ),
+				    	),
 					'LEGAL_SHIPTAXMETH' => array(
 						'type'  => 'bool',
 						'title' => $this->l('Shipping tax method'),
@@ -1719,7 +1720,7 @@ class EU_Legal extends Module {
 	    }
 	}
 	
-	public function hookDisplayShoppingCartFooter($params) {
+	public function hookDisplayAfterShoppingCartBlock($params) {
 	    $cart_text = Configuration::get('SHOPPING_CART_TEXT_AFTER', $this->context->language->id);
 
 	    if ($cart_text && Configuration::get('PS_EU_PAYMENT_API')) {
