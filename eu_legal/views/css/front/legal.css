@@ -150,3 +150,12 @@ ul.product_list.list .center-block .delivery-info {
 	display:block;
 	margin:6px 0 0
 }
+
+table#cart_summary {
+	border-width: 5px;
+}
+
+/* payment */
+table.payment-summary tbody.active td {
+	background-color: #E8E8E8;
+}
