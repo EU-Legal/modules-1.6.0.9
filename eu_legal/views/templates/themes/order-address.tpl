@@ -19,7 +19,7 @@
 				{if $delivery->id}
 					<div class="col-xs-12 col-sm-6">
 						<ul id="delivery_address" class="address item box">
-							<li><h3 class="page-subheading">{l s='Delivery address'}&nbsp;<span class="address_alias">({$delivery->alias})</span></h3></li>
+							<li><h3 class="page-subheading">{l s='Delivery address' mod='eu_legal'}&nbsp;<span class="address_alias">({$delivery->alias})</span></h3></li>
 							{if $delivery->company}<li class="address_company">{$delivery->company|escape:'html':'UTF-8'}</li>{/if}
 							<li class="address_name">{$delivery->firstname|escape:'html':'UTF-8'} {$delivery->lastname|escape:'html':'UTF-8'}</li>
 							<li class="address_address1">{$delivery->address1|escape:'html':'UTF-8'}</li>
@@ -32,7 +32,7 @@
 				{if $invoice->id}
 					<div class="col-xs-12 col-sm-6">
 						<ul id="invoice_address" class="address alternate_item box">
-							<li><h3 class="page-subheading">{l s='Invoice address'}&nbsp;<span class="address_alias">({$invoice->alias})</span></h3></li>
+							<li><h3 class="page-subheading">{l s='Invoice address' mod='eu_legal'}&nbsp;<span class="address_alias">({$invoice->alias})</span></h3></li>
 							{if $invoice->company}<li class="address_company">{$invoice->company|escape:'html':'UTF-8'}</li>{/if}
 							<li class="address_name">{$invoice->firstname|escape:'html':'UTF-8'} {$invoice->lastname|escape:'html':'UTF-8'}</li>
 							<li class="address_address1">{$invoice->address1|escape:'html':'UTF-8'}</li>
@@ -49,9 +49,9 @@
 							<li>
 								<h3 class="page-subheading">
 									{if $k eq 'invoice'}
-										{l s='Invoice address'}
+										{l s='Invoice address' mod='eu_legal'}
 									{elseif $k eq 'delivery' && $delivery->id}
-										{l s='Delivery address'}
+										{l s='Delivery address' mod='eu_legal'}
 									{/if}
 									{if isset($address.object.alias)}
 										<span class="address_alias">({$address.object.alias})</span>
@@ -76,7 +76,7 @@
 								{/foreach}
 							{/foreach}
 							<li class="address_update">
-								<a class="btn btn-default button button-small" href="{$link->getPageLink('address', true, null, "id_address={$address.object.id|intval}")|escape:'html':'UTF-8'}" title="{l s='Update'}"><span>{l s='Update'}<i class="icon-chevron-right right"></i></span></a>
+								<a class="btn btn-default button button-small" href="{$link->getPageLink('address', true, null, "id_address={$address.object.id|intval}")|escape:'html':'UTF-8'}" title="{l s='Update' mod='eu_legal'}"><span>{l s='Update' mod='eu_legal'}<i class="icon-chevron-right right"></i></span></a>
 							</li>
 						</ul>
 					</div>

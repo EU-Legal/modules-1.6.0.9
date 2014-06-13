@@ -30,9 +30,9 @@
 {/if}
 
 {if $PS_CATALOG_MODE}
-	{capture name=path}{l s='Your shopping cart'}{/capture}
-	<h2 id="cart_title">{l s='Your shopping cart'}</h2>
-	<p class="alert alert-warning">{l s='Your new order was not accepted.'}</p>
+	{capture name=path}{l s='Your shopping cart' mod='eu_legal'}{/capture}
+	<h2 id="cart_title">{l s='Your shopping cart' mod='eu_legal'}</h2>
+	<p class="alert alert-warning">{l s='Your new order was not accepted.' mod='eu_legal'}</p>
 {else}
 	{if $productNumber}
 		<!-- Shopping Cart -->
@@ -56,10 +56,10 @@
 		{include file="$legal_theme_dir./order-payment.tpl"}
 		<!-- END Payment -->
 	{else}
-		{capture name=path}{l s='Your shopping cart'}{/capture}
-		<h2 class="page-heading">{l s='Your shopping cart'}</h2>
+		{capture name=path}{l s='Your shopping cart' mod='eu_legal'}{/capture}
+		<h2 class="page-heading">{l s='Your shopping cart' mod='eu_legal'}</h2>
 		{include file="$tpl_dir./errors.tpl"}
-		<p class="alert alert-warning">{l s='Your shopping cart is empty.'}</p>
+		<p class="alert alert-warning">{l s='Your shopping cart is empty.' mod='eu_legal'}</p>
 	{/if}
 {strip}
 {addJsDef imgDir=$img_dir}
@@ -84,22 +84,22 @@
 {addJsDef addresses=array()}
 {addJsDef isVirtualCart=$isVirtualCart|intval}
 {addJsDef isPaymentStep=$isPaymentStep|intval}
-{addJsDefL name=txtWithTax}{l s='(tax incl.)' js=1}{/addJsDefL}
-{addJsDefL name=txtWithoutTax}{l s='(tax excl.)' js=1}{/addJsDefL}
-{addJsDefL name=txtHasBeenSelected}{l s='has been selected' js=1}{/addJsDefL}
-{addJsDefL name=txtNoCarrierIsSelected}{l s='No carrier has been selected' js=1}{/addJsDefL}
-{addJsDefL name=txtNoCarrierIsNeeded}{l s='No carrier is needed for this order' js=1}{/addJsDefL}
-{addJsDefL name=txtConditionsIsNotNeeded}{l s='You do not need to accept the Terms of Service for this order.' js=1}{/addJsDefL}
-{addJsDefL name=txtTOSIsAccepted}{l s='The service terms have been accepted' js=1}{/addJsDefL}
-{addJsDefL name=txtTOSIsNotAccepted}{l s='The service terms have not been accepted' js=1}{/addJsDefL}
-{addJsDefL name=txtThereis}{l s='There is' js=1}{/addJsDefL}
-{addJsDefL name=txtErrors}{l s='Error(s)' js=1}{/addJsDefL}
-{addJsDefL name=txtDeliveryAddress}{l s='Delivery address' js=1}{/addJsDefL}
-{addJsDefL name=txtInvoiceAddress}{l s='Invoice address' js=1}{/addJsDefL}
-{addJsDefL name=txtModifyMyAddress}{l s='Modify my address' js=1}{/addJsDefL}
-{addJsDefL name=txtInstantCheckout}{l s='Instant checkout' js=1}{/addJsDefL}
-{addJsDefL name=txtSelectAnAddressFirst}{l s='Please start by selecting an address.' js=1}{/addJsDefL}
-{addJsDefL name=txtFree}{l s='Free' js=1}{/addJsDefL}
+{addJsDefL name=txtWithTax}{l s='(tax incl.)' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtWithoutTax}{l s='(tax excl.)' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtHasBeenSelected}{l s='has been selected' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtNoCarrierIsSelected}{l s='No carrier has been selected' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtNoCarrierIsNeeded}{l s='No carrier is needed for this order' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtConditionsIsNotNeeded}{l s='You do not need to accept the Terms of Service for this order.' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtTOSIsAccepted}{l s='The service terms have been accepted' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtTOSIsNotAccepted}{l s='The service terms have not been accepted' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtThereis}{l s='There is' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtErrors}{l s='Error(s)' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtDeliveryAddress}{l s='Delivery address' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtInvoiceAddress}{l s='Invoice address' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtModifyMyAddress}{l s='Modify my address' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtInstantCheckout}{l s='Instant checkout' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtSelectAnAddressFirst}{l s='Please start by selecting an address.' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtFree}{l s='Free' mod='eu_legal' js=1}{/addJsDefL}
 
 {capture}{if $back}&mod={$back|urlencode}{/if}{/capture}
 {capture name=addressUrl}{$link->getPageLink('address', true, NULL, 'back='|cat:$back_order_page|cat:'?step=1'|cat:$smarty.capture.default)|addslashes}{/capture}
@@ -109,11 +109,11 @@
 {capture name=addressUrlAdd}{$smarty.capture.addressUrl|cat:'&id_address='}{/capture}
 {addJsDef addressUrlAdd=$smarty.capture.addressUrlAdd}
 {addJsDef opc=$opc|boolval}
-{capture}<h3 class="page-subheading">{l s='Your billing address' js=1}</h3>{/capture}
+{capture}<h3 class="page-subheading">{l s='Your billing address' mod='eu_legal' js=1}</h3>{/capture}
 {addJsDefL name=titleInvoice}{$smarty.capture.default|@addcslashes:'\''}{/addJsDefL}
-{capture}<h3 class="page-subheading">{l s='Your delivery address' js=1}</h3>{/capture}
+{capture}<h3 class="page-subheading">{l s='Your delivery address' mod='eu_legal' js=1}</h3>{/capture}
 {addJsDefL name=titleDelivery}{$smarty.capture.default|@addcslashes:'\''}{/addJsDefL}
-{capture}<a class="button button-small btn btn-default" href="{$smarty.capture.addressUrlAdd}" title="{l s='Update' js=1}"><span>{l s='Update' js=1}<i class="icon-chevron-right right"></i></span></a>{/capture}
+{capture}<a class="button button-small btn btn-default" href="{$smarty.capture.addressUrlAdd}" title="{l s='Update' mod='eu_legal' js=1}"><span>{l s='Update' mod='eu_legal' js=1}<i class="icon-chevron-right right"></i></span></a>{/capture}
 {addJsDefL name=liUpdate}{$smarty.capture.default|@addcslashes:'\''}{/addJsDefL}
 {/strip}
 {/if}

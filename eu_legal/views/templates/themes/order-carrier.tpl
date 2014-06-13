@@ -23,16 +23,16 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 {if !$opc}
-	{capture name=path}{l s='Shipping:'}{/capture}
+	{capture name=path}{l s='Shipping:' mod='eu_legal'}{/capture}
 	{assign var='current_step' value='shipping'}
 	<div id="carrier_area">
-		<h1 class="page-heading">{l s='Shipping:'}</h1>
+		<h1 class="page-heading">{l s='Shipping:' mod='eu_legal'}</h1>
 		{include file="$tpl_dir./order-steps.tpl"}
 		{include file="$tpl_dir./errors.tpl"}
 		<form id="form" action="{$link->getPageLink('order', true, NULL, "multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}" method="post" name="carrier_area">
 {else}
 	<div id="carrier_area" class="opc-main-block">
-		<h1 class="page-heading step-num"><span>2</span> {l s='Delivery methods'}</h1>
+		<h1 class="page-heading step-num"><span>2</span> {l s='Delivery methods' mod='eu_legal'}</h1>
 			<div id="opc_delivery_methods" class="opc-main-block">
 				<div id="opc_delivery_methods-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
@@ -46,13 +46,13 @@
 			{/if}
 		</div>
 		{if isset($isVirtualCart) && $isVirtualCart}
-			<p class="alert alert-warning">{l s='No carrier is needed for this order.'}</p>
+			<p class="alert alert-warning">{l s='No carrier is needed for this order.' mod='eu_legal'}</p>
 		{else}
 			{if $recyclablePackAllowed}
 				<div class="checkbox">
 					<label for="recyclable">
 						<input type="checkbox" name="recyclable" id="recyclable" value="1" {if $recyclable == 1}checked="checked"{/if} />
-						{l s='I would like to receive my order in recycled packaging.'}.
+						{l s='I would like to receive my order in recycled packaging.' mod='eu_legal'}.
 					</label>
 				</div>
 			{/if}
@@ -61,9 +61,9 @@
 					{foreach $delivery_option_list as $id_address => $option_list}
 						<p class="carrier_title">
 							{if isset($address_collection[$id_address])}
-								{l s='Choose a shipping option for this address:'} {$address_collection[$id_address]->alias}
+								{l s='Choose a shipping option for this address:' mod='eu_legal'} {$address_collection[$id_address]->alias}
 							{else}
-								{l s='Choose a shipping option'}
+								{l s='Choose a shipping option' mod='eu_legal'}
 							{/if}
 						</p>
 						<div class="delivery_options">
@@ -97,13 +97,13 @@
 													{if count($option_list) > 1}
 														{if $option.is_best_grade}
 															{if $option.is_best_price}
-																{l s='The best price and speed'}
+																{l s='The best price and speed' mod='eu_legal'}
 															{else}
-																{l s='The fastest'}
+																{l s='The fastest' mod='eu_legal'}
 															{/if}
 														{else}
 															{if $option.is_best_price}
-																{l s='The best price'}
+																{l s='The best price' mod='eu_legal'}
 															{/if}
 														{/if}
 													{/if}
@@ -113,15 +113,15 @@
 														{if $option.total_price_with_tax && !$option.is_free && (!isset($free_shipping) || (isset($free_shipping) && !$free_shipping))}
 															{if $use_taxes == 1}
 																{if $priceDisplay == 1}
-																	{convertPrice price=$option.total_price_without_tax} {l s='(tax excl.)'}
+																	{convertPrice price=$option.total_price_without_tax} {l s='(tax excl.)' mod='eu_legal'}
 																{else}
-																	{convertPrice price=$option.total_price_with_tax} {l s='(tax incl.)'}
+																	{convertPrice price=$option.total_price_with_tax} {l s='(tax incl.)' mod='eu_legal'}
 																{/if}
 															{else}
 																{convertPrice price=$option.total_price_without_tax}
 															{/if}
 														{else}
-															{l s='Free'}
+															{l s='Free' mod='eu_legal'}
 														{/if}
 													</div>
 												</td>
@@ -146,9 +146,9 @@
 														{if isset($carrier.instance->delay[$cookie->id_lang])}
 															<i class="icon-info-sign"></i>{$carrier.instance->delay[$cookie->id_lang]}
 															{if count($carrier.product_list) <= 1}
-																({l s='Product concerned:'}
+																({l s='Product concerned:' mod='eu_legal'}
 															{else}
-																({l s='Products concerned:'}
+																({l s='Products concerned:' mod='eu_legal'}
 															{/if}
 															{* This foreach is on one line, to avoid tabulation in the title attribute of the acronym *}
 															{foreach $carrier.product_list as $product}
@@ -187,15 +187,15 @@
 							<p class="alert alert-warning" id="noCarrierWarning">
 								{foreach $cart->getDeliveryAddressesWithoutCarriers(true) as $address}
 									{if empty($address->alias)}
-										{l s='No carriers available.'}
+										{l s='No carriers available.' mod='eu_legal'}
 									{else}
-										{l s='No carriers available for the address "%s".' sprintf=$address->alias}
+										{l s='No carriers available for the address "%s".' mod='eu_legal' sprintf=$address->alias}
 									{/if}
 									{if !$address@last}
 										<br />
 									{/if}
 								{foreachelse}
-									{l s='No carriers available.'}
+									{l s='No carriers available.' mod='eu_legal'}
 								{/foreach}
 							</p>
 						{/foreach}
@@ -203,13 +203,13 @@
 				</div> <!-- end delivery_options_address -->
 				<div id="extra_carrier" style="display: none;"></div>
 					{if $giftAllowed}
-						<p class="carrier_title">{l s='Gift'}</p>
+						<p class="carrier_title">{l s='Gift' mod='eu_legal'}</p>
 						<p class="checkbox gift">
 							<input type="checkbox" name="gift" id="gift" value="1" {if $cart->gift == 1}checked="checked"{/if} />
 							<label for="gift">
-								{l s='I would like my order to be gift wrapped.'}
+								{l s='I would like my order to be gift wrapped.' mod='eu_legal'}
 								{if $gift_wrapping_price > 0}
-									&nbsp;<i>({l s='Additional cost of'}
+									&nbsp;<i>({l s='Additional cost of' mod='eu_legal'}
 									<span class="price" id="gift-price">
 										{if $priceDisplay == 1}
 											{convertPrice price=$total_wrapping_tax_exc_cost}
@@ -219,9 +219,9 @@
 									</span>
 									{if $use_taxes}
 										{if $priceDisplay == 1}
-											{l s='(tax excl.)'}
+											{l s='(tax excl.)' mod='eu_legal'}
 										{else}
-											{l s='(tax incl.)'}
+											{l s='(tax incl.)' mod='eu_legal'}
 										{/if}
 									{/if})
 									</i>
@@ -229,27 +229,27 @@
 							</label>
 						</p>
 						<p id="gift_div">
-							<label for="gift_message">{l s='If you\'d like, you can add a note to the gift:'}</label>
+							<label for="gift_message">{l s='If you\'d like, you can add a note to the gift:' mod='eu_legal'}</label>
 							<textarea rows="2" cols="120" id="gift_message" class="form-control" name="gift_message">{$cart->gift_message|escape:'html':'UTF-8'}</textarea>
 						</p>
 					{/if}
 				{/if}
 			{/if}
 			{if $opc}
-				<p class="carrier_title">{l s='Leave a message'}</p>
+				<p class="carrier_title">{l s='Leave a message' mod='eu_legal'}</p>
 	 			<div>
-	 				<p>{l s='If you would like to add a comment about your order, please write it in the field below.'}</p>
+	 				<p>{l s='If you would like to add a comment about your order, please write it in the field below.' mod='eu_legal'}</p>
 	 				<textarea class="form-control" cols="120" rows="2" name="message" id="message">{strip}
 	 					{if isset($oldMessage)}{$oldMessage|escape:'html':'UTF-8'}{/if}
 	 				{/strip}</textarea>
 	 			</div>
 			{/if}
 			{if ( ! isset($PS_EU_PAYMENT_API) || ! $PS_EU_PAYMENT_API) && $conditions AND $cms_id}
-				<p class="carrier_title">{l s='Terms of service'}</p>
+				<p class="carrier_title">{l s='Terms of service' mod='eu_legal'}</p>
 				<p class="checkbox">
 					<input type="checkbox" name="cgv" id="cgv" value="1" {if $checkedTOS}checked="checked"{/if} />
-					<label for="cgv">{l s='I agree to the terms of service and will adhere to them unconditionally.'}</label>
-					<a href="{$link_conditions|escape:'html':'UTF-8'}" class="iframe" rel="nofollow">{l s='(Read the Terms of Service)'}</a>
+					<label for="cgv">{l s='I agree to the terms of service and will adhere to them unconditionally.' mod='eu_legal'}</label>
+					<a href="{$link_conditions|escape:'html':'UTF-8'}" class="iframe" rel="nofollow">{l s='(Read the Terms of Service)' mod='eu_legal'}</a>
 				</p>
 			{/if}
 		</div> <!-- end delivery_options_address -->
@@ -261,33 +261,33 @@
 						{if $back}
 							<a 
 								href="{$link->getPageLink('order', true, NULL, "step=1&back={$back}&multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}"
-								title="{l s='Previous'}"
+								title="{l s='Previous' mod='eu_legal'}"
 								class="button-exclusive btn btn-default">
 								<i class="icon-chevron-left"></i>
-								{l s='Continue shopping'}
+								{l s='Continue shopping' mod='eu_legal'}
 							</a>
 						{else}
 							<a
 								href="{$link->getPageLink('order', true, NULL, "step=1&multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}"
-								title="{l s='Previous'}"
+								title="{l s='Previous' mod='eu_legal'}"
 								class="button-exclusive btn btn-default">
 								<i class="icon-chevron-left"></i>
-								{l s='Continue shopping'}
+								{l s='Continue shopping' mod='eu_legal'}
 							</a>
 						{/if}
 					{else}
 						<a
 							href="{$link->getPageLink('order', true, NULL, "multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}"
-							title="{l s='Previous'}"
+							title="{l s='Previous' mod='eu_legal'}"
 							class="button-exclusive btn btn-default">
 							<i class="icon-chevron-left"></i>
-							{l s='Continue shopping'}
+							{l s='Continue shopping' mod='eu_legal'}
 						</a>
 					{/if}
 					{if isset($virtual_cart) && $virtual_cart || (isset($delivery_option_list) && !empty($delivery_option_list))}
 						<button type="submit" name="processCarrier" class="button btn btn-default standard-checkout button-medium">
 							<span>
-								{l s='Proceed to checkout'}
+								{l s='Proceed to checkout' mod='eu_legal'}
 								<i class="icon-chevron-right right"></i>
 							</span>
 						</button>
@@ -311,10 +311,10 @@
 		{addJsDef cart_gift=false}
 	{/if}
 	{addJsDef orderUrl=$link->getPageLink("order", true)|addslashes}
-	{addJsDefL name=txtProduct}{l s='Product' js=1}{/addJsDefL}
-	{addJsDefL name=txtProducts}{l s='Products' js=1}{/addJsDefL}
+	{addJsDefL name=txtProduct}{l s='Product' mod='eu_legal' js=1}{/addJsDefL}
+	{addJsDefL name=txtProducts}{l s='Products' mod='eu_legal' js=1}{/addJsDefL}
 {/if}
 {if $conditions}
-	{addJsDefL name=msg_order_carrier}{l s='You must agree to the terms of service before continuing.' js=1}{/addJsDefL}
+	{addJsDefL name=msg_order_carrier}{l s='You must agree to the terms of service before continuing.' mod='eu_legal' js=1}{/addJsDefL}
 {/if}
 {/strip}

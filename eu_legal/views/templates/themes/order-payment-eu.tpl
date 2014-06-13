@@ -14,7 +14,7 @@
 </style>
 
 <div class="panel">
-	<h2>{l s='Payment Options'}</h2>
+	<h2>{l s='Payment Options' mod='eu_legal'}</h2>
 	{if $payment_options}
 		<table class="table payment-summary">
 			{foreach from=$payment_options item=option key=payment_name}
@@ -30,10 +30,10 @@
 										<form action="">
 											<input type="hidden" name="payment_option" value="{$payment_name}">
 											<input type="hidden" name="step" value="3">
-											<button class="btn btn-default">{l s='Choose'}</button>
+											<button class="btn btn-default">{l s='Choose' mod='eu_legal'}</button>
 										</form>
 									{else}
-										<span class="label label-success">{l s='Chosen'}</span>
+										<span class="label label-success">{l s='Chosen' mod='eu_legal'}</span>
 									{/if}
 								</div>
 							{/if}
@@ -61,6 +61,6 @@
 			{/foreach}
 		</table>
 	{else}
-		<p class="alert alert-warning">{l s='No payment modules have been installed.'}</p>
+		<p class="alert alert-warning">{l s='No payment modules have been installed.' mod='eu_legal'}</p>
 	{/if}
 </div>

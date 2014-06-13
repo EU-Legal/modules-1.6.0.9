@@ -27,7 +27,7 @@ $_MODULE['<{cheque}prestashop>payment_return_61da27a5dd1f8ced46c77b0feaa9e159'] 
 $_MODULE['<{cheque}prestashop>payment_return_621455d95c5de701e05900a98aaa9c66'] = 'Zahlungsbetrag';
 $_MODULE['<{cheque}prestashop>payment_return_9b8f932b1412d130ece5045ecafd1b42'] = 'zahlbar an';
 $_MODULE['<{cheque}prestashop>payment_return_9a94f1d749a3de5d299674d6c685e416'] = 'E-Mail an';
-$_MODULE['<{cheque}prestashop>payment_return_e1c54fdba2544646684f41ace03b5fda'] = 'Bitte vergessen Sie nicht, Ihre Bestellnummer #%d mit anzugeben.';
+$_MODULE['<{cheque}prestashop>payment_return_e1c54fdba2544646684f41ace03b5fda'] = 'Bitte vergessen Sie nicht, Ihre Bestellnummer %s mit anzugeben.';
 $_MODULE['<{cheque}prestashop>payment_return_4761b03b53bc2b3bd948bb7443a26f31'] = 'Bitte vergessen Sie nicht, Ihre Bestellnummer %s mit anzugeben.';
 $_MODULE['<{cheque}prestashop>payment_return_610abe74e72f00210e3dcb91a0a3f717'] = 'Eine E-Mail mit diesen Informationen wurde Ihnen zugesandt.';
 $_MODULE['<{cheque}prestashop>payment_return_ffd2478830ca2f519f7fe7ee259d4b96'] = 'Sie erhalten Ihre Bestellung, sobald die Zahlung eingegangen ist.';
