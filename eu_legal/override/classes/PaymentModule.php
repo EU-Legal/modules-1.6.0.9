@@ -149,7 +149,7 @@ class PaymentModule extends PaymentModuleCore {
 
 					if ($compound_taxes) {
 						$order->total_shipping_tax_incl = (float)$this->context->cart->getPackageShippingCost((int)$id_carrier, true, null, $order->product_list);
-						$order->total_shipping_tax_excl = (float)Order::calculateCompundTaxPrice($order->total_shipping_tax_incl, $taxDetails);
+						$order->total_shipping_tax_excl = Tools::ps_round((float)Order::calculateCompundTaxPrice($order->total_shipping_tax_incl, $taxDetails), 2);
 					}
 					else {
 						$order->total_shipping_tax_excl = (float)$this->context->cart->getPackageShippingCost((int)$id_carrier, false, null, $order->product_list);
