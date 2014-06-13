@@ -117,7 +117,7 @@ class PayPal extends PaymentModule
 
 	public function install()
 	{
-		if (!parent::install() || !$this->registerHook('payment') || !$this->registerHook('paymentEU') || !$this->registerHook('paymentReturn') ||
+		if (!parent::install() || !$this->registerHook('payment') || !$this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn') ||
 		!$this->registerHook('shoppingCartExtra') || !$this->registerHook('backBeforePayment') || !$this->registerHook('rightColumn') ||
 		!$this->registerHook('cancelProduct') || !$this->registerHook('productFooter') || !$this->registerHook('header') ||
 		!$this->registerHook('adminOrder') || !$this->registerHook('backOfficeHeader'))
@@ -483,7 +483,7 @@ class PayPal extends PaymentModule
 		return null;
 	}
 	
-	public function hookPaymentEU($params) {
+	public function hookDisplayPaymentEU($params) {
 		if (!$this->active)
 			return;
 
