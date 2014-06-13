@@ -333,6 +333,11 @@ class EU_Legal extends Module {
 		// regenerate class index
 		Autoload::getInstance()->generateIndex();
 		
+		if ($return) {
+		    // Forbid autoupdate to prevent modified payment modules from being updated.
+		    Configuration::updateValue('PRESTASTORE_LIVE', 0);
+		}
+		
 		return (bool)$return;
 		
     }
