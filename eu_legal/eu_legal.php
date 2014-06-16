@@ -4,7 +4,7 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.6
+* @version       : 0.0.7
 * @date          : 2014 06 12
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.6';                
+		$this->version = '0.0.7';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -146,6 +146,7 @@ class EU_Legal extends Module {
 		$this->modules_not_compatible = array(
 			'bankwire',
 			'cheque',
+			'ganalytics',
 		);
 		
 		// modules must install 
@@ -156,8 +157,8 @@ class EU_Legal extends Module {
 		// supported modules, delivered with EU Legal
 		$this->modules = array(           
 			'gc_ganalytics' => 'Google Analytics',
-			'gc_newsletter' => 'Newsletter',
-			'gc_blockcart'  => 'Warenkorb Block',
+			/*'gc_newsletter' => 'Newsletter',
+			'gc_blockcart'  => 'Warenkorb Block',*/
 		);
 		
 		// available cms pages
@@ -766,7 +767,7 @@ class EU_Legal extends Module {
 				if(Module::isEnabled($module))
 					continue;
 				else
-					$modules_must_install .= $this->l('Must enable').': <b>'.$module.'</b><br>';
+					$modules_must_install .= $this->l('Please enable').': <b>'.$module.'</b><br>';
 			else
 				$modules_must_install .= $this->l('Please install and enable').': <b>'.$module.'</b><br>';
 			
@@ -799,7 +800,7 @@ class EU_Legal extends Module {
 						'icon' => 'icon-puzzle-piece'
 					),
 					'input' => array(
-						/*array(
+						array(
 							'type' => 'checkbox_module',
 							'label' => $this->l('Must have modules'),
 							'name' => 'modules',
@@ -810,29 +811,33 @@ class EU_Legal extends Module {
 								'name'     => 'title',
 								'disabled' => 'installed',
 							),
-						),*/
-						array(
-							'type'  => 'html',
-							'id'    => 'modules_not_compatible',
-							'label' => $this->l('Modules not compatible'),
-							'name'  => (!empty($modules_not_compatible) ? '<div class="alert alert-warning">'.$modules_not_compatible.'</div>' : '<div class="alert alert-success">'.$this->l('There are no modules not compatible to Legal installed.').'</div>'),
-							'desc'  => $this->l('You have to uninstall some modules not compatible with EU Legal.'),
-						),
-						array(
-							'type'  => 'html',
-							'id'    => 'modules_must_install',
-							'label' => $this->l('Must install modules'),
-							'name'  => (!empty($modules_must_install) ? '<div class="alert alert-warning">'.$modules_must_install.'</div>' : '<div class="alert alert-success">'.$this->l('You have installes and enabled all required modules.').'</div>'),
-							'desc'  => $this->l('You have to install some required prestashop modules.'),
 						),
 					),
-					/*'submit' => array(
+					'submit' => array(
 						'title' => $this->l('Add Modules'),
 						'icon'  => 'process-icon-plus',
-					)*/
+					)
 				),
 			),
 		);
+		
+		if($modules_not_compatible)
+			$this->form_fields_modules[0]['form']['input'][] = array(
+				'type'  => 'html',
+				'id'    => 'modules_not_compatible',
+				'label' => $this->l('Modules not compatible'),
+				'name'  => '<div class="alert alert-warning">'.$modules_not_compatible.'</div>',
+				'desc'  => $this->l('You have to uninstall some modules not compatible with EU Legal.'),
+			);
+		
+		if($modules_must_install)
+			$this->form_fields_modules[0]['form']['input'][] = array(
+				'type'  => 'html',
+				'id'    => 'modules_must_install',
+				'label' => $this->l('Must install modules'),
+				'name'  => '<div class="alert alert-warning">'.$modules_must_install.'</div>',
+				'desc'  => $this->l('You have to install some required prestashop modules.'),
+			);
 		
 	}
 	
