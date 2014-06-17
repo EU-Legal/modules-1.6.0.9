@@ -4,15 +4,15 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.7
-* @date          : 2014 06 12
+* @version       : 0.0.8
+* @date          : 2014 06 17
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
 * @license       : http://opensource.org/licenses/osl-3.0.php
 * @changelog     : see changelog.txt
-* @compatibility : PS >= 1.6.0.6
+* @compatibility : PS >= 1.6.0.7
 */
 
 // no direct access to this module
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.7';                
+		$this->version = '0.0.8';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -69,7 +69,7 @@ class EU_Legal extends Module {
 		
 		// module compliancy: only for exactly one PS version
 		$this->ps_versions_compliancy = array(                  
-			'min' => '1.6.0.6',
+			'min' => '1.6.0.7',
 			'max' => '1.6.0.7'
 		);
 	 	
@@ -144,8 +144,8 @@ class EU_Legal extends Module {
 		
 		// modules not compatible with EU Legal
 		$this->modules_not_compatible = array(
-			'bankwire',
-			'cheque',
+			/*'bankwire',
+			'cheque',*/
 			'ganalytics',
 		);
 		
@@ -157,6 +157,8 @@ class EU_Legal extends Module {
 		// supported modules, delivered with EU Legal
 		$this->modules = array(           
 			'gc_ganalytics' => 'Google Analytics',
+			'bankwire' => 'EU Bankwire',
+			'cheque' => 'EU Cheque',
 			/*'gc_newsletter' => 'Newsletter',
 			'gc_blockcart'  => 'Warenkorb Block',*/
 		);
