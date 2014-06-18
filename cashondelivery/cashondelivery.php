@@ -36,6 +36,7 @@ class CashOnDelivery extends PaymentModule
 		$this->version = '0.5';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 1;
+		$this->is_eu_compatible = 1;
 		
 		$this->currencies = false;
 
@@ -55,7 +56,7 @@ class CashOnDelivery extends PaymentModule
 
 	public function install()
 	{
-		if (!parent::install() OR !$this->registerHook('payment') OR ! $this->registerHook('paymentEU') OR !$this->registerHook('paymentReturn'))
+		if (!parent::install() OR !$this->registerHook('payment') OR ! $this->registerHook('displayPaymentEU') OR !$this->registerHook('paymentReturn'))
 			return false;
 		return true;
 	}
@@ -83,7 +84,7 @@ class CashOnDelivery extends PaymentModule
 		return $this->display(__FILE__, 'payment.tpl');
 	}
 	
-	public function hookPaymentEU($params)
+	public function hookDisplayPaymentEU($params)
 	{
 		if (!$this->active)
 			return ;
