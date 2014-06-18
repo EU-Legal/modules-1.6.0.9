@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>moneybookers</name>
+	<displayName><![CDATA[Moneybookers]]></displayName>
+	<version><![CDATA[1.6.7]]></version>
+	<description><![CDATA[Akzeptiert Zahlungen per Moneybookers]]></description>
+	<author><![CDATA[]]></author>
+	<tab><![CDATA[payments_gateways]]></tab>
+	<confirmUninstall><![CDATA[Sie sind sicher, dass Sie Ihre Daten löschen wollen?]]></confirmUninstall>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+	<is_eu_compatible>1</is_eu_compatible>
+</module>

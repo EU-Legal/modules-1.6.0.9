@@ -39,6 +39,8 @@ class MoneyBookers extends PaymentModule
 		$this->tab = 'payments_gateways';
 		$this->version = '1.6.7';
 		$this->module_key = '1d4c89650f76d274a85e5407cffe8403';
+		
+		$this->is_eu_compatible = 1;
 
 		parent::__construct();
 
@@ -126,7 +128,7 @@ class MoneyBookers extends PaymentModule
 	{
 		if (!parent::install() OR
 			!$this->registerHook('payment') OR
-			!$this->registerHook('paymentEU') OR
+			!$this->registerHook('displayPaymentEU') OR
 			!$this->registerHook('paymentReturn'))
 			return false;
 		Configuration::updateValue('MB_HIDE_LOGIN', 1);
@@ -679,7 +681,7 @@ class MoneyBookers extends PaymentModule
 		}
 	}
 	
-	public function hookPaymentEU($params) {
+	public function hookDisplayPaymentEU($params) {
 		global $smarty, $cookie;
 
 		/*if (!Configuration::get('MB_PARAMETERS') OR !Configuration::get('MB_PARAMETERS_2') OR (Configuration::get('MB_LOCAL_METHODS') == '' AND Configuration::get('MB_INTER_METHODS') == ''))
@@ -757,11 +759,11 @@ class MoneyBookers extends PaymentModule
 				$logos = ${$k . '_logos'};
 				
 				foreach ($method_list as $index => $method) {
-					$smarty->assign('code', $logos[$index]['code']);
+					$smarty->assign('code', $logos[$method]['code']);
 
 					array_push($result, array(
-						'cta_text' => $this->l('Pay using') . ' ' . $logos[$index]['name'],
-						'logo' => Media::getMediaPath(dirname(__FILE__) . '/logos/' . ($k == 'local' ? $k : 'international') . '/' . $logos[$index]['file'] . '.gif'),
+						'cta_text' => $this->l('Pay using') . ' ' . $logos[$method]['name'],
+						'logo' => Media::getMediaPath(dirname(__FILE__) . '/logos/' . ($k == 'local' ? $k : 'international') . '/' . $logos[$method]['file'] . '.gif'),
 						'form' => $smarty->fetch(dirname(__FILE__) . '/moneybookers_eu.tpl')
 					));
 				}
