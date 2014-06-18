@@ -3,6 +3,26 @@
 class Product extends ProductCore
 {
 	
+	/** @var string delivery_period */
+
+	/** @var string delivery_period */
+	
+
+	
+	
+	
+	
+	
+	/** @var string delivery_period */
+
+	/** @var string delivery_period */
+	
+
+	
+	
+	
+	
+	
 	public $delivery_now;
 	public $delivery_later;
 	

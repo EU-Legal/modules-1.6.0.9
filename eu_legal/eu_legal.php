@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.8
-* @date          : 2014 06 17
+* @version       : 0.0.9
+* @date          : 2014 06 18
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.8';                
+		$this->version = '0.0.9';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -1728,7 +1728,7 @@ class EU_Legal extends Module {
 	}
 	
 	public function hookDisplayAfterShoppingCartBlock($params) {
-	    $cart_text = Configuration::get('SHOPPING_CART_TEXT_AFTER', $this->context->language->id);
+	    $cart_text = Configuration::get('SHOPPING_CART_TEXT_AFTER', Context::getContext()->language->id);
 
 	    if ($cart_text && Configuration::get('PS_EU_PAYMENT_API')) {
 		$this->context->smarty->assign('cart_text', $cart_text);
@@ -1781,25 +1781,24 @@ class EU_Legal extends Module {
 	*******************************************************************************************************************/
 	
 	public function getCurrentThemeDir($theme_name = false) {
-		
-		if(!$theme_name)
-			$theme_name = Context::getContext()->theme->directory;
+		if(!$theme_name) {
+		    $theme_name = Context::getContext()->theme->directory;
+		}
 		
 		// first look in theme directory
 		$path = _PS_ALL_THEMES_DIR_ . $theme_name . '/modules/' . $this->name . '/views/templates/themes/';
 		
-		if(is_dir($path))
+		if (is_dir($path))
 			return $path;
 		
 		// then look in module directory
-		$path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/';
+		$path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme_name . '/';
 
-		if(is_dir($path))
+		if (is_dir($path))
 			return $path;
 		
-		// maybe should return the path to native theme, tests needed
-		return false;
-		
+	    // maybe should return the path to native theme, tests needed
+	    return false;
 	}
 	
 	public function getThemeOverride($template_file) {

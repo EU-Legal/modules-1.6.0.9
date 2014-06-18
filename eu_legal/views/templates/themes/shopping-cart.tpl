@@ -294,6 +294,9 @@
 						</td>
 					{/if}
 				</tr>
+				<tr>
+					<td colspan="{$col_span_subtotal + 2}">{hook h="displayAfterShoppingCartBlock"}</td>
+				</tr>
 			</tfoot>
 			<tbody>
 				{assign var='odd' value=0}

@@ -2,6 +2,8 @@
 
 class AuthController extends AuthControllerCore {
 	
+	
+	
 	protected function sendConfirmationMail(Customer $customer) {
 		
 		/*

@@ -3,6 +3,10 @@
 class Mail extends MailCore
 {
 
+	
+
+	
+
 	public static function Send(
 		$id_lang, 
 		$template, 

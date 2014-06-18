@@ -3,6 +3,10 @@
 class CMS extends CMSCore
 {
 
+	
+
+	
+
 	public static function getContentFromId($id_cms, $id_lang = null) {
 		
 		/*

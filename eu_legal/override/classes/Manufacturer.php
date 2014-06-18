@@ -3,6 +3,10 @@
 class Manufacturer extends ManufacturerCore
 {
 
+
+
+
+
 	public static function getProducts($id_manufacturer, $id_lang, $p, $n, $order_by = null, $order_way = null,
 		$get_total = false, $active = true, $active_category = true, Context $context = null)
 	{

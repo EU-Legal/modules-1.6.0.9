@@ -3,6 +3,10 @@
 class Category extends CategoryCore
 {
 	
+	
+	
+	
+	
 	public function getProducts($id_lang, $p, $n, $order_by = null, $order_way = null, $get_total = false, $active = true, $random = false, $random_number_products = 1, $check_access = true, Context $context = null)
 	{
 		if (!$context)

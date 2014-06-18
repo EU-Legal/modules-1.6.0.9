@@ -1,6 +1,5 @@
 <?php
 class OrderController extends OrderControllerCore {
-    
     public function initContent() {
 	ParentOrderController::initContent();
 
