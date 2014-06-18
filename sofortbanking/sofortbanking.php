@@ -56,6 +56,7 @@ class Sofortbanking extends PaymentModule
 		$this->module_key = '65af9f83d2ae6fbe6dbdaa91d21f952a';
 		$this->currencies = true;
 		$this->currencies_mode = 'radio';
+		$this->is_eu_compatible = 1;
 		parent::__construct();
 		$this->page = basename(__FILE__, '.php');
 		$this->displayName = $this->l('sofortbanking');
@@ -78,7 +79,7 @@ class Sofortbanking extends PaymentModule
 			|| !Configuration::updateValue('SOFORTBANKING_PROJECT_PW', '') || !Configuration::updateValue('SOFORTBANKING_NOTIFY_PW', '')
 			|| !Configuration::updateValue('SOFORTBANKING_BLOCK_LOGO', 'Y') || !Configuration::updateValue('SOFORTBANKING_CPROTECT', 'N')
 			|| !Configuration::updateValue('SOFORTBANKING_OS_ERROR', 8) || !Configuration::updateValue('SOFORTBANKING_OS_ACCEPTED', 2)
-			|| !Configuration::updateValue('SOFORTBANKING_REDIRECT', 'N') || !$this->registerHook('payment') || ! $this->registerHook('paymentEU')
+			|| !Configuration::updateValue('SOFORTBANKING_REDIRECT', 'N') || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU')
 			|| !$this->registerHook('paymentReturn') || !$this->registerHook('leftColumn'))
 			return false;
 		return true;
@@ -219,7 +220,7 @@ class Sofortbanking extends PaymentModule
 		return $this->display(__FILE__, 'views/templates/hook/payment.tpl');
 	}
 	
-	public function hookPaymentEU($params)
+	public function hookDisplayPaymentEU($params)
 	{
 		$cprotect = Configuration::get('SOFORTBANKING_CPROTECT');
 		$lang = Language::getIsoById((int)$params['cart']->id_lang);
@@ -239,7 +240,7 @@ class Sofortbanking extends PaymentModule
 		return array(
 			'cta_text' => $title,
 			'logo' => $logo,
-			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false)))
+			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true))
 		);
 	}
 
