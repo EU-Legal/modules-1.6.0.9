@@ -46,6 +46,7 @@ class BankWire extends PaymentModule
 		
 		$this->currencies = true;
 		$this->currencies_mode = 'checkbox';
+		$this->is_eu_compatible = 1;
 
 		$config = Configuration::getMultiple(array('BANK_WIRE_DETAILS', 'BANK_WIRE_OWNER', 'BANK_WIRE_ADDRESS'));
 		if (!empty($config['BANK_WIRE_OWNER']))
@@ -76,7 +77,7 @@ class BankWire extends PaymentModule
 
 	public function install()
 	{
-		if (!parent::install() || !$this->registerHook('displayPayment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('displayPaymentReturn'))
+		if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn'))
 			return false;
 		return true;
 	}
@@ -138,7 +139,7 @@ class BankWire extends PaymentModule
 		return $this->_html;
 	}
 
-	public function hookDisplayPayment($params)
+	public function hookPayment($params)
 	{
 		if (!$this->active)
 			return;
@@ -170,7 +171,7 @@ class BankWire extends PaymentModule
 		);
 	}
 
-	public function hookDisplayPaymentReturn($params)
+	public function hookPaymentReturn($params)
 	{
 		if (!$this->active)
 			return;
