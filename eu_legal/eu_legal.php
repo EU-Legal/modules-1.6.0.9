@@ -1785,6 +1785,8 @@ class EU_Legal extends Module {
 		    $theme_name = Context::getContext()->theme->directory;
 		}
 		
+		$default_theme = 'default-bootstrap';
+		
 		// first look in theme directory
 		$path = _PS_ALL_THEMES_DIR_ . $theme_name . '/modules/' . $this->name . '/views/templates/themes/';
 		
@@ -1794,8 +1796,12 @@ class EU_Legal extends Module {
 		// then look in module directory
 		$path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme_name . '/';
 
-		if (is_dir($path))
+		if (is_dir($path)) {
 			return $path;
+		}
+		else if ($theme_name != $default_theme) {
+			return $this->getCurrentThemeDir($default_name);
+		}
 		
 	    // maybe should return the path to native theme, tests needed
 	    return false;
