@@ -2,9 +2,10 @@
 
 global $_MODULE;
 $_MODULE = array();
+
 $_MODULE['<{bankwire}prestashop>bankwire_05adcee99142c1a60fb38bb1330bbbc1'] = 'Banküberweisung';
-$_MODULE['<{bankwire}prestashop>bankwire_a246a8e9907530c4c36b8b4c37bbc823'] = 'Zahlung per Banküberweisung annehmen.';
-$_MODULE['<{bankwire}prestashop>bankwire_cbe0a99684b145e77f3e14174ac212e3'] = 'Möchten Sie die Details wirklich löschen?';
+$_MODULE['<{bankwire}prestashop>bankwire_a246a8e9907530c4c36b8b4c37bbc823'] = 'Zahlung per Überweisung annehmen.';
+$_MODULE['<{bankwire}prestashop>bankwire_cbe0a99684b145e77f3e14174ac212e3'] = 'Möchten Sie die -details wirklich löschen?';
 $_MODULE['<{bankwire}prestashop>bankwire_0ea0227283d959415eda0cfa31d9f718'] = 'Kontoinhaber und Details müssen erfasst sein, um dieses Modul nutzen zu können.';
 $_MODULE['<{bankwire}prestashop>bankwire_a02758d758e8bec77a33d7f392eb3f8a'] = 'Keine Währung für dieses Modul eingestellt';
 $_MODULE['<{bankwire}prestashop>bankwire_bfa43217dfe8261ee7cb040339085677'] = 'Konto-Details erforderlich.';
@@ -29,11 +30,11 @@ $_MODULE['<{bankwire}prestashop>payment_execution_b28be4c423d93e02081f4e79fe2434
 $_MODULE['<{bankwire}prestashop>payment_execution_a7a08622ee5c8019b57354b99b7693b2'] = 'Wählen Sie eine der folgenden Möglichkeiten:';
 $_MODULE['<{bankwire}prestashop>payment_execution_a854d894458d66d92cabf0411c499ef4'] = 'Wir nehmen folgende Währung per Überweisung an:';
 $_MODULE['<{bankwire}prestashop>payment_execution_3dd021316505c0204989f984246c6ff1'] = 'Die Kontoinformationen zur Überweisung erhalten Sie auf der folgenden Seite.';
-$_MODULE['<{bankwire}prestashop>payment_execution_b939c4940deb5588f47ee8f12c61f11f'] = 'Bitte bestätigen Sie Ihre Bestellung durch Klicken auf \"KAUFEN\".';
+$_MODULE['<{bankwire}prestashop>payment_execution_b939c4940deb5588f47ee8f12c61f11f'] = 'Bitte bestätigen Sie Ihre Bestellung durch Klicken auf "KAUFEN".';
 $_MODULE['<{bankwire}prestashop>payment_execution_46b9e3665f187c739c55983f757ccda0'] = 'KAUFEN';
 $_MODULE['<{bankwire}prestashop>payment_execution_569fd05bdafa1712c4f6be5b153b8418'] = 'Andere Zahlungsmethoden';
 $_MODULE['<{bankwire}prestashop>infos_c1be305030739396775edaca9813f77d'] = 'Dieses Modul ermöglicht es Ihnen, Zahlungen per Banküberweisung zu erhalten.';
-$_MODULE['<{bankwire}prestashop>infos_60742d06006fde3043c77e6549d71a99'] = 'Wenn der Kunde Banküberweisung wählt, wird der Bestellstatus auf \"Warte auf Zahlung\" umgestellt.';
+$_MODULE['<{bankwire}prestashop>infos_60742d06006fde3043c77e6549d71a99'] = 'Wenn der Kunde Banküberweisung wählt, wird der Bestellstatus auf "Warte auf Zahlung" umgestellt.';
 $_MODULE['<{bankwire}prestashop>infos_5fb4bbf993c23848433caf58e6b2816d'] = 'Aus diesem Grund müssen Sie den Auftrag nach Zahlungseingang bestätigen.';
 $_MODULE['<{bankwire}prestashop>payment_return_88526efe38fd18179a127024aba8c1d7'] = 'Ihre Bestellung auf %s ist abgeschlossen.';
 $_MODULE['<{bankwire}prestashop>payment_return_1f8cdc30326f1f930b0c87b25fdac965'] = 'Bitte senden Sie uns eine Überweisung in Höhe von:';
@@ -50,3 +51,6 @@ $_MODULE['<{bankwire}prestashop>payment_return_dfe239de8c0b2453a8e8f7657a191d5d'
 $_MODULE['<{bankwire}prestashop>payment_return_d15feee53d81ea16269e54d4784fa123'] = 'Wir haben bei Ihrer Bestellung ein Problem festgestellt. Wenn Sie denken, dies sei ein Fehler, kontaktieren Sie bitte unseren';
 $_MODULE['<{bankwire}prestashop>payment_5e1695822fc5af98f6b749ea3cbc9b4c'] = 'Zahlung per Überweisung';
 $_MODULE['<{bankwire}prestashop>payment_4e1fb9f4b46556d64db55d50629ee301'] = '(Bearbeitung dauert länger)';
+
+
+return $_MODULE;
