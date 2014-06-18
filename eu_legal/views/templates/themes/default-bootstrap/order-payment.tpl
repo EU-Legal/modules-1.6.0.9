@@ -61,28 +61,28 @@
 					</div>
 					{if $opc}</div> <!-- end opc_payment_methods-content -->{/if}
 				{else}
-					<p class="alert alert-warning">{l s='No payment modules have been installed.'}</p>
+					<p class="alert alert-warning">{l s='No payment modules have been installed.' mod='eu_legal'}</p>
 				{/if}
 				
 				
 				{if isset($PS_EU_PAYMENT_API) and $PS_EU_PAYMENT_API}
 					<div {if !$opc}style="display:none" data-show-if-js{/if}>
-						<p class="carrier_title">{l s='Terms of service'}</p>
+						<p class="carrier_title">{l s='Terms of service' mod='eu_legal'}</p>
 						<p class="checkbox">
 							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
 							<input type="checkbox" name="cgv" id="cgv" value="1"/>
 							{/if}
 							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
-							   <label for="cgv">{l s='I agree to the' mod='eu_legal'}</label> <a href="{$PS_CONDITIONS_CMS_ID_LINK}" class="iframe">{l s='terms of service' mod='germanext'}</a>
+							   <label for="cgv">{l s='I agree to the' mod='eu_legal'}</label> <a href="{$PS_CONDITIONS_CMS_ID_LINK}" class="iframe">{l s='terms of service'  mod='eu_legal'}</a>
 							{/if}
 							{if isset($LEGAL_CMS_ID_REVOCATION) && $LEGAL_CMS_ID_REVOCATION}
-							   <label>{l s='and' mod='germanext'}</label> <a href="{$LEGAL_CMS_ID_REVOCATION_LINK}" class="iframe">{l s='terms of revocation' mod='germanext'}</a> {l s='adhire to them unconditionally.' mod='germanext'}
+							   <label>{l s='and'  mod='eu_legal'}</label> <a href="{$LEGAL_CMS_ID_REVOCATION_LINK}" class="iframe">{l s='terms of revocation' mod='eu_legal'}</a> {l s='adhire to them unconditionally.'  mod='eu_legal'}
 							{/if}
 						</p>
 					</div>
 					{if $is_partially_virtual}
 					<div {if !$opc}style="display:none" data-show-if-js{/if}>
-						<p class="carrier_title">{l s='Revocation'}</p>
+						<p class="carrier_title">{l s='Revocation' mod='eu_legal'}</p>
 						<p class="checkbox">
 							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
 							<input type="checkbox" name="revocation_terms_aggreed" id="revocation_terms_aggreed" value="1"/>
@@ -97,9 +97,9 @@
 				
 				{if !$opc}
 					<p class="cart_navigation clearfix">
-						<a href="{$link->getPageLink('order', true, NULL, "step=2")|escape:'html':'UTF-8'}" title="{l s='Previous'}" class="button-exclusive btn btn-default">
+						<a href="{$link->getPageLink('order', true, NULL, "step=2")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='eu_legal'}" class="button-exclusive btn btn-default">
 							<i class="icon-chevron-left"></i>
-							{l s='Continue shopping'}
+							{l s='Continue shopping' mod='eu_legal'}
 						</a>
 					</p>
 				{else}
