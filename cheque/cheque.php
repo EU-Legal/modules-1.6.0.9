@@ -46,6 +46,8 @@ class Cheque extends PaymentModule
 
 		$this->currencies = true;
 		$this->currencies_mode = 'checkbox';
+		
+		$this->is_eu_compatible = 1;
 
 		$config = Configuration::getMultiple(array('CHEQUE_NAME', 'CHEQUE_ADDRESS'));
 		if (isset($config['CHEQUE_NAME']))
