@@ -85,6 +85,8 @@ class PayPal extends PaymentModule
 
 		$this->currencies = true;
 		$this->currencies_mode = 'radio';
+		
+		$this->is_eu_compatible = 1;
 
 		parent::__construct();
 
@@ -625,7 +627,7 @@ class PayPal extends PaymentModule
 		/* Only execute if you use PayPal API for payment */
 		if (((int)Configuration::get('PAYPAL_PAYMENT_METHOD') != HSS) && $this->isPayPalAPIAvailable())
 		{
-			if ($params['module'] != $this->name || !$this->context->cookie->paypal_token || !$this->context->cookie->paypal_payer_id)
+			if ((isset($params['module']) && $params['module'] != $this->name) || !$this->context->cookie->paypal_token || !$this->context->cookie->paypal_payer_id)
 				return false;
 			Tools::redirect('modules/'.$this->name.'/express_checkout/submit.php?confirm=1&token='.$this->context->cookie->paypal_token.'&payerID='.$this->context->cookie->paypal_payer_id);
 		}
