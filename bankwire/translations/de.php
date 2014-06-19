@@ -5,7 +5,7 @@ $_MODULE = array();
 
 $_MODULE['<{bankwire}prestashop>bankwire_05adcee99142c1a60fb38bb1330bbbc1'] = 'Banküberweisung';
 $_MODULE['<{bankwire}prestashop>bankwire_a246a8e9907530c4c36b8b4c37bbc823'] = 'Zahlung per Überweisung annehmen.';
-$_MODULE['<{bankwire}prestashop>bankwire_cbe0a99684b145e77f3e14174ac212e3'] = 'Möchten Sie die -details wirklich löschen?';
+$_MODULE['<{bankwire}prestashop>bankwire_cbe0a99684b145e77f3e14174ac212e3'] = 'Möchten Sie die Details wirklich löschen?';
 $_MODULE['<{bankwire}prestashop>bankwire_0ea0227283d959415eda0cfa31d9f718'] = 'Kontoinhaber und Details müssen erfasst sein, um dieses Modul nutzen zu können.';
 $_MODULE['<{bankwire}prestashop>bankwire_a02758d758e8bec77a33d7f392eb3f8a'] = 'Keine Währung für dieses Modul eingestellt';
 $_MODULE['<{bankwire}prestashop>bankwire_bfa43217dfe8261ee7cb040339085677'] = 'Konto-Details erforderlich.';
@@ -43,7 +43,7 @@ $_MODULE['<{bankwire}prestashop>payment_return_5ca0b1b910f393ed1f9f6fa99e414255'
 $_MODULE['<{bankwire}prestashop>payment_return_d717aa33e18263b8405ba00e94353cdc'] = 'mit dieser Bankverbindung';
 $_MODULE['<{bankwire}prestashop>payment_return_984482eb9ff11e6310fef641d2268a2a'] = 'an diese Bank';
 $_MODULE['<{bankwire}prestashop>payment_return_63fb3f7c94ee5d8027bf599885de279d'] = 'Als Verwendungszweck der Überweisung geben Sie bitte die Bestellnummer %d  an.';
-$_MODULE['<{bankwire}prestashop>payment_return_1faa25b80a8d31e5ef25a78d3336606d'] = 'Geben Sie bitte Ihre Auftrags-Nr. %s als Verwendungszweck der Überweisung an.';
+$_MODULE['<{bankwire}prestashop>payment_return_1faa25b80a8d31e5ef25a78d3336606d'] = 'Geben Sie bitte Ihre Bestell-Nr. %s als Verwendungszweck der Überweisung an.';
 $_MODULE['<{bankwire}prestashop>payment_return_19c419a8a4f1cd621853376a930a2e24'] = 'Eine E-Mail wurde Ihnen mit diesen Informationen zugeschickt.';
 $_MODULE['<{bankwire}prestashop>payment_return_b9a1cae09e5754424e33764777cfcaa0'] = 'Ihre Bestellung wird versandt, sobald wir Ihre Überweisung erhalten haben.';
 $_MODULE['<{bankwire}prestashop>payment_return_ca7e41a658753c87973936d7ce2429a8'] = 'Bei Fragen oder für weitere Informationen kontaktieren Sie bitte unseren';
