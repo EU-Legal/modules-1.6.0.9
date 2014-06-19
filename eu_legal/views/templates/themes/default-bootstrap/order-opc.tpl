@@ -98,6 +98,8 @@
 {addJsDefL name=txtInstantCheckout}{l s='Instant checkout' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtSelectAnAddressFirst}{l s='Please start by selecting an address.' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtFree}{l s='Free' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
 
 {capture}{if $back}&mod={$back|urlencode}{/if}{/capture}
 {capture name=addressUrl}{$link->getPageLink('address', true, NULL, 'back='|cat:$back_order_page|cat:'?step=1'|cat:$smarty.capture.default)|addslashes}{/capture}
