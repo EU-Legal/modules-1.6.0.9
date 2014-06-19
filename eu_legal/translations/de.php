@@ -191,7 +191,7 @@ $_MODULE['<{eu_legal}prestashop>order-summary_ea9cf7e47ff33b2be14e6dd07cbcefc6']
 $_MODULE['<{eu_legal}prestashop>order-summary_9816a5054cd05761b6765fbef0062b29'] = 'Gesamt Gutscheine (o. MwSt.):';
 $_MODULE['<{eu_legal}prestashop>order-summary_ada0f55ef37f4928c5cd970f378c15e8'] = 'Gesamt Gutscheine';
 $_MODULE['<{eu_legal}prestashop>order-summary_19809527da8b7308e45e2dc6ac40cca9'] = 'Gesamt Gutscheine (inkl. MwSt.):';
-$_MODULE['<{eu_legal}prestashop>order-summary_598a4c4d56197cc1f6bca50b20aa484a'] = 'Gesamt Steuern';
+$_MODULE['<{eu_legal}prestashop>order-summary_598a4c4d56197cc1f6bca50b20aa484a'] = 'Gesamt MwSt.';
 $_MODULE['<{eu_legal}prestashop>order-summary_a82868319826fb092b73968e661b5b38'] = 'Gutscheine';
 $_MODULE['<{eu_legal}prestashop>order-summary_444bcb3a3fcf8389296c49467f27e1d6'] = 'ok';
 $_MODULE['<{eu_legal}prestashop>order-summary_f7b96335c6a33477579e43f3da368507'] = 'Profitieren Sie von unseren Angeboten:';
