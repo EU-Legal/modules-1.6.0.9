@@ -1,12 +1,6 @@
 <?php
-
 class AdminProductsController extends AdminProductsControllerCore
 {
-
-	
-
-	
-
 	public function initFormInformations($product)
 	{
 		if (!$this->default_form_language)

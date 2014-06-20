@@ -1,30 +1,8 @@
 <?php
-
 class Mail extends MailCore
 {
-
-	
-
-	
-
-	public static function Send(
-		$id_lang, 
-		$template, 
-		$subject, 
-		$template_vars, 
-		$to, 
-		$to_name = null, 
-		$from = null, 
-		$from_name = null, 
-		$file_attachment = null, 
-		$mode_smtp = null, 
-		$template_path = _PS_MAIL_DIR_, 
-		$die = false, 
-		$id_shop = null,
-		$bcc = null
-	)
-	{
-		
+	public static function Send($id_lang, $template, $subject, $template_vars, $to, $to_name = null, $from = null, $from_name = null, $file_attachment = null, $mode_smtp = null, $template_path = _PS_MAIL_DIR_, $die = false, $id_shop = null, $bcc = null)
+	{	
 		/*
 		* Legal 0.0.1 | 20140320
 		* CMS Seiten für alle Emails verfügbar machen, sowohl als HTML als auch als TXT
@@ -73,4 +51,3 @@ class Mail extends MailCore
 	}
 	
 }
-

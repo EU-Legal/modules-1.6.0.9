@@ -1,16 +1,8 @@
 <?php
-
 class Supplier extends SupplierCore
 {
-
-	
-
-	
-
-	public static function getProducts($id_supplier, $id_lang, $p, $n,
-		$order_by = null, $order_way = null, $get_total = false, $active = true, $active_category = true)
-	{
-		
+	public static function getProducts($id_supplier, $id_lang, $p, $n, $order_by = null, $order_way = null, $get_total = false, $active = true, $active_category = true)
+	{	
 		/*
 		* Legal 0.0.1 | 20140320
 		* Standard Lieferzeit aus Datenbank ermitteln pl.*
@@ -127,4 +119,3 @@ class Supplier extends SupplierCore
 	}
 	
 }
-

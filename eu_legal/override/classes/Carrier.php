@@ -1,12 +1,6 @@
 <?php
-
 class Carrier extends CarrierCore
 {
-	
-	
-	
-	
-	
 	public function getTaxesRate(Address $address)
 	{
 		
@@ -32,4 +26,3 @@ class Carrier extends CarrierCore
 	}
 	
 }
-

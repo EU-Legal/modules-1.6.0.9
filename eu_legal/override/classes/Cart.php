@@ -1,18 +1,6 @@
 <?php
-
 class Cart extends CartCore
 {
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
 	protected static $_isPartlyVirtualCart = array();
 	
 	public function getProducts($refresh = false, $id_product = false, $id_country = null)
@@ -1007,5 +995,5 @@ class Cart extends CartCore
 
 		return $shipping_cost;
 	}
+	
 }
-

@@ -1,5 +1,6 @@
 <?php
-class Module extends ModuleCore {
+class Module extends ModuleCore
+{
 	protected $is_eu_compatible = 0;
 	
 	public static function getModulesOnDisk($useConfig = false, $loggedOnAddons = false, $id_employee = false)
@@ -333,4 +334,5 @@ class Module extends ModuleCore {
 			@chmod($file, 0664);
 		}
 	}
+	
 }

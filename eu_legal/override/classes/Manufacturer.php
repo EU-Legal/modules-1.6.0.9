@@ -1,16 +1,8 @@
 <?php
-
 class Manufacturer extends ManufacturerCore
 {
-
-
-
-
-
-	public static function getProducts($id_manufacturer, $id_lang, $p, $n, $order_by = null, $order_way = null,
-		$get_total = false, $active = true, $active_category = true, Context $context = null)
+	public static function getProducts($id_manufacturer, $id_lang, $p, $n, $order_by = null, $order_way = null, $get_total = false, $active = true, $active_category = true, Context $context = null)
 	{
-		
 		/*
 		* Legal 0.0.1 | 20140320
 		* Standard Lieferzeit aus Datenbank ermitteln pl.*

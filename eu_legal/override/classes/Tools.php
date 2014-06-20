@@ -1,6 +1,8 @@
 <?php
-class Tools extends ToolsCore {
-    public static function displayPrice($price, $currency = null, $no_utf8 = false, Context $context = null) {
+class Tools extends ToolsCore
+{
+    public static function displayPrice($price, $currency = null, $no_utf8 = false, Context $context = null)
+    {
 	if (!is_numeric($price))
 	    return $price;
 	if (!$context)
@@ -87,4 +89,5 @@ class Tools extends ToolsCore {
 	
 	return $ret;
     }
+    
 }

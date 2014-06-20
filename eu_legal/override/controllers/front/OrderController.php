@@ -1,6 +1,8 @@
 <?php
-class OrderController extends OrderControllerCore {
-    public function initContent() {
+class OrderController extends OrderControllerCore
+{
+    public function initContent()
+    {
 	ParentOrderController::initContent();
 
 	if (Tools::isSubmit('ajax') && Tools::getValue('method') == 'updateExtraCarrier') {
@@ -139,4 +141,5 @@ class OrderController extends OrderControllerCore {
 	    'currencyBlank' => $this->context->currency->blank,
 	));
     }
+    
 }

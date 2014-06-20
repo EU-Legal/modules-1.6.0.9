@@ -1,7 +1,8 @@
 <?php
 class TaxCalculator extends TaxCalculatorCore
 {
-	public function getTaxData() {
+	public function getTaxData()
+	{
 		$prepared = array();
 		$id_lang = (int)Context::getContext()->language->id;
 
@@ -14,4 +15,5 @@ class TaxCalculator extends TaxCalculatorCore
 		
 		return $prepared;
 	}
+	
 }

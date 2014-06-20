@@ -1,9 +1,6 @@
 <?php
-class OrderOpcController extends OrderOpcControllerCore {
-    
-    
-    
-    
+class OrderOpcController extends OrderOpcControllerCore
+{
     public function init()
     {
 	    ParentOrderController::init();
@@ -464,4 +461,5 @@ class OrderOpcController extends OrderOpcControllerCore {
 		    return '<p class="warning">'.Tools::displayError('No payment method is available for use at this time. ').'</p>';
 	    return $return;
     }
+    
 }

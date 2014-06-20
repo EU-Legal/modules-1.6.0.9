@@ -1,34 +1,11 @@
 <?php
-
 class Product extends ProductCore
 {
-	
-	/** @var string delivery_period */
-
-	/** @var string delivery_period */
-	
-
-	
-	
-	
-	
-	
-	/** @var string delivery_period */
-
-	/** @var string delivery_period */
-	
-
-	
-	
-	
-	
-	
 	public $delivery_now;
 	public $delivery_later;
 	
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null)
 	{
-		
 		/*
 		* Legal 0.0.1 | 20140320
 		* Standard Lieferzeit hinzufügen
@@ -386,4 +363,3 @@ class Product extends ProductCore
 	}
 	
 }
-

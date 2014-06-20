@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.9
-* @date          : 2014 06 18
+* @version       : 0.0.10
+* @date          : 2014 06 20
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.9';                
+		$this->version = '0.0.10';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -520,7 +520,6 @@ class EU_Legal extends Module {
 	
 	// module configuration
 	public function getContent() {
-		
 		$html  = '';
 		
 		$this->context->controller->addCSS($this->_path.'views/css/admin/legal.css');
@@ -555,6 +554,7 @@ class EU_Legal extends Module {
 		$html .= $this->displayFormSettings();
 		$html .= $this->displayFormModules();
 		$html .= $this->displayFormMails();
+		$html .= $this->displayFormPdf();
 		$html .= $this->displayFormTheme();
 		
 		return $html;
@@ -635,6 +635,36 @@ class EU_Legal extends Module {
 		
 		$this->getFormFieldsMails();
 		return $helper->generateForm($this->form_fields_mails);
+		
+	}
+	
+	/*
+	 * Displays a form with PDF settings in BO
+	 *
+	 * @access protected
+	 *
+	 * @return string - form's html
+	 */
+	protected function displayFormPdf() {
+		
+		$helper = new HelperForm();
+		
+		// Helper Form
+		$helper->languages = $this->languages;
+		$helper->default_form_language = $this->default_language_id;
+		$helper->submit_action = 'submitSavePdf';
+		
+		// Helper
+		$helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
+		$helper->table = 'configuration';
+		$helper->token = Tools::getAdminTokenLite('AdminModules');
+		$helper->module = $this;
+		$helper->title = null;
+		
+		$helper->fields_value['theme'] = '';
+		
+		$this->getFormFieldsPdf();
+		return $helper->generateForm($this->form_fields_pdf);
 		
 	}
 	
@@ -845,12 +875,7 @@ class EU_Legal extends Module {
 	
 	protected function getFormFieldsMails() {
 		
-		$templates = array();
-		
-		$files = scandir(_PS_ALL_THEMES_DIR_);
-		foreach($files as $file)
-			if(is_dir(_PS_ALL_THEMES_DIR_.'/'.$file) and !in_array($file, array('.', '..')))
-				$templates[] = array('id' => $file, 'name' => $file);
+		$templates = $this->getThemeList();
 		
 		$this->form_fields_mails = array(
 			array(
@@ -879,6 +904,52 @@ class EU_Legal extends Module {
 					),
 					'submit' => array(
 						'title' => $this->l('Add Email Templates'),
+						'icon'  => 'process-icon-plus',
+					),
+				),
+			),
+		);
+		
+	}
+	
+	/*
+	 * Creates a form with PDF settings in BO
+	 *
+	 * @access protected
+	 *
+	 * @return void
+	 */
+	protected function getFormFieldsPdf() {
+		
+		$templates = $this->getThemeList();
+		
+		$this->form_fields_pdf = array(
+			array(
+				'form' => array(
+					'legend' => array(
+						'title' => $this->l('PDF Settings'),
+						'icon' => 'icon-file-pdf-o'
+					),
+					'description' => $this->l('You can override your pdf templates with the pdf templates suppurtet by eu legal. Please be sure to backup your current pdf templates!'),
+					'input' => array(
+						array(
+							'type'    => 'select',
+							'name'    => 'theme',
+							'label'   => $this->l('Theme directory'),
+							'desc'    => $this->l('Select your theme directory from the list above.'),
+							'options' => array(
+								'default' => array(
+									'value' => '', 
+									'label' => $this->l('-- Select a Theme --'),
+								),
+								'query' => $templates,
+								'id'    => 'id',
+								'name'  => 'name',
+							),
+						),
+					),
+					'submit' => array(
+						'title' => $this->l('Add PDF Templates'),
 						'icon'  => 'process-icon-plus',
 					),
 				),
@@ -1113,6 +1184,32 @@ class EU_Legal extends Module {
 			
 		}
 		
+		elseif(Tools::isSubmit('submitSavePdf')) {
+			
+			if(!$theme = Tools::getValue('theme'))
+				$this->_errors[] = $this->l('Please select a theme.');
+			else {
+				
+				if(!is_dir(_PS_ALL_THEMES_DIR_.$theme.'/pdf/') and !mkdir(_PS_ALL_THEMES_DIR_.$theme.'/pdf/', 0755, true))
+					$this->_errors[] = $this->l('Could not create pdf dir.');
+				else {
+					
+					try {
+						$this->rcopy('modules/'.$this->name.'/pdf/', 'themes/'.$theme.'/pdf/', array('root' => _PS_ROOT_DIR_));
+					}
+					catch(Exception $e) {
+						$this->_errors[] = $this->l('Could not copy').': modules/'.$this->name.'/pdf/';
+					}
+					
+				}
+				
+			}
+			
+			if(count($this->_errors) <= 0)
+				return $this->displayConfirmation($this->l('PDF files were saved'));
+			
+		}
+		
 		elseif(Tools::isSubmit('submitSaveTheme')) {
 			
 			if(!Configuration::updateValue('LEGAL_CSS', (bool)Tools::getValue('LEGAL_CSS')))
@@ -1135,6 +1232,24 @@ class EU_Legal extends Module {
 	* Helper Functions
 	*
 	*******************************************************************************************************************/
+	
+	/*
+	 * Returns a list of available themes as an array
+	 *
+	 * @access private
+	 *
+	 * @return mixed - array of themes or boolean false if no themes were detected
+	 */
+	private function getThemeList() {
+	    $templates = array();
+	    
+	    $files = scandir(_PS_ALL_THEMES_DIR_);
+	    foreach($files as $file)
+		    if(is_dir(_PS_ALL_THEMES_DIR_.'/'.$file) and !in_array($file, array('.', '..')))
+			    $templates[] = array('id' => $file, 'name' => $file);
+			    
+	    return sizeof($templates) ? $templates : false;
+	}
 	
 	private function searchHooksInThemes() {
 		
@@ -1796,11 +1911,10 @@ class EU_Legal extends Module {
 		// then look in module directory
 		$path = _PS_MODULE_DIR_ . $this->name . '/views/templates/themes/' . $theme_name . '/';
 
-		if (is_dir($path)) {
+		if (is_dir($path))
 			return $path;
-		}
 		else if ($theme_name != $default_theme) {
-			return $this->getCurrentThemeDir($default_name);
+		    return $this->getCurrentThemeDir($default_theme);
 		}
 		
 	    // maybe should return the path to native theme, tests needed

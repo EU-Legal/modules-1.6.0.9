@@ -1,6 +1,6 @@
 <?php
-class Order extends OrderCore {
-	
+class Order extends OrderCore
+{
 	public function getOrderTaxes($products = false, $slip = false) {
 		if ( ! $products) {
 			$products = ($slip && Validate::isLoadedObject($slip)) ? $slip->getProducts() : $this->getProducts();
@@ -188,4 +188,5 @@ class Order extends OrderCore {
 
 		return $order_taxes;
 	}
+	
 }

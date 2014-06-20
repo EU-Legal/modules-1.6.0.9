@@ -1,9 +1,6 @@
 <?php
-
-class AuthController extends AuthControllerCore {
-	
-	
-	
+class AuthController extends AuthControllerCore
+{
 	protected function sendConfirmationMail(Customer $customer) {
 		
 		/*
@@ -29,5 +26,3 @@ class AuthController extends AuthControllerCore {
 	}
 	
 }
-
-

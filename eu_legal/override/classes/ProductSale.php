@@ -1,14 +1,6 @@
 <?php
-
 class ProductSale extends ProductSaleCore
 {
-	
-
-	
-	
-
-	
-	
 	public static function getBestSales($id_lang, $page_number = 0, $nb_products = 10, $order_by = null, $order_way = null)
 	{
 		
@@ -158,4 +150,3 @@ class ProductSale extends ProductSaleCore
 	}
 	
 }
-

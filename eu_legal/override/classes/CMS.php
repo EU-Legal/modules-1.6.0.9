@@ -1,14 +1,8 @@
 <?php
-
 class CMS extends CMSCore
 {
-
-	
-
-	
-
-	public static function getContentFromId($id_cms, $id_lang = null) {
-		
+	public static function getContentFromId($id_cms, $id_lang = null)
+	{
 		/*
 		* Legal 0.0.1 | 20140320
 		* Eigene Funktion: Liefert Inhalt anhand CMS ID
@@ -31,4 +25,3 @@ class CMS extends CMSCore
 	}
 	
 }
-

@@ -1,15 +1,8 @@
 <?php
-
 class OrderDetail extends OrderDetailCore
 {
-	
-	
-	
-	
-	
 	public function saveTaxCalculator(Order $order, $replace = false)
 	{
-		
 		/*
 		* Legal 0.0.1 | 20140320
 		* An der stelle darf nicht gerundet werden -> Rundungsproblem bei großen Stückzahlen

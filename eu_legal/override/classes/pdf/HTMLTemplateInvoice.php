@@ -35,5 +35,5 @@ class HTMLTemplateInvoice extends HTMLTemplateInvoiceCore
 
 		return $this->smarty->fetch($this->getTemplate('invoice.tax-tab'));
 	}
+	
 }
-
