@@ -87,7 +87,7 @@
 							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
 							<input type="checkbox" name="revocation_terms_aggreed" id="revocation_terms_aggreed" value="1"/>
 							{/if}
-							<label for="cgv">{l s='I agree that the digital products in my cart can not be returned or refunded due to the nature of such products.' mod='eu_legal'}</label>
+							<label for="revocation_terms_aggreed">{l s='I agree that the digital products in my cart can not be returned or refunded due to the nature of such products.' mod='eu_legal'}</label>
 						</p>
 					</div>
 					{/if}
