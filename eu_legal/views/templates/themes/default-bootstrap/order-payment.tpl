@@ -27,12 +27,12 @@
 	{addJsDef currencyRate=$currencyRate|floatval}
 	{addJsDef currencyFormat=$currencyFormat|intval}
 	{addJsDef currencyBlank=$currencyBlank|intval}
-	{addJsDefL name=txtProduct}{l s='product' js=1}{/addJsDefL}
-	{addJsDefL name=txtProducts}{l s='products' js=1}{/addJsDefL}
-	{capture name=path}{l s='Your payment method'}{/capture}
-	<h1 class="page-heading">{l s='Please choose your payment method'}</h1>
+	{addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
+	{addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
+	{capture name=path}{l s='Your payment method' mod='eu_legal'}{/capture}
+	<h1 class="page-heading">{l s='Please choose your payment method' mod='eu_legal'}</h1>
 {else}
-	<h1 class="page-heading step-num"><span>3</span> {l s='Please choose your payment method'}</h1>
+	<h1 class="page-heading step-num"><span>3</span> {l s='Please choose your payment method' mod='eu_legal'}</h1>
 {/if}
 
 {addJsDef PS_EU_PAYMENT_API=isset($PS_EU_PAYMENT_API) && $PS_EU_PAYMENT_API}
@@ -66,6 +66,9 @@
 				
 				
 				{if isset($PS_EU_PAYMENT_API) and $PS_EU_PAYMENT_API}
+					{if ! $opc}
+					{include file="$legal_theme_dir/order-address.tpl"}
+					{/if}
 					<div {if !$opc}style="display:none" data-show-if-js{/if}>
 						<p class="carrier_title">{l s='Terms of service' mod='eu_legal'}</p>
 						<p class="checkbox">

@@ -30,10 +30,10 @@
 										<form action="">
 											<input type="hidden" name="payment_option" value="{$payment_name}">
 											<input type="hidden" name="step" value="3">
-											<button class="btn btn-default">{l s='Choose'}</button>
+											<button class="btn btn-default">{l s='Choose' mod='eu_legal'}</button>
 										</form>
 									{else}
-										<span class="label label-success">{l s='Chosen'}</span>
+										<span class="label label-success">{l s='Chosen' mod='eu_legal'}</span>
 									{/if}
 								</div>
 							{/if}
