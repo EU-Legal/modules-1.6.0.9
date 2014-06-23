@@ -9,6 +9,7 @@ $_MODULE['<{sofortbanking}prestashop>sofortbanking_75e74dadd42d76ea206adda30801f
 $_MODULE['<{sofortbanking}prestashop>sofortbanking_34c32843d334dd45babe605fa104f4fe'] = 'SOFORT Überweisung \"project id\" wird benötigt.';
 $_MODULE['<{sofortbanking}prestashop>sofortbanking_03238c51b2998ee34fd259f7cdd663d0'] = 'SOFORT Überweisung \"project password\" wird benötigt.';
 $_MODULE['<{sofortbanking}prestashop>sofortbanking_c888438d14855d7d96a2724ee9c306bd'] = 'Einstellungen gespeichert';
+$_MODULE['<{sofortbanking}prestashop>sofortbanking_a0aeadb20782e6a291c33715a07c5839'] = 'Zahlung per SOFORT Überweisung';
 $_MODULE['<{sofortbanking}prestashop>sofortbanking_170149a92b2369179bf59bbd535d2f03'] = 'Warenkorb-ID:';
 $_MODULE['<{sofortbanking}prestashop>validation_430b932b3ed2561e26c45227f74cf77d'] = 'Fatal Error (1)';
 $_MODULE['<{sofortbanking}prestashop>validation_963d0dffd2ef75d529e90f4c1e267274'] = 'Fatal Error (2)';
