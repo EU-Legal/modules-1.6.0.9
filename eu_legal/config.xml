@@ -2,7 +2,7 @@
 <module>
 	<name>eu_legal</name>
 	<displayName><![CDATA[EU Legal]]></displayName>
-	<version><![CDATA[0.0.3]]></version>
+	<version><![CDATA[0.0.10]]></version>
 	<description><![CDATA[Better security for european merchants.]]></description>
 	<author><![CDATA[EU Legal Team]]></author>
 	<tab><![CDATA[administration]]></tab>
