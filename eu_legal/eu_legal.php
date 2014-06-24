@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.10
-* @date          : 2014 06 20
+* @version       : 0.0.11
+* @date          : 2014 06 24
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.10';                
+		$this->version = '0.0.11';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -1094,6 +1094,9 @@ class EU_Legal extends Module {
 			
 			if(!Configuration::updateValue('LEGAL_CMS_ID_REVOCATION', (int)Tools::getValue('LEGAL_CMS_ID_REVOCATION')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_REVOCATION';
+			
+			if(!Configuration::updateValue('LEGAL_CMS_ID_REVOCATIONFORM', (int)Tools::getValue('LEGAL_CMS_ID_REVOCATIONFORM')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_REVOCATIONFORM';
 			
 			if(!Configuration::updateValue('LEGAL_CMS_ID_PRIVACY', (int)Tools::getValue('LEGAL_CMS_ID_PRIVACY')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_PRIVACY';
