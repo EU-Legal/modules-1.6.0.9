@@ -36,6 +36,7 @@
 {else}
 	{if $productNumber}
 		<!-- Shopping Cart -->
+		{* eu-legal: hide if EU API enabled *}
 		{if !isset($PS_EU_PAYMENT_API) or !$PS_EU_PAYMENT_API}
 		{include file="$tpl_dir./shopping-cart.tpl"}
 		{/if}
@@ -57,6 +58,7 @@
 	{else}
 		{capture name=path}{l s='Your shopping cart' mod='eu_legal'}{/capture}
 		<h2 class="page-heading">{l s='Your shopping cart' mod='eu_legal'}</h2>
+		{include file="$tpl_dir./errors.tpl"}
 		<p class="alert alert-warning">{l s='Your shopping cart is empty.' mod='eu_legal'}</p>
 	{/if}
 {strip}
@@ -90,8 +92,8 @@
 {addJsDefL name=txtConditionsIsNotNeeded}{l s='You do not need to accept the Terms of Service for this order.' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtTOSIsAccepted}{l s='The service terms have been accepted' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtTOSIsNotAccepted}{l s='The service terms have not been accepted' mod='eu_legal' js=1}{/addJsDefL}
-{addJsDefL name=txtThereis}{l s='There is' js=1}{/addJsDefL}
-{addJsDefL name=txtErrors}{l s='Error(s)' js=1}{/addJsDefL}
+{addJsDefL name=txtThereis}{l s='There is' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtErrors}{l s='Error(s)' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtDeliveryAddress}{l s='Delivery address' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtInvoiceAddress}{l s='Invoice address' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtModifyMyAddress}{l s='Modify my address' mod='eu_legal' js=1}{/addJsDefL}
