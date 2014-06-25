@@ -1781,14 +1781,28 @@ class EU_Legal extends Module {
 		if(!isset($params['product']))
 			return;
 		
-		$this->smarty->assign(array(
-			'is_object'             => (bool)($params['product'] instanceof Product),
-			'product'               => $params['product'],
-			'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
-			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
-		));
+		if($params['product'] instanceof Product) {
+			$id_product = (int)$params['product']->id;
+		}
+		else {
+			$id_product = (int)$params['product']['id_product'];
+		}
 		
-		return $this->display(__FILE__, 'displayProductDeliveryTime.tpl');
+		$cache_key = $this->name.'_'.$id_product;
+		
+		if (!$this->isCached('displayProductDeliveryTime.tpl', $this->getCacheId($cache_key)))
+		{
+		
+			$this->smarty->assign(array(
+				'is_object'             => (bool)($params['product'] instanceof Product),
+				'product'               => $params['product'],
+				'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
+				'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
+			));
+		
+		}
+		
+		return $this->display(__FILE__, 'displayProductDeliveryTime.tpl', $this->getCacheId($cache_key));
 		
 	}
 	
@@ -1797,39 +1811,54 @@ class EU_Legal extends Module {
 		if(!isset($params['product']))
 			return;
 		
-		$weight = 0;
-		$combination_weight = 0;
-		
 		if($params['product'] instanceof Product) {
-			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']->id);
-			$weight = (float)$params['product']->weight;
+			$id_product = (int)$params['product']->id;
 		}
 		else {
-			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']['id_product']);
-			$weight = (float)$params['product']['weight'];
+			$id_product = (int)$params['product']['id_product'];
 		}
 		
-		if($id_product_attribute) {
-			$combination = new Combination($id_product_attribute);
-			$combination_weight = $combination->weight;
-		}
+		$cache_key = $this->name.'_'.$params['type'].'_'.$id_product;
 		
-		$this->smarty->assign(array(
-			'is_object'             => (bool)($params['product'] instanceof Product),
-			'product'               => $params['product'],
-			'weight'                => $weight,
-			'combination_weight'    => $combination_weight,
-			'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
-			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
-			'php_self'              => $this->context->controller->php_self,
-			'tax_enabled'           => Configuration::get('PS_TAX'),  
-			'cms_id_shipping'       => Configuration::get('LEGAL_CMS_ID_SHIPPING'),
-			'template_type'         => $params['type'],
-			'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
-			'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
-		));
+		if (!$this->isCached('displayProductPriceBlock.tpl', $this->getCacheId($cache_key)))
+		{
+			
+			$weight = 0;
+			$combination_weight = 0;
+			$id_product = 0;
+			
+			if($params['product'] instanceof Product) {
+				$id_product_attribute = Product::getDefaultAttribute($id_product);
+				$weight = (float)$params['product']->weight;
+			}
+			else {
+				$id_product_attribute = Product::getDefaultAttribute($id_product);
+				$weight = (float)$params['product']['weight'];
+			}
+			
+			if($id_product_attribute) {
+				$combination = new Combination($id_product_attribute);
+				$combination_weight = $combination->weight;
+			}
+			
+			$this->smarty->assign(array(
+				'is_object'             => (bool)($params['product'] instanceof Product),
+				'product'               => $params['product'],
+				'weight'                => $weight,
+				'combination_weight'    => $combination_weight,
+				'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
+				'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
+				'php_self'              => $this->context->controller->php_self,
+				'tax_enabled'           => Configuration::get('PS_TAX'),  
+				'cms_id_shipping'       => Configuration::get('LEGAL_CMS_ID_SHIPPING'),
+				'template_type'         => $params['type'],
+				'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
+				'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
+			));
 		
-		return $this->display(__FILE__, 'displayProductPriceBlock.tpl');
+		}	
+		
+		return $this->display(__FILE__, 'displayProductPriceBlock.tpl', $this->getCacheId($cache_key));
 		
 	}
 	
