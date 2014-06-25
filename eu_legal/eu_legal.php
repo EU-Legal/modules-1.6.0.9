@@ -1806,7 +1806,7 @@ class EU_Legal extends Module {
 		}
 		else {
 			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']['id_product']);
-			$weight = (float)$params['product']['weight'];
+			$weight = isset($params['product']['weight']) && $params['product']['weight'] != null ? (float)$params['product']['weight'] : 0;
 		}
 		
 		if($id_product_attribute) {
