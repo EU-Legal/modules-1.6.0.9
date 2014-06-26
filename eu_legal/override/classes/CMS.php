@@ -5,7 +5,7 @@ class CMS extends CMSCore
 	{
 		/*
 		* Legal 0.0.1 | 20140320
-		* Eigene Funktion: Liefert Inhalt anhand CMS ID
+		* own function: returns content from CMS ID
 		*/
 		
 		if(!Validate::isUnsignedInt($id_cms))
