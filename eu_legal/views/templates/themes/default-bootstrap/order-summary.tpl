@@ -12,31 +12,31 @@
 					{/if}
 					<th class="cart_unit item">{l s='Unit price' mod='eu_legal'}</th>
 					<th class="cart_quantity item">{l s='Qty' mod='eu_legal'}</th>
-					<th class="cart_total item">{l s='Total' mod='eu_legal'}</th>
-					<th class="cart_delete last_item">&nbsp;</th>
+					<th class="cart_total last_item">{l s='Total' mod='eu_legal'}</th>
+
 				</tr>
 			</thead>
 			<tfoot>
 				{if $use_taxes}
 					{if $priceDisplay}
 						<tr class="cart_total_price">
-							<td colspan="5" class="text-right">{if $display_tax_label}{l s='Total products (tax excl.)' mod='eu_legal'}{else}{l s='Total products' mod='eu_legal'}{/if}</td>
+							<td colspan="4" class="text-right">{if $display_tax_label}{l s='Total products (tax excl.)' mod='eu_legal'}{else}{l s='Total products' mod='eu_legal'}{/if}</td>
 							<td colspan="2" class="price" id="total_product">{displayPrice price=$total_products}</td>
 						</tr>
 					{else}
 						<tr class="cart_total_price">
-							<td colspan="5" class="text-right">{if $display_tax_label}{l s='Total products (tax incl.)' mod='eu_legal'}{else}{l s='Total products' mod='eu_legal'}{/if}</td>
+							<td colspan="4" class="text-right">{if $display_tax_label}{l s='Total products (tax incl.)' mod='eu_legal'}{else}{l s='Total products' mod='eu_legal'}{/if}</td>
 							<td colspan="2" class="price" id="total_product">{displayPrice price=$total_products_wt}</td>
 						</tr>
 					{/if}
 				{else}
 					<tr class="cart_total_price">
-						<td colspan="5" class="text-right">{l s='Total products' mod='eu_legal'}</td>
+						<td colspan="4" class="text-right">{l s='Total products' mod='eu_legal'}</td>
 						<td colspan="2" class="price" id="total_product">{displayPrice price=$total_products}</td>
 					</tr>
 				{/if}
 				<tr class="cart_total_voucher" {if $total_wrapping == 0}style="display:none"{/if}>
-					<td colspan="5" class="text-right">
+					<td colspan="4" class="text-right">
 						{if $use_taxes}
 							{if $priceDisplay}
 								{if $display_tax_label}{l s='Total gift wrapping (tax excl.):' mod='eu_legal'}{else}{l s='Total gift wrapping cost:' mod='eu_legal'}{/if}
@@ -62,37 +62,37 @@
 				{if ! $PS_EU_PAYMENT_API}
 					{if $total_shipping_tax_exc <= 0 && !isset($virtualCart)}
 						<tr class="cart_total_delivery">
-							<td colspan="5" class="text-right">{l s='Shipping:' mod='eu_legal'}</td>
+							<td colspan="4" class="text-right">{l s='Shipping:' mod='eu_legal'}</td>
 							<td colspan="2" class="price" id="total_shipping">{l s='Free Shipping!' mod='eu_legal'}</td>
 						</tr>
 					{else}
 						{if $use_taxes && $total_shipping_tax_exc != $total_shipping}
 							{if $priceDisplay}
 								<tr class="cart_total_delivery" {if $shippingCost <= 0} style="display:none"{/if}>
-									<td colspan="5" class="text-right">{if $display_tax_label}{l s='Total shipping (tax excl.)' mod='eu_legal'}{else}{l s='Total shipping' mod='eu_legal'}{/if}</td>
+									<td colspan="4" class="text-right">{if $display_tax_label}{l s='Total shipping (tax excl.)' mod='eu_legal'}{else}{l s='Total shipping' mod='eu_legal'}{/if}</td>
 									<td colspan="2" class="price" id="total_shipping">{displayPrice price=$shippingCostTaxExc}</td>
 								</tr>
 							{else}
 								<tr class="cart_total_delivery"{if $shippingCost <= 0} style="display:none"{/if}>
-									<td colspan="5" class="text-right">{if $display_tax_label}{l s='Total shipping (tax incl.)' mod='eu_legal'}{else}{l s='Total shipping' mod='eu_legal'}{/if}</td>
+									<td colspan="4" class="text-right">{if $display_tax_label}{l s='Total shipping (tax incl.)' mod='eu_legal'}{else}{l s='Total shipping' mod='eu_legal'}{/if}</td>
 									<td colspan="2" class="price" id="total_shipping" >{displayPrice price=$shippingCost}</td>
 								</tr>
 							{/if}
 						{else}
 							<tr class="cart_total_delivery"{if $shippingCost <= 0} style="display:none"{/if}>
-								<td colspan="5" class="text-right">{l s='Total shipping' mod='eu_legal'}</td>
+								<td colspan="4" class="text-right">{l s='Total shipping' mod='eu_legal'}</td>
 								<td colspan="2" class="price" id="total_shipping" >{displayPrice price=$shippingCostTaxExc}</td>
 							</tr>
 						{/if}
 					{/if}
 				{else}
 					<tr class="cart_total_delivery">
-						<td colspan="5" class="text-right">{l s='Shipping' mod='eu_legal'}</td>
+						<td colspan="4" class="text-right">{l s='Shipping' mod='eu_legal'}</td>
 						<td colspan="2" class="price" id="total_shipping">{hook h="displayShippingPrice"}</td>
 					</tr>
 				{/if}
 				<tr class="cart_total_voucher" {if $total_discounts == 0}style="display:none"{/if}>
-					<td colspan="5" class="text-right">
+					<td colspan="4" class="text-right">
 						{if $use_taxes}
 							{if $priceDisplay}
 								{if $display_tax_label}{l s='Total vouchers (tax excl.)' mod='eu_legal'}{else}{l s='Total vouchers' mod='eu_legal'}{/if}
@@ -118,12 +118,12 @@
 				{if $use_taxes}
 					{if $priceDisplay && $total_tax != 0}
 						<tr class="cart_total_tax">
-							<td colspan="5" class="text-right">{l s='Total tax:' mod='eu_legal'}</td>
+							<td colspan="4" class="text-right">{l s='Total tax:' mod='eu_legal'}</td>
 							<td colspan="2" class="price" id="total_tax" >{displayPrice price=$total_tax}</td>
 						</tr>
 					{/if}
 					<tr class="cart_total_price">
-						<td colspan="5" class="total_price_container text-right"><span>{l s='Total' mod='eu_legal'}</span></td>
+						<td colspan="4" class="total_price_container text-right"><span>{l s='Total' mod='eu_legal'}</span></td>
 						<td colspan="2" class="price" id="total_price_container">
 							<span id="total_price">{displayPrice price=$total_price}</span>
 						</td>
@@ -180,9 +180,9 @@
 					{assign var='productId' value=$product.id_product}
 					{assign var='productAttributeId' value=$product.id_product_attribute}
 					{assign var='quantityDisplayed' value=0}
-					{assign var='cannotModify' value=0}
+					{assign var='cannotModify' value=1}
 					{assign var='odd' value=$product@iteration%2}
-					{assign var='noDeleteButton' value=0}
+					{assign var='noDeleteButton' value=1}
 	
 					{* Display the product line *}
 					{include file="$tpl_dir./shopping-cart-product-line.tpl"}
@@ -222,11 +222,7 @@
 								<td class="cart_quantity text-center">
 									{$customization.quantity}
 								</td>
-								<td class="cart_delete">
-									<div>
-										<a rel="nofollow" class="cart_quantity_delete" id="{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "delete=1&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_customization={$id_customization}&amp;id_address_delivery={$product.id_address_delivery}&amp;token={$token_cart}")|escape:'html'}">{l s='Delete' mod='eu_legal'}</a>
-									</div>
-								</td>
+								<td class="cart_total"></td>
 							</tr>
 							{assign var='quantityDisplayed' value=$quantityDisplayed+$customization.quantity}
 						{/foreach}
@@ -241,9 +237,9 @@
 					{assign var='quantityDisplayed' value=0}
 					{assign var='odd' value=($product@iteration+$last_was_odd)%2}
 					{assign var='ignoreProductLast' value=isset($customizedDatas.$productId.$productAttributeId)}
-					{assign var='cannotModify' value=0}
+					{assign var='cannotModify' value=1}
 					{* Display the gift product line *}
-					{include file="./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}
+					{include file="$tpl_dir./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}
 				{/foreach}
 			</tbody>
 	
@@ -251,9 +247,20 @@
 				<tbody>
 					{foreach from=$discounts item=discount name=discountLoop}
 						<tr class="cart_discount {if $smarty.foreach.discountLoop.last}last_item{elseif $smarty.foreach.discountLoop.first}first_item{else}item{/if}" id="cart_discount_{$discount.id_discount}">
-							<td class="cart_discount_description" colspan="2">{$discount.description}</td>												
-							<td class="cart_discount_name">{$discount.name}</td>
-							<td class="cart_discount_price" colspan="2">
+							<td class="cart_discount_name" colspan="{if $PS_STOCK_MANAGEMENT}3{else}2{/if}">{$discount.name}</td>
+								<td class="cart_discount_price">
+									<span class="price-discount">
+										{if $discount.value_real > 0}
+											{if !$priceDisplay}
+												{displayPrice price=$discount.value_real*-1}
+											{else}
+												{displayPrice price=$discount.value_tax_exc*-1}
+											{/if}
+										{/if}
+									</span>
+								</td>
+								<td class="cart_discount_delete">1</td>
+								<td class="cart_discount_price">
 								<span class="price-discount">
 									{if $discount.value_real > 0}
 										{if !$priceDisplay}

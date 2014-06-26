@@ -28,6 +28,12 @@ $(document).ready(function(){
 		
 	}
 	
+	/* Show Imprint in mobile view */
+	if ($(document).width() <= 767)
+	{
+		accordionFooter('disable'); 
+	}
+	
 });
 
 function findCombinationLegal() {
