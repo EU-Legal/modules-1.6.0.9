@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 * 2007-2014 PrestaShop
 *
 * NOTICE OF LICENSE
@@ -27,6 +27,7 @@
 class PayPalConnect
 {
 	private	$_logs = array();
+	
 	private $paypal = null;
 	
 	public function __construct()
@@ -34,12 +35,12 @@ class PayPalConnect
 		$this->paypal = new PayPal();
 	}
 
-	public function makeConnection($host, $script, $body, $simple_mode = false, $http_header = false, $identify = false)
+	public function makeConnection($host, $script, $body, $simple_mode = false)
 	{
 		$this->_logs[] = $this->paypal->l('Making new connection to').' \''.$host.$script.'\'';
 
 		if (function_exists('curl_exec'))
-			$return = $this->_connectByCURL($host.$script, $body, $http_header, $identify);
+			$return = $this->_connectByCURL($host.$script, $body);
 
 		if (isset($return) && $return)
 			return $return;
@@ -60,7 +61,7 @@ class PayPalConnect
 	/************************************************************/
 	/********************** CONNECT METHODS *********************/
 	/************************************************************/
-	private function _connectByCURL($url, $body, $http_header = false, $identify = false)
+	private function _connectByCURL($url, $body)
 	{
 		$ch = @curl_init();
 
@@ -73,23 +74,15 @@ class PayPalConnect
 			$this->_logs[] = $body;
 
 			@curl_setopt($ch, CURLOPT_URL, 'https://'.$url);
-
-			if ($identify)
-				@curl_setopt($ch, CURLOPT_USERPWD, Configuration::get('PAYPAL_LOGIN_CLIENT_ID').':'.Configuration::get('PAYPAL_LOGIN_SECRET'));
-
 			@curl_setopt($ch, CURLOPT_POST, true);
-			if ($body)
-				@curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+			@curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 			@curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			@curl_setopt($ch, CURLOPT_HEADER, false);
 			@curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 			@curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			@curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 			@curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-			@curl_setopt($ch, CURLOPT_VERBOSE, false);
-
-			if ($http_header)
-				@curl_setopt($ch, CURLOPT_HTTPHEADER, $http_header);
+			@curl_setopt($ch, CURLOPT_VERBOSE, true);
 
 			$result = @curl_exec($ch);
 
@@ -112,6 +105,7 @@ class PayPalConnect
 		else
 		{
 			$header = $this->_makeHeader($host, $script, Tools::strlen($body));
+			$this->_logs[] = $this->paypal->l('Connect with fsockopen method successful');
 			$this->_logs[] = $this->paypal->l('Sending this params:').' '.$header.$body;
 
 			@fputs($fp, $header.$body);

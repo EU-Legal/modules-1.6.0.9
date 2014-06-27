@@ -114,18 +114,17 @@ $(document).ready( function() {
 	}
 
 	function checkOrder() {
-		if(confirmTimer == false)
-			confirmTimer = setInterval(getOrdersCount, 1000);
+		confirmTimer = setInterval(getOrdersCount, 1000);
 	}
 
 	{/literal}{if isset($id_cart)}{literal}
 	function getOrdersCount() {
-		clearInterval(confirmTimer);
 		$.get(
 			fullPath + '/confirm.php',
 			{ id_cart: '{/literal}{$id_cart}{literal}' },
 			function (data) {
 				if ((typeof(data) != 'undefined') && (data > 0)) {
+					clearInterval(confirmTimer);
 					window.location.replace(fullPath + '/submit.php?id_cart={/literal}{$id_cart}{literal}');
 					$('p.payment_module, p.cart_navigation').hide();
 				}

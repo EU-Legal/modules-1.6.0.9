@@ -61,25 +61,6 @@ class PayPalInstall
 			PRIMARY KEY (`id_paypal_customer`)
 		) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8 AUTO_INCREMENT=1'))
 			return false;
-
-		if (!Db::getInstance()->Execute('
-			CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'paypal_login_user`  (
-				`id_paypal_login_user` INT(11) AUTO_INCREMENT,
-				`id_customer` INT(11) NOT NULL,
-				`token_type` VARCHAR(255) NOT NULL,
-				`expires_in` VARCHAR(255) NOT NULL,
-				`refresh_token` VARCHAR(255) NOT NULL,
-				`id_token` VARCHAR(255) NOT NULL,
-				`access_token` VARCHAR(255) NOT NULL,
-				`account_type` VARCHAR(255) NOT NULL,
-				`user_id` VARCHAR(255) NOT NULL,
-				`verified_account` VARCHAR(255) NOT NULL,
-				`zoneinfo` VARCHAR(255) NOT NULL,
-				`age_range` VARCHAR(255) NOT NULL,
-				PRIMARY KEY (`id_paypal_login_user`)
-			) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8'))
-			return false;
-
 	}
 	
 	/**
@@ -125,14 +106,6 @@ class PayPalInstall
 		Configuration::deleteByName('PAYPAL_CAPTURE');
 		Configuration::deleteByName('PAYPAL_DEBUG_MODE');
 		Configuration::deleteByName('PAYPAL_COUNTRY_DEFAULT');
-		Configuration::deleteByName('PAYPAL_VERSION');
-		
-		/* USE PAYPAL LOGIN */
-		Configuration::deleteByName('PAYPAL_LOGIN');
-		Configuration::deleteByName('PAYPAL_LOGIN_CLIENT_ID');
-		Configuration::deleteByName('PAYPAL_LOGIN_SECRET');
-		Configuration::deleteByName('PAYPAL_LOGIN_TPL');
-		/* /USE PAYPAL LOGIN */
 
 		// PayPal v3 configuration
 		Configuration::deleteByName('PAYPAL_EXPRESS_CHECKOUT_SHORTCUT');
@@ -145,31 +118,31 @@ class PayPalInstall
 	{
 		if (!Configuration::get('PAYPAL_OS_AUTHORIZATION'))
 		{
-			$order_state = new OrderState();
-			$order_state->name = array();
+			$orderState = new OrderState();
+			$orderState->name = array();
 
 			foreach (Language::getLanguages() as $language)
 			{
 				if (Tools::strtolower($language['iso_code']) == 'fr')
-					$order_state->name[$language['id_lang']] = 'Autorisation acceptée par PayPal';
+					$orderState->name[$language['id_lang']] = 'Autorisation acceptée par PayPal';
 				else
-					$order_state->name[$language['id_lang']] = 'Authorization accepted from PayPal';
+					$orderState->name[$language['id_lang']] = 'Authorization accepted from PayPal';
 			}
 
-			$order_state->send_email = false;
-			$order_state->color = '#DDEEFF';
-			$order_state->hidden = false;
-			$order_state->delivery = false;
-			$order_state->logable = true;
-			$order_state->invoice = true;
+			$orderState->send_email = false;
+			$orderState->color = '#DDEEFF';
+			$orderState->hidden = false;
+			$orderState->delivery = false;
+			$orderState->logable = true;
+			$orderState->invoice = true;
 
-			if ($order_state->add())
+			if ($orderState->add())
 			{
 				$source = dirname(__FILE__).'/../../img/os/'.Configuration::get('PS_OS_PAYPAL').'.gif';
-				$destination = dirname(__FILE__).'/../../img/os/'.(int)$order_state->id.'.gif';
+				$destination = dirname(__FILE__).'/../../img/os/'.(int)$orderState->id.'.gif';
 				copy($source, $destination);
 			}
-			Configuration::updateValue('PAYPAL_OS_AUTHORIZATION', (int)$order_state->id);
+			Configuration::updateValue('PAYPAL_OS_AUTHORIZATION', (int)$orderState->id);
 		}
 	}
 }

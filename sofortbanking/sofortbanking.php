@@ -51,7 +51,7 @@ class Sofortbanking extends PaymentModule
 	{
 		$this->name = 'sofortbanking';
 		$this->tab = 'payments_gateways';
-		$this->version = '2.4';
+		$this->version = '2.2';
 		$this->author = 'touchdesign';
 		$this->module_key = '65af9f83d2ae6fbe6dbdaa91d21f952a';
 		$this->currencies = true;
@@ -226,7 +226,7 @@ class Sofortbanking extends PaymentModule
 		$lang = Language::getIsoById((int)$params['cart']->id_lang);
 		$mod_lang = $this->isSupportedLang();
 		
-		$logo = $this->_path . 'img/' . $mod_lang . '/';
+		$logo = Media::getMediaPath(dirname(__FILE__) . '/img/' . $mod_lang . '/');
 		
 		if (strtolower($cprotect) == 'y' && strtolower($lang) == 'de') {
 			$logo.= 'banner_400x100_ks.png';
