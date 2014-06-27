@@ -8,8 +8,8 @@ class Cart extends CartCore
 		
 		/*
 		* Legal 0.0.1 | 20140320
-		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen
-		* Standard-Verfügbarkeit den Produkten zuordnen
+		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen
+		* Standard-VerfÃ¼gbarkeit den Produkten zuordnen
 		*/
 		
 		if (!$this->id)
@@ -172,7 +172,7 @@ class Cart extends CartCore
 					(int)$row['id_product'],
 					true,
 					isset($row['id_product_attribute']) ? (int)$row['id_product_attribute'] : null,
-					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 					null,
 					false,
 					true,
@@ -189,7 +189,7 @@ class Cart extends CartCore
 
 				$tax_rate = Tax::getProductTaxRate((int)$row['id_product'], (int)$address_id);
 				
-				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 				//$row['total_wt'] = Tools::ps_round($row['price'] * (float)$row['cart_quantity'] * (1 + (float)$tax_rate / 100), 2);
 				//$row['total'] = $row['price'] * (int)$row['cart_quantity'];
 				$row['total_wt'] = $row['price_wt'] * (int)$row['cart_quantity'];
@@ -202,7 +202,7 @@ class Cart extends CartCore
 					(int)$row['id_product'],
 					false,
 					(int)$row['id_product_attribute'],
-					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 					null,
 					false,
 					true,
@@ -239,7 +239,7 @@ class Cart extends CartCore
 				// In case when you use QuantityDiscount, getPriceStatic() can be return more of 2 decimals
 				$row['price_wt'] = Tools::ps_round($row['price_wt'], 2);
 				$row['total_wt'] = $row['price_wt'] * (int)$row['cart_quantity'];
-				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 				//$row['total'] = Tools::ps_round($row['price'] * (int)$row['cart_quantity'], 2);
 				$row['total'] = $row['price'] * (int)$row['cart_quantity'];
 			}
@@ -279,7 +279,7 @@ class Cart extends CartCore
 			if (array_key_exists($row['id_product_attribute'].'-'.$this->id_lang, self::$_attributesLists))
 				$row = array_merge($row, self::$_attributesLists[$row['id_product_attribute'].'-'.$this->id_lang]);
 			
-			/* Standard-Verfügbarkeit den Produkten zuordnen */
+			/* Standard-VerfÃ¼gbarkeit den Produkten zuordnen */
 			$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW', $this->id_lang);
 			$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', $this->id_lang);
 			
@@ -292,13 +292,13 @@ class Cart extends CartCore
 		return $this->_products;
 		
 	}
-	
+
 	public function getOrderTotal($with_taxes = true, $type = Cart::BOTH, $products = null, $id_carrier = null, $use_cache = true)
 	{
 		
 		/*
 		* Legal 0.0.1 | 20140320
-		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen
+		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen
 		*/
 		
 		if (!$this->id)
@@ -440,7 +440,7 @@ class Cart extends CartCore
 
 					$total_price = ($total_price - $total_ecotax) * (1 + $product_tax_rate / 100);
 					$total_ecotax = $total_ecotax * (1 + $product_eco_tax_rate / 100);
-					/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+					/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 					// $total_price = Tools::ps_round($total_price + $total_ecotax, 2);
 					$total_price = $total_price + $total_ecotax;
 					
@@ -473,7 +473,7 @@ class Cart extends CartCore
 						(int)$product['id_product'],
 						false,
 						(int)$product['id_product_attribute'],
-						6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+						6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 						null,
 						false,
 						true,
@@ -487,7 +487,7 @@ class Cart extends CartCore
 						true,
 						$virtual_context
 					);
-				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 				//$total_price = Tools::ps_round($price * (int)$product['cart_quantity'], 2);
 				$total_price = $price * (int)$product['cart_quantity'];
 				$order_total_products_taxed+= Tools::ps_round($total_price, 2);
@@ -572,7 +572,7 @@ class Cart extends CartCore
 		if ($type == Cart::ONLY_DISCOUNTS)
 			return $order_total_discount;
 		
-		/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+		/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen StÃ¼ckzahlen */
 		//return Tools::ps_round((float)$order_total, 2);
 		
 		if($this->_taxCalculationMethod == PS_TAX_EXC)
@@ -610,7 +610,15 @@ class Cart extends CartCore
 		return $wrapping_fees;
 	}
 	
-	
+	/*
+	 * Check if cart contains virtual products. Can't use "isVirtual" method, because it tests if ALL
+	 * the products in cart are virtual. This method will return boolean true if at least one virtual
+	 * product is contained.
+	 * 
+	 * @access public
+	 *
+	 * @return boolean - whether or not the cart contains virtual products
+	 */
 	public function containsVirtualProducts() {
 		
 		/*
@@ -643,6 +651,17 @@ class Cart extends CartCore
 		return self::$_isPartlyVirtualCart[$this->id];
 	}
 	
+	/*
+	 * Returns a list of all the taxes represented in the cart and the percentage of each tax, e.g,
+	 * an order with two products taxed with 9% and 17% accordingly would have 50% of 9% tax and
+	 * 50% of 19% tax.
+
+	 * @access public
+	 *
+	 * @param mixed $products - an array of procuts (optional, will be fetched from the current cart instance if not provided)
+	 *
+	 * @return mixed - an array of taxes or boolean false
+	 */
 	public function getTaxDetails($products = false) {
 		if ( ! is_array($products) || ! sizeof($products)) {
 			$products = $this->getProducts();
@@ -698,6 +717,21 @@ class Cart extends CartCore
 		return sizeof($prepared_taxes) ? $prepared_taxes : false;
 	}
 	
+	/*
+	 * Get package shipping cost. If LEGAL_SHIPTAXMETH is disabled, the default way is used, otherwise
+	 * it is more or less the same to the default, except that it subtracts the carrier tax as opposed
+	 * to the default way, where the carrier tax is added.
+	 * The basic logic is this:
+	 * LEGAL_SHIPTAXMETH disabled, $use_tax = true
+	 * get shipping cost, get tax, add the tax to the cost
+	 *
+	 * LEGAL_SHIPTAXMETH enabled, $use_tax = false
+	 * get shipping cost, get tax, subtract the tax from the cost
+	 *
+	 * @access public
+	 *
+	 * @return float - shipping price
+	 */
 	public function getPackageShippingCost($id_carrier = null, $use_tax = true, Country $default_country = null, $product_list = null, $id_zone = null) {
 		if ( ! Configuration::get('LEGAL_SHIPTAXMETH')) {
 			return parent::getPackageShippingCost($id_carrier, $use_tax, $default_country, $product_list, $id_zone);
