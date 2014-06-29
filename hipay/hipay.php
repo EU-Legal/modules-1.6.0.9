@@ -179,20 +179,16 @@ class Hipay extends PaymentModule
 		if (!in_array($logo_suffix, array('DE', 'FR', 'GB', 'BE', 'ES', 'IT', 'NL', 'PT', 'BR')))
 			$logo_suffix = 'DEFAULT';
 
-		if ($hipayAccount && $hipayPassword && $hipaySiteId && $hipayCategory && Configuration::get('HIPAY_RATING'))
+			
+		if ($hipayAccount && $hipayPassword && $hipaySiteId && $hipayCategory && Configuration::get('HIPAY_RATING') && $this->context->cart->getOrderTotal() >=2 )
 		{
-			$this->context->smarty->assign('hipay_prod', $this->env);
-			$this->context->smarty->assign('logo_suffix', $logo_suffix);
-			$this->context->smarty->assign(array('this_path' => $this->_path, 'this_path_ssl' => Tools::getShopDomainSsl(true).__PS_BASE_URI__.'modules/'.$this->name.'/'));
-			return $this->display(__FILE__, 'payment.tpl');
+			$logo = $this->_path ."hipay_eu.png";
+			return array(
+				'cta_text' => $this->l('Hipay'),
+				'logo' => $logo,
+				'action' => Tools::getShopDomainSsl(true).__PS_BASE_URI__.'modules/'.$this->name.'/redirect.php'
+				);
 		}
-		
-		$logo = $this->_path ."hipay_eu.png";
-		return array(
-			'cta_text' => $this->l('Hipay'),
-			'logo' => $logo,
-			'action' => Tools::getShopDomainSsl(true).__PS_BASE_URI__.'modules/'.$this->name.'/redirect.php'
-		);
 	}
 
 	private function getModuleCurrency($cart)
