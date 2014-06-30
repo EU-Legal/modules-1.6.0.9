@@ -1,6 +1,16 @@
 <?php
 class OrderController extends OrderControllerCore
 {
+    /*
+     * Mostly copies parent's method, with the exception of PS_EU_PAYMENT_API condition in step 3
+     * and tried to instersect the following templates:
+     * order-carrier.tpl, order-payment.tpl and shopping-cart.tpl - method tries to replace them
+     * with eu_legal tmeplates
+     *
+     * @access public
+     *
+     * @return void
+     */
     public function initContent()
     {
 	ParentOrderController::initContent();
