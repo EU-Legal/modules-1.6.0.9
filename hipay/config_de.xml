@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>hipay</name>
+	<displayName><![CDATA[HiPay]]></displayName>
+	<version><![CDATA[1.6.4]]></version>
+	<description><![CDATA[Sichere payement mit Visa, Mastercard und europ&auml;ische L&ouml;sungen.]]></description>
+	<author><![CDATA[PrestaShop]]></author>
+	<tab><![CDATA[payments_gateways]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+	<is_eu_compatible>1</is_eu_compatible>
+</module>
