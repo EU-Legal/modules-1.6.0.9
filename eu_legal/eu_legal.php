@@ -4,7 +4,7 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.12
+* @version       : 0.0.13
 * @date          : 2014 06 24
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.12';                
+		$this->version = '0.0.13';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -1242,6 +1242,32 @@ class EU_Legal extends Module {
 			
 			if(count($this->_errors) <= 0)
 				return $this->displayConfirmation($this->l('Theme settings saved'));
+			
+		}
+		
+		elseif(Tools::isSubmit('submitAddModules')) {
+			
+			$modules = Tools::getValue('module');
+			$dir = dirname(__FILE__).'/modules/';
+			
+			foreach($modules as $module) {
+				
+				if(!is_dir(_PS_MODULE_DIR_.$module) and !Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
+					$this->_errors[] = $this->l('Could not extract file').': '.$module.'.zip';
+					continue;
+				}
+				
+				if(!$instance = self::getInstanceByName($module) or !$instance->install()) {
+					
+					if(is_array($instance->_errors))
+						$this->_errors = array_merge($this->_errors, $instance->_errors);
+					
+				}
+				
+			}
+			
+			if(count($this->_errors) <= 0)
+				return $this->displayConfirmation($this->l('Modules installed'));
 			
 		}
 		
