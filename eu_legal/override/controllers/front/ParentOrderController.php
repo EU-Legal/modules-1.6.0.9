@@ -3,6 +3,13 @@ class ParentOrderController extends ParentOrderControllerCore
 {
 	protected $_legal = false;
 	
+	/*
+	 * Construct the parent and instantiate the eu_legal module if it's installed and activated.
+	 *
+	 * @access public
+	 *
+	 * @return void
+	 */
 	public function __construct()
 	{
 		/*
@@ -19,7 +26,14 @@ class ParentOrderController extends ParentOrderControllerCore
 		}
 	}
     
-	private function getLegalInstance()
+	/*
+	 * Get the instance of eu_legal module. A helper method to use in classes that are not children of ParentOrderController
+	 *
+	 * @access public
+	 *
+	 * @return object
+	 */
+	public function getLegalInstance()
 	{
 		/*
 		* Legal 0.0.1 | 20140320
@@ -30,6 +44,15 @@ class ParentOrderController extends ParentOrderControllerCore
 		return $this->_legal;
 	}
     
+	/*
+	 * Initialize parent and get two CMS pages responsible for "terms and conditions" and "terms of revocation".
+	 * Also assigns PS_EU_PAYMENT_API var to use in templates and the path to eu_legal templates to use in
+	 * smarty's "include" function.
+	 *
+	 * @access public
+	 *
+	 * @return void
+	 */
 	public function init() {
 		parent::init();
 		
@@ -66,18 +89,40 @@ class ParentOrderController extends ParentOrderControllerCore
 		));
 	}
     
+	/*
+	 * Adds a legal.js javascript file to parent's default javascript collection.
+	 *
+	 * @access public
+	 *
+	 * @return void
+	 */
 	public function setMedia() {
 		parent::setMedia();
 		
 		$this->addJS(_MODULE_DIR_ . 'eu_legal/js/legal.js');
 	}
 	
+	/*
+	 * In addition to parent's _assignCarrier, assigns PS_EU_PAYMENT_API var to smarty to use in templates
+	 *
+	 * @access public
+	 *
+	 * @return void
+	 */
 	protected function _assignCarrier() {
 		parent::_assignCarrier();
 		
 		$this->context->smarty->assign('PS_EU_PAYMENT_API', Configuration::get('PS_EU_PAYMENT_API')); 
 	}
     
+	/*
+	 * Gets html templates for payment modules that are assigned to "displayPaymentEU" hook.
+	 * This method is invoked only if "PS_EU_PAYMENT_API" is enabled.
+	 *
+	 * @access protected
+	 *
+	 * @return string
+	 */
 	protected function _getEuPaymentOptionsHTML() {
 		$this->context->smarty->assign('payment_option', Tools::getValue('payment_option'));
 	
@@ -123,6 +168,16 @@ class ParentOrderController extends ParentOrderControllerCore
 		return $payment_options_html;
 	}
     
+	/*
+	 * Assigns payment method templates to hooks that are responsible for payment methods display.
+	 * Unlinke parent's method, it checks for "PS_EU_PAYMENT_API" - if it's enabled, only the modules
+	 * hooked onto "displayPaymentEU" will be displayed. Otherwise it's a usualy display of modules
+	 * hooked onto "displayPayment" hook.
+	 *
+	 * @access protected
+	 *
+	 * @return void
+	 */
 	protected function _assignPayment() {
 		// Invoke legally safe EU payment modules
 		if ($PS_EU_PAYMENT_API = Configuration::get('PS_EU_PAYMENT_API')) {
