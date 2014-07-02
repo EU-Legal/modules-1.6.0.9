@@ -1911,6 +1911,8 @@ class EU_Legal extends Module {
 				'template_type'         => $params['type'],
 				'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
 				'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
+				'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY'),
+				'seo_active'            => Configuration::get('PS_REWRITING_SETTINGS'),
 			));
 		
 		}	
@@ -1972,7 +1974,9 @@ class EU_Legal extends Module {
 		'shipping_price' => $shipping_price,
 		'no_address_selected' => $no_address_selected,
 		'default_country' => $default_country,
-		'shipping_link' => $shipping_link
+		'shipping_link' => $shipping_link,
+		'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY'),
+		'seo_active'            => Configuration::get('PS_REWRITING_SETTINGS'),
 	    ));
 	    
 	    return $this->display(__FILE__, 'displayShippingPrice.tpl');
