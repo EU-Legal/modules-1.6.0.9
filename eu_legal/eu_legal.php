@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.13
-* @date          : 2014 06 24
+* @version       : 0.0.14
+* @date          : 2014 07 02
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.13';                
+		$this->version = '0.0.14';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -211,6 +211,12 @@ class EU_Legal extends Module {
 		// install and register hooks
 		$return &= $this->installHooks();
 		$return &= $this->installRegisterHooks();
+		
+		// register cache hooks
+		$return &= $this->registerHook('actionObjectProductAddAfter');
+		$return &= $this->registerHook('actionObjectProductUpdateAfter');
+		$return &= $this->registerHook('actionObjectProductDeleteAfter');
+		$return &= $this->registerHook('actionObjectCategoryUpdateAfter');
 		
 		// global configuration values
 		
@@ -1877,7 +1883,7 @@ class EU_Legal extends Module {
 		
 		$cache_key = $this->name.'_'.$params['type'].'_'.$id_product;
 		
-		if (!$this->isCached('displayProductPriceBlock.tpl', $this->getCacheId($cache_key)))
+		if(!$this->isCached('displayProductPriceBlock.tpl', $this->getCacheId($cache_key)))
 		{
 			
 			$weight = 0;
@@ -1980,6 +1986,33 @@ class EU_Legal extends Module {
 	    ));
 	    
 	    return $this->display(__FILE__, 'displayShippingPrice.tpl');
+	}
+	
+	
+	/* Empty cache hooks */
+	public function hookActionObjectProductAddAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectProductUpdateAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectProductDeleteAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectCategoryUpdateAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function _clearCache($template, $cache_id = NULL, $compile_id = NULL)
+	{
+		parent::_clearCache('displayProductPriceBlock.tpl');
 	}
 	
 	/*******************************************************************************************************************
