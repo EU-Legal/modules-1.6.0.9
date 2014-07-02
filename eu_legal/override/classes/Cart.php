@@ -603,7 +603,7 @@ class Cart extends CartCore
 		$wrapping_fees = (float)Configuration::get('PS_GIFT_WRAPPING_PRICE');
 		if ($with_taxes && $wrapping_fees > 0)
 		{
-			$tax_rate = Cart::getTaxesAverageUsed((int)($this->id_cart));
+			$tax_rate = Cart::getTaxesAverageUsed((int)($this->id));
 			$wrapping_fees = $wrapping_fees * (1 + ($tax_rate / 100));
 		}
 
