@@ -1247,7 +1247,7 @@ class EU_Legal extends Module {
 		
 		elseif(Tools::isSubmit('submitAddModules')) {
 			
-			$modules = Tools::getValue('module');
+			$modules = Tools::getValue('modules');
 			$dir = dirname(__FILE__).'/modules/';
 			
 			foreach($modules as $module) {
