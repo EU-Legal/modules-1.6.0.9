@@ -6,10 +6,10 @@ class Cart extends CartCore
 	public function getProducts($refresh = false, $id_product = false, $id_country = null)
 	{
 		
-		/*
-		* Legal 0.0.1 | 20140320
-		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen
-		* Standard-Verfügbarkeit den Produkten zuordnen
+		/* 
+		* EU-Legal
+		* 1) correct calculation of prices -> Problem with inaccuracy at high number of items 
+		* 2) assign standard delivery times to products
 		*/
 		
 		if (!$this->id)
@@ -172,7 +172,7 @@ class Cart extends CartCore
 					(int)$row['id_product'],
 					true,
 					isset($row['id_product_attribute']) ? (int)$row['id_product_attribute'] : null,
-					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+					6, /* EU-Legal	* correct calculation of prices -> Problem with inaccuracy at high number of items */
 					null,
 					false,
 					true,
@@ -189,7 +189,9 @@ class Cart extends CartCore
 
 				$tax_rate = Tax::getProductTaxRate((int)$row['id_product'], (int)$address_id);
 				
-				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				/* 
+				* EU-Legal
+				* correct calculation of prices -> Problem with inaccuracy at high number of items */
 				//$row['total_wt'] = Tools::ps_round($row['price'] * (float)$row['cart_quantity'] * (1 + (float)$tax_rate / 100), 2);
 				//$row['total'] = $row['price'] * (int)$row['cart_quantity'];
 				$row['total_wt'] = $row['price_wt'] * (int)$row['cart_quantity'];
@@ -202,7 +204,7 @@ class Cart extends CartCore
 					(int)$row['id_product'],
 					false,
 					(int)$row['id_product_attribute'],
-					6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+					6, /* EU-Legal	* correct calculation of prices -> Problem with inaccuracy at high number of items */
 					null,
 					false,
 					true,
@@ -239,7 +241,9 @@ class Cart extends CartCore
 				// In case when you use QuantityDiscount, getPriceStatic() can be return more of 2 decimals
 				$row['price_wt'] = Tools::ps_round($row['price_wt'], 2);
 				$row['total_wt'] = $row['price_wt'] * (int)$row['cart_quantity'];
-				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				/* 
+				* EU-Legal
+				* correct calculation of prices -> Problem with inaccuracy at high number of items */
 				//$row['total'] = Tools::ps_round($row['price'] * (int)$row['cart_quantity'], 2);
 				$row['total'] = $row['price'] * (int)$row['cart_quantity'];
 			}
@@ -279,7 +283,9 @@ class Cart extends CartCore
 			if (array_key_exists($row['id_product_attribute'].'-'.$this->id_lang, self::$_attributesLists))
 				$row = array_merge($row, self::$_attributesLists[$row['id_product_attribute'].'-'.$this->id_lang]);
 			
-			/* Standard-Verfügbarkeit den Produkten zuordnen */
+			/* 
+			* EU-Legal
+			/* assign standard delivery times to products */
 			$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW', $this->id_lang);
 			$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', $this->id_lang);
 			
@@ -296,10 +302,9 @@ class Cart extends CartCore
 	public function getOrderTotal($with_taxes = true, $type = Cart::BOTH, $products = null, $id_carrier = null, $use_cache = true)
 	{
 		
-		/*
-		* Legal 0.0.1 | 20140320
-		* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen
-		*/
+		/* 
+		* EU-Legal
+		* correct calculation of prices -> Problem with inaccuracy at high number of items */
 		
 		if (!$this->id)
 			return 0;
@@ -440,7 +445,9 @@ class Cart extends CartCore
 
 					$total_price = ($total_price - $total_ecotax) * (1 + $product_tax_rate / 100);
 					$total_ecotax = $total_ecotax * (1 + $product_eco_tax_rate / 100);
-					/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+					/* 
+					* EU-Legal
+					* correct calculation of prices -> Problem with inaccuracy at high number of items */
 					// $total_price = Tools::ps_round($total_price + $total_ecotax, 2);
 					$total_price = $total_price + $total_ecotax;
 					
@@ -473,7 +480,7 @@ class Cart extends CartCore
 						(int)$product['id_product'],
 						false,
 						(int)$product['id_product_attribute'],
-						6, /* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+						6, /* EU-Legal	* correct calculation of prices -> Problem with inaccuracy at high number of items */
 						null,
 						false,
 						true,
@@ -487,7 +494,9 @@ class Cart extends CartCore
 						true,
 						$virtual_context
 					);
-				/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+				/* 
+				* EU-Legal
+				* correct calculation of prices -> Problem with inaccuracy at high number of items */
 				//$total_price = Tools::ps_round($price * (int)$product['cart_quantity'], 2);
 				$total_price = $price * (int)$product['cart_quantity'];
 				$order_total_products_taxed+= Tools::ps_round($total_price, 2);
@@ -572,7 +581,9 @@ class Cart extends CartCore
 		if ($type == Cart::ONLY_DISCOUNTS)
 			return $order_total_discount;
 		
-		/* Richtige Berechnung der Preise -> Problem mit Ungenauigkeit bei hohen Stückzahlen */
+		/* 
+		* EU-Legal
+		* correct calculation of prices -> Problem with inaccuracy at high number of items */
 		//return Tools::ps_round((float)$order_total, 2);
 		
 		if($this->_taxCalculationMethod == PS_TAX_EXC)
@@ -592,8 +603,8 @@ class Cart extends CartCore
 	{
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Alternative Methode zur Berechnung der MwSt. (LEGAL_SHIPTAXMETH)
+		* EU-Legal
+		* alternative method for tax calculation (LEGAL_SHIPTAXMETH)
 		*/
 		
 		if(!Configuration::get('LEGAL_SHIPTAXMETH'))
@@ -614,8 +625,8 @@ class Cart extends CartCore
 	public function containsVirtualProducts() {
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* ist mindestens ein virtuelles Produkt im Warenkorb?
+		* EU-Legal
+		* is at least one virtual product in cart?
 		*/
 		
 		if (!ProductDownload::isFeatureActive())

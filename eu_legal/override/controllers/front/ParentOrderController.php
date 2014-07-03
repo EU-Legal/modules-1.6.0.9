@@ -6,8 +6,8 @@ class ParentOrderController extends ParentOrderControllerCore
 	public function __construct()
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* EU Legal Modul instanziieren
+		* EU-Legal
+		* instantiate EU Legal Module
 		*/
 		
 		parent::__construct();
@@ -22,15 +22,20 @@ class ParentOrderController extends ParentOrderControllerCore
 	private function getLegalInstance()
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* EU Legal Modul instanziieren
-		* (wird zur Zeit noch nicht verwendet!)
+		* EU-Legal
+		* instantiate EU Legal Module
+		* (not used at the moment!)
 		*/
 		
 		return $this->_legal;
 	}
     
-	public function init() {
+	public function init() 
+	{
+		/*
+		* EU-Legal
+		* conditions and revocation within eu-payment page / lightbox
+		*/
 		parent::init();
 		
 		$cms = array(
@@ -66,7 +71,12 @@ class ParentOrderController extends ParentOrderControllerCore
 		));
 	}
     
-	public function setMedia() {
+	public function setMedia() 
+	{
+		/*
+		* EU-Legal
+		* own checkout js
+		*/
 		parent::setMedia();
 		
 		$this->addJS(_MODULE_DIR_ . 'eu_legal/js/legal.js');
