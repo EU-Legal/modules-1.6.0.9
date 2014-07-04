@@ -1268,7 +1268,7 @@ class EU_Legal extends Module {
 					continue;
 				}
 				
-				if(!$instance = self::getInstanceByName($module) {
+				if(!$instance = self::getInstanceByName($module)) {
 					$this->_errors[] = $this->l('Could not instance module').': '.$module;
 					continue;
 				}
