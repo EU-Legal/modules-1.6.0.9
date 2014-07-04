@@ -27,7 +27,7 @@
 			</span>
 			{/if}
 			<span class="shipping_info">
-				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)} {if $seo_active && $show_fancy }?content_only=1{else if !$seo_active && $show_fancy}&content_only=1{/if}" {if $show_fancy} class="iframeEULegal" {/if} >{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
+				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)}{if $seo_active && $show_fancy }?content_only=1{else if !$seo_active && $show_fancy}&content_only=1{/if}" {if $show_fancy} class="iframeEULegal" {/if} >{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
 			</span>
 		</span>
 	{else}
