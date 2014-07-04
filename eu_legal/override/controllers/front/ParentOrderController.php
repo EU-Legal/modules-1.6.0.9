@@ -50,7 +50,7 @@ class ParentOrderController extends ParentOrderControllerCore
 				if (Validate::isLoadedObject($cms)) {
 					$this->context->smarty->assign($config, new CMS((int)$id_cms, $this->context->language->id));
 					
-					$link = $this->context->link->getCMSLink($cms);
+					$link = $this->context->link->getCMSLink($cms, $cms->link_rewrite, Configuration::get('PS_SSL_ENABLED'));
 					
 					if ( ! strpos($link, '?')) {
 						$link.= '?content_only=1';
