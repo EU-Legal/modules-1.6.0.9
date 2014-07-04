@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.16
-* @date          : 2014 07 02
+* @version       : 0.0.17
+* @date          : 2014 07 04
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.16';                
+		$this->version = '0.0.17';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -1894,14 +1894,17 @@ class EU_Legal extends Module {
 			$weight = 0;
 			$combination_weight = 0;
 			$id_product = 0;
+			$allow_oosp = 0;
 			
 			if($params['product'] instanceof Product) {
 				$id_product_attribute = Product::getDefaultAttribute($id_product);
 				$weight = (float)$params['product']->weight;
+				$allow_oosp = $params['product']->isAvailableWhenOutOfStock((int)$params['product']->out_of_stock);
 			}
 			else {
 				$id_product_attribute = Product::getDefaultAttribute($id_product);
 				$weight = (float)$params['product']['weight'];
+				$allow_oosp = $params['product']['allow_oosp'];
 			}
 			
 			if($id_product_attribute) {
@@ -1913,6 +1916,7 @@ class EU_Legal extends Module {
 				'is_object'             => (bool)($params['product'] instanceof Product),
 				'product'               => $params['product'],
 				'weight'                => $weight,
+				'allow_oosp'            => $allow_oosp,
 				'combination_weight'    => $combination_weight,
 				'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
 				'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
