@@ -1268,13 +1268,21 @@ class EU_Legal extends Module {
 					continue;
 				}
 				
-				if(!$instance = self::getInstanceByName($module) or !$instance->install()) {
+				if(!$instance = self::getInstanceByName($module) {
+					$this->_errors[] = $this->l('Could not instance module').': '.$module;
+					continue;
+				}
+				
+				if(!$instance->install()) {
 					
 					if(is_array($instance->_errors))
 						$this->_errors = array_merge($this->_errors, $instance->_errors);
 					
 				}
 				
+				Cache::clean('Module::isInstalled'.$name);
+		
+		
 			}
 			
 			if(count($this->_errors) <= 0)
