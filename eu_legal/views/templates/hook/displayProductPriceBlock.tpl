@@ -27,7 +27,7 @@
 			</span>
 			{/if}
 			<span class="shipping_info">
-				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)} {if $seo_active && $show_fancy }?content_only=1{else if !$seo_active && $show_fancy}&content_only=1{/if}" {if $show_fancy} class="iframeEULegal" {/if} >{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
+				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)}{if $seo_active && $show_fancy }?content_only=1{else if !$seo_active && $show_fancy}&content_only=1{/if}" {if $show_fancy} class="iframeEULegal" {/if} >{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
 			</span>
 		</span>
 	{else}
@@ -76,7 +76,7 @@
 			{math equation="pprice / punit_price"  pprice=$productPrice  punit_price=$product->unit_price_ratio assign=unit_price}
 			<p class="unit-price eu-legal">
 				<span class="unit-price-label">{l s='unit price' mod='eu_legal'}:</span>
-				<span id="unit_price_display">{convertPrice price=$unit_price}</span> {l s='per' mod='eu_legal'} {$product->unity|escape:'html':'UTF-8'}
+				<span class="unit-price-display">{convertPrice price=$unit_price}</span> {l s='per' mod='eu_legal'} {$product->unity|escape:'html':'UTF-8'}
 			</p>
 		{/if}
 	{else}
@@ -84,7 +84,7 @@
 		{math equation="pprice / punit_price"  pprice=$productPrice  punit_price=$product.unit_price_ratio assign=unit_price}
 		<span class="unit-price eu-legal">
 			<span class="unit-price-label">{l s='unit price' mod='eu_legal'}:</span>
-			<span id="unit-price-display">{convertPrice price=$unit_price}</span> {l s='per' mod='eu_legal'} {$product.unity|escape:'html':'UTF-8'}
+			<span class="unit-price-display">{convertPrice price=$unit_price}</span> {l s='per' mod='eu_legal'} {$product.unity|escape:'html':'UTF-8'}
 		</span>
 		{/if}
 	{/if}

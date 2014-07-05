@@ -4,8 +4,8 @@ class OrderDetail extends OrderDetailCore
 	public function saveTaxCalculator(Order $order, $replace = false)
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* An der stelle darf nicht gerundet werden -> Rundungsproblem bei großen Stückzahlen
+		* EU-Legal
+		* correct calculation of prices -> Problem with inaccuracy at high number of items 
 		*/
 		
 		// Nothing to save
@@ -28,7 +28,11 @@ class OrderDetail extends OrderDetailCore
 		$values = '';
 		foreach ($this->tax_calculator->getTaxesAmount($discounted_price_tax_excl) as $id_tax => $amount)
 		{
-			/* An der stelle darf nicht gerundet werden -> Rundungsproblem bei großen Stückzahlen */
+			/*
+			* EU-Legal
+			* correct calculation of prices -> Problem with inaccuracy at high number of items 
+			*/
+			//don't round here
 			//$unit_amount = (float)Tools::ps_round($amount, 2);
 			$unit_amount = (float)$amount;
 			$total_amount = $unit_amount * $this->product_quantity;

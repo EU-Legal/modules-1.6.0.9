@@ -5,8 +5,8 @@ class ProductSale extends ProductSaleCore
 	{
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit aus Datenbank ermitteln pl.*
+		* EU-Legal
+		* get standard shipping time from database pl.*
 		*/
 		
 		if ($page_number < 0) $page_number = 0;
@@ -43,7 +43,10 @@ class ProductSale extends ProductSaleCore
 		$ids = count($ids) > 0 ? implode(',', $ids) : 'NULL';
 		
 		//Main query
-		/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
+		/* 
+		* EU-Legal
+		* get standard shipping time from database pl.* 
+		*/
 		$sql = 'SELECT p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity,
 					pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`,
 					pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`,

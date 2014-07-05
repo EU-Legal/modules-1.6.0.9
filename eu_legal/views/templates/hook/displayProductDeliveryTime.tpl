@@ -5,7 +5,7 @@
 	</span>
 	<span class="delivery-value">
 		{if $product->quantity <= 0}
-			{if $product->allow_oosp}
+			{if $allow_oosp}
 				{$product->delivery_later}
 			{else}
 				{l s='This product is no longer in stock' mod='eu_legal'}
