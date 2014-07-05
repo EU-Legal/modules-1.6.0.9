@@ -11,7 +11,12 @@
 	width:100%;
 	display:inline-block
 }
-
+/* Show Imprint in mobile view */
+@media (max-width: 767px) {
+	.footer-container #footer h4.active:after {
+		content: "";
+	}
+}
 /* product-list grid-view */
 ul.product_list.grid .content_price .old-price {
 	display: block;
@@ -124,6 +129,9 @@ ul.product_list.list .center-block .delivery-info {
 /* product */
 #product #old_price_display {
 	display:none
+}
+#product .old-price.eu-legal #old_price_display{
+	display:inline-block
 }
 
 #product .tax-shipping-info {

@@ -11,7 +11,7 @@
 						id="{$id_checkbox}"
 						class="{if isset($input.class)}{$input.class}{/if}"
 						{if isset($value.val)}value="{$value.val|escape:'html':'UTF-8'}"{/if}
-						{if isset($fields_value[$id_checkbox]) && $fields_value[$id_checkbox]}checked="checked"{/if}
+						{if isset($value[$input.values.disabled]) and $value[$input.values.disabled]}checked="checked"{/if}
 						{if isset($value[$input.values.disabled]) and $value[$input.values.disabled]}disabled="disabled"{/if} />
 					{$value[$input.values.name]}
 				</label>

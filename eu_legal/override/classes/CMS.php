@@ -4,8 +4,8 @@ class CMS extends CMSCore
 	public static function getContentFromId($id_cms, $id_lang = null)
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* Eigene Funktion: Liefert Inhalt anhand CMS ID
+		* EU-Legal
+		* own function: returns content from CMS ID
 		*/
 		
 		if(!Validate::isUnsignedInt($id_cms))

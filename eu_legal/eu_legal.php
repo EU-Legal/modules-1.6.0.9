@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.10
-* @date          : 2014 06 20
+* @version       : 0.0.17
+* @date          : 2014 07 04
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.10';                
+		$this->version = '0.0.17';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -139,7 +139,11 @@ class EU_Legal extends Module {
 			'displayShippingPrice' => array(
 			    'name' => 'display shipping price in cart',
 			    'templates' => array()
-			)
+			),
+			'displayTop' => array(
+			    'name' => 'hook top',
+			    'templates' => array()
+			),
 		);
 		
 		// modules not compatible with EU Legal
@@ -208,6 +212,12 @@ class EU_Legal extends Module {
 		$return &= $this->installHooks();
 		$return &= $this->installRegisterHooks();
 		
+		// register cache hooks
+		$return &= $this->registerHook('actionObjectProductAddAfter');
+		$return &= $this->registerHook('actionObjectProductUpdateAfter');
+		$return &= $this->registerHook('actionObjectProductDeleteAfter');
+		$return &= $this->registerHook('actionObjectCategoryUpdateAfter');
+		
 		// global configuration values
 		
 		// shop specific configuration values
@@ -257,6 +267,16 @@ class EU_Legal extends Module {
 		if($return and !Configuration::updateValue('LEGAL_SHOW_WEIGHTS', 1)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_WEIGHTS';
+		}
+		
+		if($return and !Configuration::updateValue('LEGAL_SHOW_FANCY', false)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_FANCY';
+		}
+		
+		if($return and !Configuration::updateValue('LEGAL_CSS', 1)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_CSS';
 		}
 		
 		// set config vars for cms pages
@@ -448,6 +468,7 @@ class EU_Legal extends Module {
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_NOW');
 		$return &= Configuration::deleteByName('LEGAL_DELIVERY_LATER');
 		$return &= Configuration::deleteByName('LEGAL_SHOW_WEIGHTS');
+		$return &= Configuration::deleteByName('LEGAL_SHOW_FANCY');
 		
 		foreach($this->cms_pages as $cms_page)
 			if(strpos($cms_page['config'], $this->config_prefix) === 0)
@@ -503,6 +524,8 @@ class EU_Legal extends Module {
 		$return &= Configuration::updateValue('LEGAL_DELIVERY_LATER', $values);
 		
 		$return &= Configuration::updateValue('LEGAL_SHOW_WEIGHTS', 1);
+		
+		$return &= Configuration::updateValue('LEGAL_SHOW_FANCY', false);
 		
 		foreach($this->cms_pages as $cms_page)
 			if(strpos($cms_page['config'], $this->config_prefix) === 0)
@@ -760,6 +783,12 @@ class EU_Legal extends Module {
 						'title' => $this->l('Show product weights'),
 						'desc'  => $this->l('Shows the product weights at your product if weight higher than zero.'),
 					),
+					'LEGAL_SHOW_FANCY' => array(
+						'type'  => 'bool',
+						'title' => $this->l('Show fancybox excl. shipping'),
+						'desc'  => $this->l('Shows a fancybox on the excl. shipping links.'),
+					),
+					
 				),
 				'submit' => array(
 					'title' => $this->l('Save general options'),
@@ -1084,6 +1113,10 @@ class EU_Legal extends Module {
 			
 			if(!Configuration::updateValue('LEGAL_SHOW_WEIGHTS', (bool)Tools::getValue('LEGAL_SHOW_WEIGHTS'))) 
 				$this->_errors[] = $this->l('Could not update').': LEGAL_SHOW_WEIGHTS';
+				
+			if(!Configuration::updateValue('LEGAL_SHOW_FANCY', (bool)Tools::getValue('LEGAL_SHOW_FANCY'))) 
+				$this->_errors[] = $this->l('Could not update').': LEGAL_SHOW_FANCY';
+				
 			
 			// CMS IDs festlegen
 			if(!Configuration::updateValue('LEGAL_CMS_ID_LEGAL', (int)Tools::getValue('LEGAL_CMS_ID_LEGAL')))
@@ -1094,6 +1127,9 @@ class EU_Legal extends Module {
 			
 			if(!Configuration::updateValue('LEGAL_CMS_ID_REVOCATION', (int)Tools::getValue('LEGAL_CMS_ID_REVOCATION')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_REVOCATION';
+			
+			if(!Configuration::updateValue('LEGAL_CMS_ID_REVOCATIONFORM', (int)Tools::getValue('LEGAL_CMS_ID_REVOCATIONFORM')))
+				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_REVOCATIONFORM';
 			
 			if(!Configuration::updateValue('LEGAL_CMS_ID_PRIVACY', (int)Tools::getValue('LEGAL_CMS_ID_PRIVACY')))
 				$this->_errors[] = $this->l('Could not update').': LEGAL_CMS_ID_PRIVACY';
@@ -1217,6 +1253,40 @@ class EU_Legal extends Module {
 			
 			if(count($this->_errors) <= 0)
 				return $this->displayConfirmation($this->l('Theme settings saved'));
+			
+		}
+		
+		elseif(Tools::isSubmit('submitAddModules')) {
+			
+			$modules = Tools::getValue('modules');
+			$dir = dirname(__FILE__).'/modules/';
+			
+			foreach($modules as $module) {
+				
+				if(!is_dir(_PS_MODULE_DIR_.$module) and !Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
+					$this->_errors[] = $this->l('Could not extract file').': '.$module.'.zip';
+					continue;
+				}
+				
+				if(!$instance = self::getInstanceByName($module)) {
+					$this->_errors[] = $this->l('Could not instance module').': '.$module;
+					continue;
+				}
+				
+				if(!$instance->install()) {
+					
+					if(is_array($instance->_errors))
+						$this->_errors = array_merge($this->_errors, $instance->_errors);
+					
+				}
+				
+				Cache::clean('Module::isInstalled'.$name);
+		
+		
+			}
+			
+			if(count($this->_errors) <= 0)
+				return $this->displayConfirmation($this->l('Modules installed'));
 			
 		}
 		
@@ -1778,55 +1848,99 @@ class EU_Legal extends Module {
 		if(!isset($params['product']))
 			return;
 		
-		$this->smarty->assign(array(
-			'is_object'             => (bool)($params['product'] instanceof Product),
-			'product'               => $params['product'],
-			'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
-			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
-		));
+		if($params['product'] instanceof Product) {
+			$id_product = (int)$params['product']->id;
+		}
+		else {
+			$id_product = (int)$params['product']['id_product'];
+		}
 		
-		return $this->display(__FILE__, 'displayProductDeliveryTime.tpl');
+		$cache_key = $this->name.'_'.$id_product;
+		
+		if (!$this->isCached('displayProductDeliveryTime.tpl', $this->getCacheId($cache_key)))
+		{
+		
+			$this->smarty->assign(array(
+				'is_object'             => (bool)($params['product'] instanceof Product),
+				'product'               => $params['product'],
+				'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
+				'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
+			));
+		
+		}
+		
+		return $this->display(__FILE__, 'displayProductDeliveryTime.tpl', $this->getCacheId($cache_key));
 		
 	}
+	
+	public function hookDisplayTop( $params )
+	{
+		if(Configuration::get('LEGAL_SHOW_FANCY') == true)
+		{
+			$this->context->controller->addJS(_PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.js');	
+			$this->context->controller->addCSS(_PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.css', 'all');
+		}
+	} 
 	
 	public function hookDisplayProductPriceBlock($params) {
 		
 		if(!isset($params['product']))
 			return;
 		
-		$weight = 0;
-		$combination_weight = 0;
-		
 		if($params['product'] instanceof Product) {
-			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']->id);
-			$weight = (float)$params['product']->weight;
+			$id_product = (int)$params['product']->id;
 		}
 		else {
-			$id_product_attribute = Product::getDefaultAttribute((int)$params['product']['id_product']);
-			$weight = (float)$params['product']['weight'];
+			$id_product = (int)$params['product']['id_product'];
 		}
 		
-		if($id_product_attribute) {
-			$combination = new Combination($id_product_attribute);
-			$combination_weight = $combination->weight;
-		}
+		$cache_key = $this->name.'_'.$params['type'].'_'.$id_product;
 		
-		$this->smarty->assign(array(
-			'is_object'             => (bool)($params['product'] instanceof Product),
-			'product'               => $params['product'],
-			'weight'                => $weight,
-			'combination_weight'    => $combination_weight,
-			'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
-			'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
-			'php_self'              => $this->context->controller->php_self,
-			'tax_enabled'           => Configuration::get('PS_TAX'),  
-			'cms_id_shipping'       => Configuration::get('LEGAL_CMS_ID_SHIPPING'),
-			'template_type'         => $params['type'],
-			'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
-			'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
-		));
+		if(!$this->isCached('displayProductPriceBlock.tpl', $this->getCacheId($cache_key)))
+		{
+			
+			$weight = 0;
+			$combination_weight = 0;
+			$id_product = 0;
+			$allow_oosp = 0;
+			
+			if($params['product'] instanceof Product) {
+				$id_product_attribute = Product::getDefaultAttribute($id_product);
+				$weight = (float)$params['product']->weight;
+				$allow_oosp = $params['product']->isAvailableWhenOutOfStock((int)$params['product']->out_of_stock);
+			}
+			else {
+				$id_product_attribute = Product::getDefaultAttribute($id_product);
+				$weight = (float)$params['product']['weight'];
+				$allow_oosp = $params['product']['allow_oosp'];
+			}
+			
+			if($id_product_attribute) {
+				$combination = new Combination($id_product_attribute);
+				$combination_weight = $combination->weight;
+			}
+			
+			$this->smarty->assign(array(
+				'is_object'             => (bool)($params['product'] instanceof Product),
+				'product'               => $params['product'],
+				'weight'                => $weight,
+				'allow_oosp'            => $allow_oosp,
+				'combination_weight'    => $combination_weight,
+				'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
+				'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
+				'php_self'              => $this->context->controller->php_self,
+				'tax_enabled'           => Configuration::get('PS_TAX'),  
+				'cms_id_shipping'       => Configuration::get('LEGAL_CMS_ID_SHIPPING'),
+				'template_type'         => $params['type'],
+				'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
+				'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
+				'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY'),
+				'seo_active'            => Configuration::get('PS_REWRITING_SETTINGS'),
+			));
 		
-		return $this->display(__FILE__, 'displayProductPriceBlock.tpl');
+		}	
+		
+		return $this->display(__FILE__, 'displayProductPriceBlock.tpl', $this->getCacheId($cache_key));
 		
 	}
 	
@@ -1883,10 +1997,39 @@ class EU_Legal extends Module {
 		'shipping_price' => $shipping_price,
 		'no_address_selected' => $no_address_selected,
 		'default_country' => $default_country,
-		'shipping_link' => $shipping_link
+		'shipping_link' => $shipping_link,
+		'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY'),
+		'seo_active'            => Configuration::get('PS_REWRITING_SETTINGS'),
 	    ));
 	    
 	    return $this->display(__FILE__, 'displayShippingPrice.tpl');
+	}
+	
+	
+	/* Empty cache hooks */
+	public function hookActionObjectProductAddAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectProductUpdateAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectProductDeleteAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectCategoryUpdateAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function _clearCache($template, $cache_id = NULL, $compile_id = NULL)
+	{
+		parent::_clearCache('displayProductPriceBlock.tpl');
 	}
 	
 	/*******************************************************************************************************************

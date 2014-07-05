@@ -5,13 +5,9 @@ class Carrier extends CarrierCore
 	{
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Alternative Methode zur Berechnung der MwSt. anstatt statischer taxrate (LEGAL_SHIPTAXMETH)
-		*/
-		
-		/*
-		* Alternative Methode zur Berechnung der MwSt. anstatt statischer taxrate (LEGAL_SHIPTAXMETH)
-		* Nur wenn Warenkorb existiert und mindestens ein Produkt im Warenkorb, sonst kann alternative methode nicht angewand werden
+		* EU-Legal
+		* alternative method for tax calculation instead of static taxrate (LEGAL_SHIPTAXMETH)
+		* Only if Cart exists and at least one product in cart, otherwise the alternative method could not be applied
 		*/
 		if(
 			Configuration::get('LEGAL_SHIPTAXMETH') and 
