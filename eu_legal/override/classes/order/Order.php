@@ -1,6 +1,20 @@
 <?php
 class Order extends OrderCore
 {
+	/*
+	 * Returns a list of all the taxes represented in the order and the percentage of each tax, e.g,
+	 * an order with two products taxed with 9% and 17% accordingly would have 50% of 9% tax and
+	 * 50% of 19% tax.
+	 *
+	 * @access public
+	 *
+	 * @param mixed $products - an array of products in the order (optional, the method will fetch
+	 * them from the order if not provided)
+	 *
+	 * @param boolean $slip - when getting the data for an order slip set this to true
+	 *
+	 * @return mixed - array of taxes on success or boolean false if taxes weren't found
+	 */
 	public function getOrderTaxes($products = false, $slip = false) {
 		if ( ! $products) {
 			$products = ($slip && Validate::isLoadedObject($slip)) ? $slip->getProducts() : $this->getProducts();
@@ -75,6 +89,20 @@ class Order extends OrderCore
 		return false;
 	}
 	
+	
+	/*
+	 * Calculates compound tax for prices that mustn't have a set tax, e.g., wrapping price
+	 *
+	 * @access public
+	 *
+	 * @scope static
+	 *
+	 * @param float $price - price to apply the tax to
+	 *
+	 * @param array $order_taxes - a list of taxes used in the order
+	 *
+	 * @return mixed - array of tax values on success or boolean false
+	 */
 	public static function calculateCompundTax($price, $order_taxes) {
 		if ( ! is_array($order_taxes) || ( ! Validate::isPrice($price) && ! Validate::isNegativePrice($price))) {
 			return false;
@@ -100,6 +128,22 @@ class Order extends OrderCore
 		return sizeof($result) ? $result : false;
 	}
 	
+	/*
+	 * Calculates compound tax price for prices that mustn't have a set tax, e.g., wrapping price
+	 *
+	 * @access public
+	 *
+	 * @scope static
+	 *
+	 *
+	 * @param float $price - price to apply the tax to
+	 *
+	 * @param array $order_taxes - a list of taxes used in the order
+	 *
+	 * @param boolean $add_tax - when set to true the tax will be added to $price, otherwise it will be subtracted
+	 *
+	 * @return float - calculated value
+	 */
 	public static function calculateCompundTaxPrice($price, $order_taxes, $add_tax = false) {
 		if ($taxes = self::calculateCompundTax($price, $order_taxes)) {
 			foreach ($taxes as $compound_tax) {
@@ -115,6 +159,20 @@ class Order extends OrderCore
 		return (float)$price;
 	}
 
+	/*
+	 * Adds compund taxes to an array of order taxes
+	 *
+	 * @access public
+	 *
+	 * @scope static
+	 *
+	 *
+	 * @param array $taxes - a reference to order taxes
+	 *
+	 * @param array $prices - a list of prices that use compund taxes
+	 *
+	 * @return void
+	 */
 	public static function addCompoundTaxesToTaxArray(&$taxes, $prices) {
 		if ( ! is_array($taxes) || ! is_array($prices)) {
 			return false;
@@ -147,6 +205,19 @@ class Order extends OrderCore
 		}
 	}
     
+	/*
+	 * Get tax details for an order, including compund taxes
+	 *
+	 * @access public
+	 *
+	 *
+	 * @param mixed $products - an array of products in the order (optional, the method will fetch
+	 * them from the order if not provided)
+	 *
+	 * @param boolean $slip - when getting the data for an order slip set this to true
+	 *
+	 * @return mixed - an array of taxes or boolean false
+	 */
 	public function getOrderTaxDetails($products = false, $slip = false) {
 		if ( ! $products) {
 			$products = ($slip && Validate::isLoadedObject($slip)) ? $slip->getProducts() : $this->getProducts();

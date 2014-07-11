@@ -44,6 +44,7 @@ class ParentOrderController extends ParentOrderControllerCore
 		return $this->_legal;
 	}
     
+<<<<<<< HEAD
 	/*
 	 * Initialize parent and get two CMS pages responsible for "terms and conditions" and "terms of revocation".
 	 * Also assigns PS_EU_PAYMENT_API var to use in templates and the path to eu_legal templates to use in
@@ -53,6 +54,15 @@ class ParentOrderController extends ParentOrderControllerCore
 	 *
 	 * @return void
 	 */
+	public function init() {
+=======
+	public function init() 
+	{
+		/*
+		* EU-Legal
+		* conditions and revocation within eu-payment page / lightbox
+		*/
+>>>>>>> dev
 		parent::init();
 		
 		$cms = array(
@@ -88,6 +98,7 @@ class ParentOrderController extends ParentOrderControllerCore
 		));
 	}
     
+<<<<<<< HEAD
 	/*
 	 * Adds a legal.js javascript file to parent's default javascript collection.
 	 *
@@ -96,6 +107,14 @@ class ParentOrderController extends ParentOrderControllerCore
 	 * @return void
 	 */
 	public function setMedia() {
+=======
+	public function setMedia() 
+	{
+		/*
+		* EU-Legal
+		* own checkout js
+		*/
+>>>>>>> dev
 		parent::setMedia();
 		
 		$this->addJS(_MODULE_DIR_ . 'eu_legal/js/legal.js');
