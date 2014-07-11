@@ -53,6 +53,7 @@ class ParentOrderController extends ParentOrderControllerCore
 	 *
 	 * @return void
 	 */
+	public function init() {
 		parent::init();
 		
 		$cms = array(
