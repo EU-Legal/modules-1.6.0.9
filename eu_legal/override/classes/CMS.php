@@ -4,7 +4,7 @@ class CMS extends CMSCore
 	public static function getContentFromId($id_cms, $id_lang = null)
 	{
 		/*
-		* Legal 0.0.1 | 20140320
+		* EU-Legal
 		* own function: returns content from CMS ID
 		*/
 		

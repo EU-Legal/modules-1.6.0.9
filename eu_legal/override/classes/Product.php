@@ -7,8 +7,8 @@ class Product extends ProductCore
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null)
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit hinzufügen
+		* EU-Legal
+		* add standard shipping time
 		*/
 		
 		self::$definition['fields']['delivery_now']   = array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255);
@@ -32,8 +32,8 @@ class Product extends ProductCore
 	{
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit aus Datenbank ermitteln pl.*
+		* EU-Legal
+		* get standard shipping time from database pl.*
 		*/
 		
 		if (!$context)
@@ -87,7 +87,9 @@ class Product extends ProductCore
 
 		$sql = new DbQuery();
 		
-		/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
+		/* 
+		* EU-Legal
+		* get standard shipping time from database pl.* */
 		$sql->select(
 			'p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`,
 			pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`, MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
@@ -148,8 +150,8 @@ class Product extends ProductCore
 	{
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit aus Datenbank ermitteln pl.*
+		* EU-Legal
+		* get standard shipping time from database pl.*
 		*/
 		
 		if (!$context)
@@ -195,7 +197,9 @@ class Product extends ProductCore
 			if (!$id_product = $result['id_product'])
 				return false;
 			
-			/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
+			/* 
+			* EU-Legal
+			* get standard shipping time from database pl.* */
 			$sql = 'SELECT p.*, product_shop.*, stock.`out_of_stock` out_of_stock, pl.`description`, pl.`description_short`,
 						pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`,
 						p.`ean13`, p.`upc`, MAX(image_shop.`id_image`) id_image, il.`legend`,
@@ -232,8 +236,8 @@ class Product extends ProductCore
 	{
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit aus Datenbank ermitteln pl.*
+		* EU-Legal
+		* get standard shipping time from database pl.*
 		*/
 		
 		if (!Validate::isBool($count))
@@ -344,9 +348,9 @@ class Product extends ProductCore
 	public static function getProductProperties($id_lang, $row, Context $context = null)
 	{
 		
-		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit aus Datenbank ermitteln pl.*
+		/* 
+		* EU-Legal
+		* get standard shipping time from database pl.*
 		*/
 		
 		if (!$row['id_product'])
@@ -354,7 +358,9 @@ class Product extends ProductCore
 		
 		$row = parent::getProductProperties($id_lang, $row, $context);
 		
-		/* Standard Lieferzeit aus Datenbank ermitteln */
+		/* 
+		* EU-Legal
+		* get standard shipping time from database */
 		$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW',   (int)$id_lang);
 		$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
 		

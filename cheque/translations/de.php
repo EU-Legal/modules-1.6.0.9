@@ -8,6 +8,7 @@ $_MODULE['<{cheque}prestashop>cheque_e09484ba6c16bc20236b63cc0d87ee95'] = 'Möch
 $_MODULE['<{cheque}prestashop>cheque_32776feb26ff6f9648054e796aa0e423'] = '\"Scheckzahlung\" und Adressinformationen müssen eingerichtet sein, um dieses Modul richtig zu nutzen.';
 $_MODULE['<{cheque}prestashop>cheque_81c6c3ba23ca2657a8eedc561f865ddb'] = '\"Zahlungsempfänger\" ist ein Pflichtfeld.';
 $_MODULE['<{cheque}prestashop>cheque_00a369029140cfd18857425d49b472f8'] = '\"Adresse\" ist ein Pflichtfeld.';
+$_MODULE['<{cheque}prestashop>cheque_354cafb81a13d2793685e46314bb6932'] = 'Zahlung per Scheck';
 $_MODULE['<{cheque}prestashop>cheque_5dd532f0a63d89c5af0243b74732f63c'] = 'Kontaktangaben';
 $_MODULE['<{cheque}prestashop>cheque_4b2f62e281e9a6829c6df0e87d34233a'] = 'Zahlungsempfänger (Name)';
 $_MODULE['<{cheque}prestashop>cheque_0fe62049ad5246bc188ec1bae347269e'] = 'Anschrift, an die der Scheck geschickt werden soll';

@@ -4,8 +4,8 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.12
-* @date          : 2014 06 24
+* @version       : 1.0.0
+* @date          : 2014 07 04
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.12';                
+		$this->version = '1.0.0';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -212,6 +212,12 @@ class EU_Legal extends Module {
 		$return &= $this->installHooks();
 		$return &= $this->installRegisterHooks();
 		
+		// register cache hooks
+		$return &= $this->registerHook('actionObjectProductAddAfter');
+		$return &= $this->registerHook('actionObjectProductUpdateAfter');
+		$return &= $this->registerHook('actionObjectProductDeleteAfter');
+		$return &= $this->registerHook('actionObjectCategoryUpdateAfter');
+		
 		// global configuration values
 		
 		// shop specific configuration values
@@ -263,9 +269,14 @@ class EU_Legal extends Module {
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_WEIGHTS';
 		}
 		
-		if($return and !Configuration::updateValue('LEGAL_SHOW_FANCY', false)) {
+		if($return and !Configuration::updateValue('LEGAL_SHOW_FANCY', 1)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_FANCY';
+		}
+		
+		if($return and !Configuration::updateValue('LEGAL_CSS', 1)) {
+			$return &= false;
+			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_CSS';
 		}
 		
 		// set config vars for cms pages
@@ -1245,6 +1256,40 @@ class EU_Legal extends Module {
 			
 		}
 		
+		elseif(Tools::isSubmit('submitAddModules')) {
+			
+			$modules = Tools::getValue('modules');
+			$dir = dirname(__FILE__).'/modules/';
+			
+			foreach($modules as $module) {
+				
+				if(!is_dir(_PS_MODULE_DIR_.$module) and !Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
+					$this->_errors[] = $this->l('Could not extract file').': '.$module.'.zip';
+					continue;
+				}
+				
+				if(!$instance = self::getInstanceByName($module)) {
+					$this->_errors[] = $this->l('Could not instance module').': '.$module;
+					continue;
+				}
+				
+				if(!$instance->install()) {
+					
+					if(is_array($instance->_errors))
+						$this->_errors = array_merge($this->_errors, $instance->_errors);
+					
+				}
+				
+				Cache::clean('Module::isInstalled'.$module);
+		
+		
+			}
+			
+			if(count($this->_errors) <= 0)
+				return $this->displayConfirmation($this->l('Modules installed'));
+			
+		}
+		
 		if(!empty($this->_errors))
 			return $this->displayError(implode('<br>', $this->_errors));
 			
@@ -1851,20 +1896,23 @@ class EU_Legal extends Module {
 		
 		$cache_key = $this->name.'_'.$params['type'].'_'.$id_product;
 		
-		if (!$this->isCached('displayProductPriceBlock.tpl', $this->getCacheId($cache_key)))
+		if(!$this->isCached('displayProductPriceBlock.tpl', $this->getCacheId($cache_key)))
 		{
 			
 			$weight = 0;
 			$combination_weight = 0;
 			$id_product = 0;
+			$allow_oosp = 0;
 			
 			if($params['product'] instanceof Product) {
 				$id_product_attribute = Product::getDefaultAttribute($id_product);
 				$weight = (float)$params['product']->weight;
+				$allow_oosp = $params['product']->isAvailableWhenOutOfStock((int)$params['product']->out_of_stock);
 			}
 			else {
 				$id_product_attribute = Product::getDefaultAttribute($id_product);
 				$weight = (float)$params['product']['weight'];
+				$allow_oosp = $params['product']['allow_oosp'];
 			}
 			
 			if($id_product_attribute) {
@@ -1876,6 +1924,7 @@ class EU_Legal extends Module {
 				'is_object'             => (bool)($params['product'] instanceof Product),
 				'product'               => $params['product'],
 				'weight'                => $weight,
+				'allow_oosp'            => $allow_oosp,
 				'combination_weight'    => $combination_weight,
 				'priceDisplay'          => Product::getTaxCalculationMethod((int)$this->context->cookie->id_customer),
 				'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
@@ -1885,6 +1934,8 @@ class EU_Legal extends Module {
 				'template_type'         => $params['type'],
 				'weight_unit'           => Configuration::get('PS_WEIGHT_UNIT'),
 				'show_weights'          => Configuration::get('LEGAL_SHOW_WEIGHTS'),
+				'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY'),
+				'seo_active'            => Configuration::get('PS_REWRITING_SETTINGS'),
 			));
 		
 		}	
@@ -1946,10 +1997,39 @@ class EU_Legal extends Module {
 		'shipping_price' => $shipping_price,
 		'no_address_selected' => $no_address_selected,
 		'default_country' => $default_country,
-		'shipping_link' => $shipping_link
+		'shipping_link' => $shipping_link,
+		'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY'),
+		'seo_active'            => Configuration::get('PS_REWRITING_SETTINGS'),
 	    ));
 	    
 	    return $this->display(__FILE__, 'displayShippingPrice.tpl');
+	}
+	
+	
+	/* Empty cache hooks */
+	public function hookActionObjectProductAddAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectProductUpdateAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectProductDeleteAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function hookActionObjectCategoryUpdateAfter($params)
+	{
+		$this->_clearCache('*');
+	}
+
+	public function _clearCache($template, $cache_id = NULL, $compile_id = NULL)
+	{
+		parent::_clearCache('displayProductPriceBlock.tpl');
 	}
 	
 	/*******************************************************************************************************************

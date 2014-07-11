@@ -3,9 +3,9 @@ class Supplier extends SupplierCore
 {
 	public static function getProducts($id_supplier, $id_lang, $p, $n, $order_by = null, $order_way = null, $get_total = false, $active = true, $active_category = true)
 	{	
-		/*
-		* Legal 0.0.1 | 20140320
-		* Standard Lieferzeit aus Datenbank ermitteln pl.*
+		/* 
+		* EU-Legal
+		* get standard shipping time from database pl.*
 		*/
 		
 		$context = Context::getContext();
@@ -64,7 +64,10 @@ class Supplier extends SupplierCore
 			$alias = 'm.';
 		}
 		
-		/* Standard Lieferzeit aus Datenbank ermitteln pl.* */
+		/* 
+		* EU-Legal
+		* get standard shipping time from database pl.* 
+		*/
 		$sql = 'SELECT p.*, product_shop.*, stock.out_of_stock,
 					IFNULL(stock.quantity, 0) as quantity,
 					pl.`description`,

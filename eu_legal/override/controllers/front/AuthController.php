@@ -4,8 +4,8 @@ class AuthController extends AuthControllerCore
 	protected function sendConfirmationMail(Customer $customer) {
 		
 		/*
-		* Legal 0.0.1 | 20140320
-		* Passwort nicht als Klartext schicken
+		* EU-Legal
+		* Password not visible
 		*/
 		
 		if (!Configuration::get('PS_CUSTOMER_CREATION_EMAIL'))

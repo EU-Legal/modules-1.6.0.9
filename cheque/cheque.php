@@ -160,7 +160,7 @@ class Cheque extends PaymentModule
 		return array(
 			'cta_text' => $this->l('Pay by Cheque'),
 			'logo' => Media::getMediaPath(dirname(__FILE__).'/cheque.jpg'),
-			'action' => $this->context->link->getModuleLink($this->name, 'validation')
+			'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
 		);
 	}
 

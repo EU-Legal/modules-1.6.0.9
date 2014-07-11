@@ -69,6 +69,8 @@ unserer Webseite verfolgen.
 
 {cms_revocation_txt}
 
+{cms_revocationform_txt}
+
 {cms_privacy_txt}
 
 {cms_environmental_txt}

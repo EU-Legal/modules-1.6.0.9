@@ -4,18 +4,17 @@ class Mail extends MailCore
 	public static function Send($id_lang, $template, $subject, $template_vars, $to, $to_name = null, $from = null, $from_name = null, $file_attachment = null, $mode_smtp = null, $template_path = _PS_MAIL_DIR_, $die = false, $id_shop = null, $bcc = null)
 	{	
 		/*
-		* Legal 0.0.1 | 20140320
-		* CMS Seiten für alle Emails verfügbar machen, sowohl als HTML als auch als TXT
-		* Duplizieren der Bestellbestätigung (LEGAL_OCMAILDBL)
+		* EU-Legal
+		* CMS pages available for all emails => txt and html
 		*/
 		
 		$additional_cms = array(
-			'conditions'    => 'PS_CONDITIONS_CMS_ID',    // Legal: AGB
-			'revocation'    => 'LEGAL_CMS_ID_REVOCATION',    // Legal: Widerrufsrecht
-			'revocationform'=> 'LEGAL_CMS_ID_REVOCATIONFORM',    // Legal: Widerrufsformular
-			'privacy'       => 'LEGAL_CMS_ID_PRIVACY',       // Legal: Datenschutz
-			'environmental' => 'LEGAL_CMS_ID_ENVIRONMENTAL', // Legal: Umweltverordnung
-			'legal'         => 'LEGAL_CMS_ID_LEGAL' // Legal: Impressum
+			'conditions'    => 'PS_CONDITIONS_CMS_ID',    // Legal: Condition
+			'revocation'    => 'LEGAL_CMS_ID_REVOCATION',    // Legal: Revocation
+			'revocationform'=> 'LEGAL_CMS_ID_REVOCATIONFORM',    // Legal: Revocation Form
+			'privacy'       => 'LEGAL_CMS_ID_PRIVACY',       // Legal: Privacy
+			'environmental' => 'LEGAL_CMS_ID_ENVIRONMENTAL', // Legal: Environmental
+			'legal'         => 'LEGAL_CMS_ID_LEGAL' // Legal: Imprint
 		);
 		
 		$type = Configuration::get('PS_MAIL_TYPE');

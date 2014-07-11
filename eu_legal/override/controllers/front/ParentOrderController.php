@@ -13,8 +13,8 @@ class ParentOrderController extends ParentOrderControllerCore
 	public function __construct()
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* EU Legal Modul instanziieren
+		* EU-Legal
+		* instantiate EU Legal Module
 		*/
 		
 		parent::__construct();
@@ -36,9 +36,9 @@ class ParentOrderController extends ParentOrderControllerCore
 	public function getLegalInstance()
 	{
 		/*
-		* Legal 0.0.1 | 20140320
-		* EU Legal Modul instanziieren
-		* (wird zur Zeit noch nicht verwendet!)
+		* EU-Legal
+		* instantiate EU Legal Module
+		* (not used at the moment!)
 		*/
 		
 		return $this->_legal;
@@ -53,7 +53,6 @@ class ParentOrderController extends ParentOrderControllerCore
 	 *
 	 * @return void
 	 */
-	public function init() {
 		parent::init();
 		
 		$cms = array(
@@ -68,7 +67,7 @@ class ParentOrderController extends ParentOrderControllerCore
 				if (Validate::isLoadedObject($cms)) {
 					$this->context->smarty->assign($config, new CMS((int)$id_cms, $this->context->language->id));
 					
-					$link = $this->context->link->getCMSLink($cms);
+					$link = $this->context->link->getCMSLink($cms, $cms->link_rewrite, Configuration::get('PS_SSL_ENABLED'));
 					
 					if ( ! strpos($link, '?')) {
 						$link.= '?content_only=1';
