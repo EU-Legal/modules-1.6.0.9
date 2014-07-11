@@ -24,7 +24,7 @@
                     <p class="">
                         <h2>{l s='Certified by' mod='eu_legal'}</h2>
                         <hr />
-                        <a target="_blank" href="http://www.silbersaiten.de">
+                        <a target="_blank" href="http://www.trustedshops.de/">
                             <img src="{$_path}views/img/admin/trustedshops_certified.gif" alt="Trusted Shops certified Software" class="img-responsive" />
                             <h4>Trusted Shops Certified Software</h4>
                         </a>
