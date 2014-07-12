@@ -1,8 +1,29 @@
 <?php
 class Module extends ModuleCore
 {
+	/* Added by eu_legal module - a boolean value to let the Module class know if a
+	 * module is eu_legal compatible. Mostly used by payment modules that register
+	 * themselves onto displayPaymentEU hook
+	 */
 	protected $is_eu_compatible = 0;
 	
+	/*
+	 * Identical to parent's getModuleOnDisk, except it generates "is_eu_compatible" node in module's
+	 * config.xml file. This node is later used in this very method to check if the module needs to be updated.
+	 * The autoupdate functionality is disabled for those modules that have is_eu_compatible set to 1
+	 *
+	 * @access public
+	 *
+	 * @scope static
+	 *
+	 * @param boolean $useConfig
+	 *
+	 * @param boolean $loggedOnAddons
+	 *
+	 * @param mixed $id_employee
+	 *
+	 * @return array
+	 */
 	public static function getModulesOnDisk($useConfig = false, $loggedOnAddons = false, $id_employee = false)
 	{
 		global $_MODULES;
@@ -307,6 +328,15 @@ class Module extends ModuleCore
 		return $module_list;
 	}
 	
+	
+	/*
+	 * Identical to parent's _generateConfigXml, except it generates "is_eu_compatible" node in module's
+	 * config.xml file.
+	 *
+	 * @access protected
+	 *
+	 * @return void
+	 */
 	protected function _generateConfigXml()
 	{
 		$xml = '<?xml version="1.0" encoding="UTF-8" ?>
