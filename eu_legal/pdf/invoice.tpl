@@ -72,7 +72,7 @@
 	<tr>
 		<td style="width: 17%; padding-right: 7px; text-align: right; vertical-align: top; font-size: 7pt;">
 			<!-- CUSTOMER INFORMATION -->
-			<b>{l s='Order Number:' pdf='true'}</b><br />
+			<b>{l s='Order Reference:' pdf='true'}</b><br />
 			{$order->getUniqReference()}<br />
 			<br />
 			<b>{l s='Order Date:' pdf='true'}</b><br />

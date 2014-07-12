@@ -4,7 +4,7 @@
 * EU Legal
 * Better security for german merchants.
 * 
-* @version       : 0.0.17
+* @version       : 1.0.0
 * @date          : 2014 07 04
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '0.0.17';                
+		$this->version = '1.0.0';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -269,7 +269,7 @@ class EU_Legal extends Module {
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_WEIGHTS';
 		}
 		
-		if($return and !Configuration::updateValue('LEGAL_SHOW_FANCY', false)) {
+		if($return and !Configuration::updateValue('LEGAL_SHOW_FANCY', 1)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' LEGAL_SHOW_FANCY';
 		}
@@ -1280,7 +1280,7 @@ class EU_Legal extends Module {
 					
 				}
 				
-				Cache::clean('Module::isInstalled'.$name);
+				Cache::clean('Module::isInstalled'.$module);
 		
 		
 			}
