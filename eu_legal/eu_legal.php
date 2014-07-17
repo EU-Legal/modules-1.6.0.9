@@ -2,11 +2,11 @@
 
 /**
 * EU Legal
-* Better security for german merchants.
+* Better security for German and EU merchants.
 * 
 * @version       : 1.0.0
 * @date          : 2014 07 04
-* @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
+* @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
