@@ -65,7 +65,7 @@
 		<PayPalLogoLarge>https://www.paypal-deutschland.de/external/logocenter-update/logo-paypal-200x55.gif</PayPalLogoLarge>
 
 		<PayPalHorizontalSolutionPP></PayPalHorizontalSolutionPP>
-		<LocalPayPalHorizontalSolutionPP>/img/default_logos/DE_horizontal_solution_PP.gif</LocalPayPalHorizontalSolutionPP>
+		<LocalPayPalHorizontalSolutionPP>/img/default_logos/DE_horizontal_solution_PP.png</LocalPayPalHorizontalSolutionPP>
 
 		<PayPalVerticalSolutionPP></PayPalVerticalSolutionPP>
 		<LocalPayPalVerticalSolutionPP>/img/default_logos/DE_vertical_solution_PP.gif</LocalPayPalVerticalSolutionPP>
