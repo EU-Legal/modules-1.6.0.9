@@ -43,6 +43,10 @@ ul.product_list.grid .left-block .delivery-info {
 ul.product_list.grid .left-block .weight-info {
 	display: none;
 }
+ul.product_list.grid > li .product-container .product-image-container .content_price span.tax-shipping-info span { /* display tax info smaller */
+	font-size: 10px; line-height: normal; 
+}
+
 @media (min-width: 1200px) {
 	ul.product_list.grid .left-block .tax-shipping-info {
 		display: block;
