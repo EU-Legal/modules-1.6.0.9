@@ -29,16 +29,16 @@
 		<tr>
 			<td style="width: 100%">
 				{if $tax_exempt}
-					{l s='Exempt of VAT according section 259B of the General Tax Code.' mod='germanext'}
+					{l s='Exempt of VAT according section 259B of the General Tax Code.' pdf='true'}
 				{else if ! $tax_details || (count($tax_details) == 0)}
-						{l s='No tax' mod='germanext'}
+						{l s='No tax' pdf='true'}
 				{else}
 				<table style="width: 100%">
 					<tr style="line-height:5px;">
-						<td style="text-align: left; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 40%">{l s='Tax' mod='germanext'}</td>
-						<td style="text-align: right; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 20%">{l s='Pre-Tax Total' mod='germanext'}</td>
-						<td style="text-align: right; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 20%">{l s='Total Tax' mod='germanext'}</td>
-						<td style="text-align: right; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 20%">{l s='Total with Tax' mod='germanext'}</td>
+						<td style="text-align: left; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 40%">{l s='Tax' pdf='true'}</td>
+						<td style="text-align: right; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 20%">{l s='Pre-Tax Total' pdf='true'}</td>
+						<td style="text-align: right; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 20%">{l s='Total Tax' pdf='true'}</td>
+						<td style="text-align: right; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 20%">{l s='Total with Tax' pdf='true'}</td>
 					</tr>
 					{foreach $tax_details as $taxName => $taxData}
 					<tr style="line-height:6px;background-color:{cycle values='#FFF,#DDD'};">
@@ -55,7 +55,7 @@
 	</table>
 	<!--  / TAX DETAILS -->
 	{if isset($USTG) && $USTG}
-	<p>{l s='According to § 19 and VAT is not displayed in the invoice.' mod='germanext'}</p>
+	<p>{l s='According to 19 and VAT is not displayed in the invoice.' pdf='true'}</p>
 	{/if}
 {else}
 	{if $tax_exempt || ((isset($product_tax_breakdown) && $product_tax_breakdown|@count > 0) || (isset($ecotax_tax_breakdown) && $ecotax_tax_breakdown|@count > 0))}
