@@ -70,7 +70,7 @@ class EU_Legal extends Module {
 		// module compliancy: only for exactly one PS version
 		$this->ps_versions_compliancy = array(                  
 			'min' => '1.6.0.7',
-			'max' => '1.6.0.8'
+			'max' => '1.6.0.9'
 		);
 	 	
 		// bootstrap baqckoffice functionality
