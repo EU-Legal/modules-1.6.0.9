@@ -180,10 +180,10 @@ class Sofortbanking extends PaymentModule
 
 		if (version_compare(_PS_VERSION_, '1.5', '>='))
 			$link = array(
-				'validation' => $this->context->shop->getBaseURL().'modules/'.$this->name.'/validation.php',
-				'success' => $this->context->shop->getBaseURL().'modules/'.$this->name
+				'validation' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/validation.php',
+				'success' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name
 					.'/confirmation.php?user_variable_1=-USER_VARIABLE_1-&hash=-USER_VARIABLE_1_HASH_PASS-',
-				'cancellation' => $this->context->shop->getBaseURL().'index.php?controller=order&step=3');
+				'cancellation' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'index.php?controller=order&step=3');
 		else
 			$link = array(
 				'validation' => (Configuration::get('PS_SSL_ENABLED') == 1 ? 'https://' : 'http://')
@@ -256,8 +256,8 @@ class Sofortbanking extends PaymentModule
 		return array(
 			'cta_text' => $title,
 			'logo' => $logo,
-			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true))
-		);
+			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true), true)
+			);
 	}
 
 	/**
