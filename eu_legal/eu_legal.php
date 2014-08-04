@@ -161,8 +161,12 @@ class EU_Legal extends Module {
 		// supported modules, delivered with EU Legal
 		$this->modules = array(           
 			'gc_ganalytics' => 'Google Analytics',
+			'trustedshops' => 'Trusted Shops',
 			'bankwire' => 'EU Bankwire',
 			'cheque' => 'EU Cheque',
+			'paypal' => 'EU PayPal',
+			'cashondelivery' => 'EU Cash on delivery',
+						
 			/*'gc_newsletter' => 'Newsletter',
 			'gc_blockcart'  => 'Warenkorb Block',*/
 		);
@@ -176,7 +180,7 @@ class EU_Legal extends Module {
 			array('name' => 'revocationform','config' => 'LEGAL_CMS_ID_REVOCATIONFORM','title' => $this->l('Revocation Form')),
 			array('name' => 'privacy',       'config' => 'LEGAL_CMS_ID_PRIVACY',       'title' => $this->l('Privacy')),
 			array('name' => 'environmental', 'config' => 'LEGAL_CMS_ID_ENVIRONMENTAL', 'title' => $this->l('Envorimental')),
-			array('name' => 'shipping',      'config' => 'LEGAL_CMS_ID_SHIPPING',      'title' => $this->l('Shipping')),
+			array('name' => 'shipping',      'config' => 'LEGAL_CMS_ID_SHIPPING',      'title' => $this->l('Shipping and Payment')),
 		);
 		
 		// prefix for config vars
@@ -736,7 +740,7 @@ class EU_Legal extends Module {
 				'fields' => array(
 				    'PS_EU_PAYMENT_API' => array(
 						'type'  => 'bool',
-						'title' => $this->l('EU Payment API Mode'),
+						'title' => $this->l('Legal Secure checkout for EU countries'),
 						'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
 						'auto_value' => false,
 						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
