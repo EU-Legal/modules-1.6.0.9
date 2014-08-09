@@ -433,7 +433,7 @@ class Cart extends CartCore
 					true,
 					$virtual_context
 				);
-
+				$product_tax_rate = 0;
 				$total_ecotax = $product['ecotax'] * (int)$product['cart_quantity'];
 				$total_price = $price * (int)$product['cart_quantity'];
 				$order_total_products_taxed+= ($total_price - $total_ecotax) * (1 + $product_tax_rate / 100);
