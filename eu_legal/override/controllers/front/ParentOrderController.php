@@ -125,6 +125,8 @@ class ParentOrderController extends ParentOrderControllerCore
 	 * @return string
 	 */
 	protected function _getEuPaymentOptionsHTML() {
+        if (!$this->isLogged)
+            return '<p class="warning">'.Tools::displayError('Please sign in to see payment methods.').'</p>';
 		$this->context->smarty->assign('payment_option', Tools::getValue('payment_option'));
 	
 		// Get available payment modules

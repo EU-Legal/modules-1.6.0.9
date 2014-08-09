@@ -225,7 +225,7 @@ class EU_Legal extends Module {
 		// global configuration values
 		
 		// shop specific configuration values
-		if($return and !Configuration::updateGlobalValue('PS_EU_PAYMENT_API', false)) {
+		if($return and !Configuration::updateGlobalValue('PS_EU_PAYMENT_API', true)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' PS_EU_PAYMENT_API';
 		}
@@ -502,7 +502,7 @@ class EU_Legal extends Module {
 		$return = true;
 		
 		// global configuration
-		$return &= Configuration::updateGlobalValue('PS_EU_PAYMENT_API', 0);
+		$return &= Configuration::updateGlobalValue('PS_EU_PAYMENT_API', 1);
 		
 		// shop specific configuration
 		$values = array(); 
@@ -742,7 +742,7 @@ class EU_Legal extends Module {
 						'type'  => 'bool',
 						'title' => $this->l('Legal Secure checkout for EU countries'),
 						'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
-						'auto_value' => false,
+						'auto_value' => true,
 						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
 						'no_multishop_checkbox' => true,
 				    ),
@@ -1609,12 +1609,37 @@ class EU_Legal extends Module {
 
 			$code .= $line;
 		}
+
+        $code = $this->removeComments($code);
 		
 		file_put_contents($override_path, $code);
 
 		return true;
 		
 	}
+
+    public function removeComments($str) {
+        $newStr  = '';
+
+        $commentTokens = array(T_COMMENT);
+
+        if (defined('T_DOC_COMMENT'))
+        $commentTokens[] = T_DOC_COMMENT;
+
+
+        $tokens = token_get_all($str);
+
+        foreach ($tokens as $token) {
+            if (is_array($token)) {
+                if (in_array($token[0], $commentTokens))
+                continue;
+
+                $token = $token[1];
+            }
+            $newStr .= ltrim($token);
+        }
+        return $newStr;
+    }
 	
 	// Nur temporär, kann in zukünftigen Versionen entfernt werden. Problem mit Upgrade und Overrides
 	public function addOverride($classname) {
@@ -1774,11 +1799,13 @@ class EU_Legal extends Module {
 
 			$code .= $line;
 		}
+
+        $code = $this->removeComments($code);
+
 		file_put_contents($override_path, $code);
 
 		// Re-generate the class index
 		PrestaShopAutoload::getInstance()->generateIndex();
-
 		return true;
 	}
 	
