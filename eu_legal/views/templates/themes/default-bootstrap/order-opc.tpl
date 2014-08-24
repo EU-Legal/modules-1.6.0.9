@@ -39,6 +39,17 @@
 		{* eu-legal: hide if EU API enabled *}
 		{if !isset($PS_EU_PAYMENT_API) or !$PS_EU_PAYMENT_API}
 		{include file="$tpl_dir./shopping-cart.tpl"}
+		{else}
+			{*set js init vars if EU PAYMENT IS ACTIVE,(needed for guest checkout) *}
+			{strip}
+			{addJsDef currencySign=$currencySign|html_entity_decode:2:"UTF-8"}
+			{addJsDef currencyRate=$currencyRate|floatval}
+			{addJsDef currencyFormat=$currencyFormat|intval}
+			{addJsDef currencyBlank=$currencyBlank|intval}
+			{addJsDef deliveryAddress=$cart->id_address_delivery|intval}
+			{addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
+			{addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
+			{/strip}
 		{/if}
 		<!-- End Shopping Cart -->
 		{if $is_logged AND !$is_guest}

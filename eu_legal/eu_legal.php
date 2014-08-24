@@ -2,11 +2,11 @@
 
 /**
 * EU Legal
-* Better security for german merchants.
+* Better security for German and EU merchants.
 * 
-* @version       : 1.0.0
-* @date          : 2014 07 04
-* @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June @ Silbersaiten.de
+* @version       : 1.0.1
+* @date          : 2014 07 28
+* @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '1.0.0';                
+		$this->version = '1.0.1';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -70,7 +70,7 @@ class EU_Legal extends Module {
 		// module compliancy: only for exactly one PS version
 		$this->ps_versions_compliancy = array(                  
 			'min' => '1.6.0.7',
-			'max' => '1.6.0.8'
+			'max' => '1.6.0.9'
 		);
 	 	
 		// bootstrap baqckoffice functionality
@@ -161,8 +161,12 @@ class EU_Legal extends Module {
 		// supported modules, delivered with EU Legal
 		$this->modules = array(           
 			'gc_ganalytics' => 'Google Analytics',
+			'trustedshops' => 'Trusted Shops',
 			'bankwire' => 'EU Bankwire',
 			'cheque' => 'EU Cheque',
+			'paypal' => 'EU PayPal',
+			'cashondelivery' => 'EU Cash on delivery',
+						
 			/*'gc_newsletter' => 'Newsletter',
 			'gc_blockcart'  => 'Warenkorb Block',*/
 		);
@@ -176,7 +180,7 @@ class EU_Legal extends Module {
 			array('name' => 'revocationform','config' => 'LEGAL_CMS_ID_REVOCATIONFORM','title' => $this->l('Revocation Form')),
 			array('name' => 'privacy',       'config' => 'LEGAL_CMS_ID_PRIVACY',       'title' => $this->l('Privacy')),
 			array('name' => 'environmental', 'config' => 'LEGAL_CMS_ID_ENVIRONMENTAL', 'title' => $this->l('Envorimental')),
-			array('name' => 'shipping',      'config' => 'LEGAL_CMS_ID_SHIPPING',      'title' => $this->l('Shipping')),
+			array('name' => 'shipping',      'config' => 'LEGAL_CMS_ID_SHIPPING',      'title' => $this->l('Shipping and Payment')),
 		);
 		
 		// prefix for config vars
@@ -221,7 +225,7 @@ class EU_Legal extends Module {
 		// global configuration values
 		
 		// shop specific configuration values
-		if($return and !Configuration::updateGlobalValue('PS_EU_PAYMENT_API', false)) {
+		if($return and !Configuration::updateGlobalValue('PS_EU_PAYMENT_API', true)) {
 			$return &= false;
 			$this->_errors[] = $this->l('Could not update config value:').' PS_EU_PAYMENT_API';
 		}
@@ -498,7 +502,7 @@ class EU_Legal extends Module {
 		$return = true;
 		
 		// global configuration
-		$return &= Configuration::updateGlobalValue('PS_EU_PAYMENT_API', 0);
+		$return &= Configuration::updateGlobalValue('PS_EU_PAYMENT_API', 1);
 		
 		// shop specific configuration
 		$values = array(); 
@@ -736,9 +740,9 @@ class EU_Legal extends Module {
 				'fields' => array(
 				    'PS_EU_PAYMENT_API' => array(
 						'type'  => 'bool',
-						'title' => $this->l('EU Payment API Mode'),
+						'title' => $this->l('Legal Secure checkout for EU countries'),
 						'desc'  => $this->l('Enable EU payment mode for payment modules. Note that it requires those modules to be specially designed.'),
-						'auto_value' => false,
+						'auto_value' => true,
 						'value' => Configuration::getGlobalValue('PS_EU_PAYMENT_API'),
 						'no_multishop_checkbox' => true,
 				    ),
@@ -1605,12 +1609,37 @@ class EU_Legal extends Module {
 
 			$code .= $line;
 		}
+
+        $code = $this->removeComments($code);
 		
 		file_put_contents($override_path, $code);
 
 		return true;
 		
 	}
+
+    public function removeComments($str) {
+        $newStr  = '';
+
+        $commentTokens = array(T_COMMENT);
+
+        if (defined('T_DOC_COMMENT'))
+        $commentTokens[] = T_DOC_COMMENT;
+
+
+        $tokens = token_get_all($str);
+
+        foreach ($tokens as $token) {
+            if (is_array($token)) {
+                if (in_array($token[0], $commentTokens))
+                continue;
+
+                $token = $token[1];
+            }
+            $newStr .= ltrim($token);
+        }
+        return $newStr;
+    }
 	
 	// Nur temporär, kann in zukünftigen Versionen entfernt werden. Problem mit Upgrade und Overrides
 	public function addOverride($classname) {
@@ -1770,11 +1799,13 @@ class EU_Legal extends Module {
 
 			$code .= $line;
 		}
+
+        $code = $this->removeComments($code);
+
 		file_put_contents($override_path, $code);
 
 		// Re-generate the class index
 		PrestaShopAutoload::getInstance()->generateIndex();
-
 		return true;
 	}
 	
@@ -1879,6 +1910,11 @@ class EU_Legal extends Module {
 		{
 			$this->context->controller->addJS(_PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.js');	
 			$this->context->controller->addCSS(_PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.css', 'all');
+		
+			$this->smarty->assign(array(
+				'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY')
+			));
+			return $this->display(__FILE__, 'displayTop.tpl');
 		}
 	} 
 	
@@ -1982,7 +2018,7 @@ class EU_Legal extends Module {
 		$cms = new CMS(Configuration::get('LEGAL_CMS_ID_SHIPPING'));
 		
 		if (Validate::isLoadedObject($cms)) {
-		    $shipping_link = $this->context->link->getCMSLink($cms);
+		    $shipping_link = $this->context->link->getCMSLink($cms, null, Configuration::get('PS_SSL_ENABLED'));
 
 		    if ( ! strpos($shipping_link, '?')) {
 			$shipping_link.= '?content_only=1';

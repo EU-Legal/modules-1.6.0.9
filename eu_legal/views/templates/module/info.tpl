@@ -2,7 +2,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <h1 class="">EU Legal</h1>
-                    <h2>{l s='Module for improved legal security in the EU' mod='eu_legal'}</h2>
+                    <h2>{l s='Legal Security Module for the EU' mod='eu_legal'}</h2>
                     <hr>
                     <p class="">
                         <a href="{$_path}licence.html" target="_blank" class="link"><i class="icon-external-link"></i> {l s='Please consider our license disclaimer.' mod='eu_legal'}</a><br />

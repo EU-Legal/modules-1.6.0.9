@@ -42,6 +42,16 @@ var legal = {
 	    legal.updateConfirmButton();
 	});
 	
+	$(document).ready( function(){
+		var cgv = $("#cgv");	
+
+		if (typeof cgv == "undefined")
+			return;
+			
+		legal.tosApproved = cgv.is(":checked");
+	    legal.updateConfirmButton();
+	});
+	
 	if (!!$.prototype.fancybox){
 	    $('a.iframe').fancybox({
 		'type': 'iframe',
@@ -58,19 +68,18 @@ var legal = {
 	    evt.preventDefault();
 	    // Hide currently displayed form if there is one
 	    legal.toggleChosenForm(false);
-
 	    var val = $(this).val();
 	    if (val) {
-		legal.paymentChosen = val;
-		// Display form if there is one
-		legal.toggleChosenForm(true);
+			legal.paymentChosen = val;
+			// Display form if there is one
+			legal.toggleChosenForm(true);
 
-		if (legal.localStorageEnabled()) {
-		    localStorage.setItem('preferredPaymentMethod', val);
-		}
+			if (legal.localStorageEnabled()) {
+				localStorage.setItem('preferredPaymentMethod', val);
+			}
 	    }
 	    else {
-		legal.paymentChosen = '';
+			legal.paymentChosen = '';
 	    }
 
 	    legal.updateConfirmButton();
