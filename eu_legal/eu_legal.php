@@ -1910,6 +1910,11 @@ class EU_Legal extends Module {
 		{
 			$this->context->controller->addJS(_PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.js');	
 			$this->context->controller->addCSS(_PS_JS_DIR_.'jquery/plugins/fancybox/jquery.fancybox.css', 'all');
+		
+			$this->smarty->assign(array(
+				'show_fancy'            => Configuration::get('LEGAL_SHOW_FANCY')
+			));
+			return $this->display(__FILE__, 'displayTop.tpl');
 		}
 	} 
 	
