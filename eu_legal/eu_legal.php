@@ -4,15 +4,15 @@
 * EU Legal
 * Better security for German and EU merchants.
 * 
-* @version       : 1.0.2
-* @date          : 2014 08 26
+* @version       : 1.0.1
+* @date          : 2014 07 28
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
 * @license       : http://opensource.org/licenses/osl-3.0.php
 * @changelog     : see changelog.txt
-* @compatibility : PS == 1.6.0.9
+* @compatibility : PS >= 1.6.0.7
 */
 
 // no direct access to this module
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '1.0.2';                
+		$this->version = '1.0.1';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
