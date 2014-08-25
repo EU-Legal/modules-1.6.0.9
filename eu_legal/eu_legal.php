@@ -847,14 +847,21 @@ class EU_Legal extends Module {
 			
 		}
 		
+		
 		$modules = array();
 		foreach($this->modules as $name => $title) {
+			
+			Cache::clean('Module::isInstalled'.$name);
+			Cache::clean('Module::getModuleIdByName_'.$name);
+			Cache::clean('Module::isEnabled'.$name);
+			
 			$modules[] = array(
 				'name'      => $name,
 				'title'     => $title,
-				'installed' => (bool)Module::isInstalled($name),
+				'installed' => Module::isInstalled($name),
 				'val'       => $name,
 			);
+			
 		}
 		
 		$this->form_fields_modules = array(
@@ -1285,6 +1292,8 @@ class EU_Legal extends Module {
 				}
 				
 				Cache::clean('Module::isInstalled'.$module);
+				Cache::clean('Module::getModuleIdByName_'.$module);
+				Cache::clean('Module::isEnabled'.$module);
 		
 		
 			}
