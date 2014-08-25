@@ -19,9 +19,9 @@
 				<td>
 					{if isset($value[$input.values.disabled]) and $value[$input.values.disabled]}
 						{if $value.eu_module}
-							<span class="label label-success">{l s='Already installed'}</span>
+							<span class="label label-success">{l s='Already installed' mod='eu_legal'}</span>
 						{else}
-							<span class="label label-warning">{l s='Original installed'}</span>
+							<span class="label label-warning">{l s='Original installed' mod='eu_legal'}</span>
 						{/if}
 					{/if}
 				</td>
