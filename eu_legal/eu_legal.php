@@ -855,10 +855,17 @@ class EU_Legal extends Module {
 			Cache::clean('Module::getModuleIdByName_'.$name);
 			Cache::clean('Module::isEnabled'.$name);
 			
+			$module = Module::getInstanceByName($name);
+			$eu_module = false;
+			
+			if($module and isset($module->is_eu_compatible) and $module->is_eu_compatible)
+				$eu_module = true;
+			
 			$modules[] = array(
 				'name'      => $name,
 				'title'     => $title,
 				'installed' => Module::isInstalled($name),
+				'eu_module' => $eu_module,
 				'val'       => $name,
 			);
 			
@@ -1284,7 +1291,11 @@ class EU_Legal extends Module {
 					continue;
 				}
 				
-				if(!$instance->install()) {
+				if(self::isInstalled($instance->name)) {
+					if($instance->uninstall())
+						$instance->install();
+				}
+				elseif(!$instance->install()) {
 					
 					if(is_array($instance->_errors))
 						$this->_errors = array_merge($this->_errors, $instance->_errors);
