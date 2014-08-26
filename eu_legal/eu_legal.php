@@ -1281,7 +1281,7 @@ class EU_Legal extends Module {
 			
 			foreach($modules as $module) {
 				
-				if(!is_dir(_PS_MODULE_DIR_.$module) and !Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
+				if(!Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
 					$this->_errors[] = $this->l('Could not extract file').': '.$module.'.zip';
 					continue;
 				}
