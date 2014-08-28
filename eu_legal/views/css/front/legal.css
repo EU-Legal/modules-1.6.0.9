@@ -3,6 +3,7 @@
 	text-decoration: underline
 }
 
+/* display price infos smaller */
 .tax-shipping-info, 
 .unit-price,
 .weight-info {
@@ -17,16 +18,16 @@
 		content: "";
 	}
 }
+
 /* product-list grid-view */
 ul.product_list.grid .content_price .old-price {
 	display: block;
 }
 
-ul.product_list.grid .content_price .old-price.product-price {
-	display: none;
-}
-
-ul.product_list.grid  > li .product-container .content_price > .price-percent-reduction {
+ul.product_list.grid .content_price .old-price.product-price,
+ul.product_list.grid  > li .product-container .content_price > .price-percent-reduction,
+ul.product_list.grid .left-block .delivery-info,
+ul.product_list.grid .left-block .weight-info {
 	display: none;
 }
 .grid .delivery-info,
@@ -36,23 +37,18 @@ ul.product_list.grid  > li .product-container .content_price > .price-percent-re
 	font-size:100%
 }
 
-ul.product_list.grid .left-block .delivery-info {
-	display: none;
-}
-
-ul.product_list.grid .left-block .weight-info {
-	display: none;
-}
--ul.product_list.grid > li .product-container .product-image-container .content_price span.tax-shipping-info span { /* display tax info smaller */
--	font-size: 10px; line-height: normal; 
--}
--
 @media (min-width: 1200px) {
-	ul.product_list.grid .left-block .tax-shipping-info {
+	ul.product_list.grid .left-block .tax-shipping-info,
+	ul.product_list.grid .left-block .unit-price,
+	ul.product_list.grid > li.hovered .right-block .delivery-info,
+	ul.product_list.grid > li.hovered .right-block .weight-info {
 		display: block;
 	}
 	
-	ul.product_list.grid .right-block .tax-shipping-info {
+	ul.product_list.grid .right-block .tax-shipping-info,
+	ul.product_list.grid .right-block .unit-price,
+	ul.product_list.grid .right-block .delivery-info
+	ul.product_list.grid .right-block .weight-info {
 		display: none;
 	}
 
@@ -61,37 +57,11 @@ ul.product_list.grid .left-block .weight-info {
 		text-decoration: underline;
 	}
 
-
-	ul.product_list.grid .left-block .unit-price {
-		display: block;
-	}
-
-	ul.product_list.grid .right-block .unit-price {
-		display: none;
-	}
-
-	ul.product_list.grid .right-block .delivery-info {
-		display: none;
-	}
-
-	ul.product_list.grid .right-block .weight-info {
-		display: none;
-	}
-
-	ul.product_list.grid > li.hovered .right-block .delivery-info {
-		display: block;
-	}
-	ul.product_list.grid > li.hovered .right-block .weight-info {
-		display: block;
-	}
 }
 
 
 /* product-list list-view */
-ul.product_list.list  > li .product-container .right-block-content .content_price > .price-percent-reduction {
-	display: none;
-}
-
+ul.product_list.list  > li .product-container .right-block-content .content_price > .price-percent-reduction,
 ul.product_list.list .right-block-content .content_price .old-price.product-price {
 	display: none;
 }
@@ -108,10 +78,7 @@ ul.product_list.list .right-block-content .content_price .old-price.product-pric
 	text-decoration:line-through
 }
 
-ul.product_list.list .left-block .delivery-info {
-	display: none;
-}
-
+ul.product_list.list .left-block .delivery-info,
 ul.product_list.list .left-block .weight-info {
 	display: none;
 }
@@ -131,9 +98,11 @@ ul.product_list.list .center-block .delivery-info {
 	font-style: italic;
 }
 /* product */
-#product #old_price_display {
-	display:none
+#product #reduction_percent,
+#product .unit-price { 
+	display:none !important
 }
+
 #product .old-price.eu-legal #old_price_display{
 	display:inline-block
 }
@@ -142,10 +111,6 @@ ul.product_list.list .center-block .delivery-info {
 	display: block;
 	font-size: 12px;
 	color: #777;
-}
-
-#product .unit-price {
-	display:none;
 }
 
 #product .unit-price.eu-legal {
