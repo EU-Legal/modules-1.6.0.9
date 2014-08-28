@@ -4,15 +4,15 @@
 * EU Legal
 * Better security for German and EU merchants.
 * 
-* @version       : 1.0.1
-* @date          : 2014 07 28
+* @version       : 1.0.2
+* @date          : 2014 08 26
 * @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
 * @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
 * @contact       : info@onlineshop-module.de | info@silbersaiten.de
 * @homepage      : www.onlineshop-module.de | www.silbersaiten.de
 * @license       : http://opensource.org/licenses/osl-3.0.php
 * @changelog     : see changelog.txt
-* @compatibility : PS >= 1.6.0.7
+* @compatibility : PS == 1.6.0.9
 */
 
 // no direct access to this module
@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '1.0.1';                
+		$this->version = '1.0.2';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
@@ -847,14 +847,28 @@ class EU_Legal extends Module {
 			
 		}
 		
+		
 		$modules = array();
 		foreach($this->modules as $name => $title) {
+			
+			Cache::clean('Module::isInstalled'.$name);
+			Cache::clean('Module::getModuleIdByName_'.$name);
+			Cache::clean('Module::isEnabled'.$name);
+			
+			$module = Module::getInstanceByName($name);
+			$eu_module = false;
+			
+			if($module and isset($module->is_eu_compatible) and $module->is_eu_compatible)
+				$eu_module = true;
+			
 			$modules[] = array(
 				'name'      => $name,
 				'title'     => $title,
-				'installed' => (bool)Module::isInstalled($name),
+				'installed' => Module::isInstalled($name),
+				'eu_module' => $eu_module,
 				'val'       => $name,
 			);
+			
 		}
 		
 		$this->form_fields_modules = array(
@@ -1267,7 +1281,7 @@ class EU_Legal extends Module {
 			
 			foreach($modules as $module) {
 				
-				if(!is_dir(_PS_MODULE_DIR_.$module) and !Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
+				if(!Tools::ZipExtract($dir.$module.'.zip', _PS_MODULE_DIR_)) {
 					$this->_errors[] = $this->l('Could not extract file').': '.$module.'.zip';
 					continue;
 				}
@@ -1277,7 +1291,11 @@ class EU_Legal extends Module {
 					continue;
 				}
 				
-				if(!$instance->install()) {
+				if(self::isInstalled($instance->name)) {
+					if($instance->uninstall())
+						$instance->install();
+				}
+				elseif(!$instance->install()) {
 					
 					if(is_array($instance->_errors))
 						$this->_errors = array_merge($this->_errors, $instance->_errors);
@@ -1285,6 +1303,8 @@ class EU_Legal extends Module {
 				}
 				
 				Cache::clean('Module::isInstalled'.$module);
+				Cache::clean('Module::getModuleIdByName_'.$module);
+				Cache::clean('Module::isEnabled'.$module);
 		
 		
 			}
