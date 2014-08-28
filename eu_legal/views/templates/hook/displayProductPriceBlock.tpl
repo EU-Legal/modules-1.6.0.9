@@ -92,7 +92,6 @@
 {elseif $template_type == 'weight'}
 
 	{if $show_weights and ($weight > 0 or $combination_weight > 0)}
-		{addJsDef product_weight=$weight}
 		{if $is_object}
 			<p class="weight-info eu-legal">
 				<span class="weight-label">{l s='Weight' mod='eu_legal'}:</span>
@@ -104,6 +103,7 @@
 				<span class="weight-display"><span class="weight-value">{($weight+$combination_weight)|round:2}</span> {$weight_unit|escape:'html':'UTF-8'}</span>
 			</span>
 		{/if}
+		{addJsDef product_weight=$weight}
 		
 	{/if}
 {/if}
