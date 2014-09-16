@@ -256,7 +256,7 @@ class Sofortbanking extends PaymentModule
 		return array(
 			'cta_text' => $title,
 			'logo' => $logo,
-			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true))
+			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true), true)
 		);
 	}
 
