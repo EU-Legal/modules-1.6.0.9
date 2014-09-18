@@ -69,6 +69,33 @@
 					{if ! $opc}
 					{include file="$legal_theme_dir/order-address.tpl"}
 					{/if}
+					{if $voucherAllowed}
+						<div  id="cart_voucher" class="cart_voucher">
+							{if isset($errors_discount) && $errors_discount}
+								<ul class="alert alert-danger">
+									{foreach $errors_discount as $k=>$error}
+										<li>{$error|escape:'html':'UTF-8'}</li>
+									{/foreach}
+								</ul>
+							{/if}
+							<form action="{if $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}" method="post" id="voucher">
+								<fieldset>
+									<h4>{l s='Vouchers'}</h4>
+									<input type="text" class="discount_name form-control" id="discount_name" name="discount_name" value="{if isset($discount_name) && $discount_name}{$discount_name}{/if}" />
+									<input type="hidden" name="submitDiscount" />
+									<button type="submit" name="submitAddDiscount" class="button btn btn-default button-small"><span>{l s='OK'}</span></button>
+								</fieldset>
+							</form>
+							{if $displayVouchers}
+								<p id="title" class="title-offers">{l s='Take advantage of our exclusive offers:'}</p>
+								<div id="display_cart_vouchers">
+									{foreach $displayVouchers as $voucher}
+										{if $voucher.code != ''}<span class="voucher_name" data-code="{$voucher.code|escape:'html':'UTF-8'}">{$voucher.code|escape:'html':'UTF-8'}</span> - {/if}{$voucher.name}<br />
+									{/foreach}
+								</div>
+							{/if}
+						</div>
+					{/if}
 					<div {if !$opc}style="display:none" data-show-if-js{/if}>
 						<p class="carrier_title">{l s='Terms of service' mod='eu_legal'}</p>
 						<p class="checkbox">
