@@ -1967,6 +1967,10 @@ class EU_Legal extends Module {
 			}
 			else {
 				$id_product_attribute = Product::getDefaultAttribute($id_product);
+				if (!isset($params['product']['weight'])) {
+					$product = new Product((int)$id_product);
+					$params['product']['weight'] = $product->weight;
+				}
 				$weight = (float)$params['product']['weight'];
 				$allow_oosp = $params['product']['allow_oosp'];
 			}
