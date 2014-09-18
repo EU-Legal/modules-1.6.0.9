@@ -114,7 +114,7 @@ ul.product_list.list .center-block .delivery-info {
 }
 
 #product .unit-price.eu-legal {
-	display:block;
+	display:block !important;
 }
 
 #product #our_price_display {
