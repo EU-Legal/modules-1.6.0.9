@@ -243,7 +243,7 @@
 					{assign var='ignoreProductLast' value=isset($customizedDatas.$productId.$productAttributeId)}
 					{assign var='cannotModify' value=0}
 					{* Display the gift product line *}
-					{include file="./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}
+					{include file="$tpl_dir./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}
 				{/foreach}
 			</tbody>
 	
@@ -253,7 +253,7 @@
 						<tr class="cart_discount {if $smarty.foreach.discountLoop.last}last_item{elseif $smarty.foreach.discountLoop.first}first_item{else}item{/if}" id="cart_discount_{$discount.id_discount}">
 							<td class="cart_discount_description" colspan="2">{$discount.description}</td>												
 							<td class="cart_discount_name">{$discount.name}</td>
-							<td class="cart_discount_price" colspan="2">
+							<td class="cart_discount_price" colspan="3">
 								<span class="price-discount">
 									{if $discount.value_real > 0}
 										{if !$priceDisplay}
@@ -263,6 +263,16 @@
 										{/if}
 									{/if}
 								</span>
+							</td>
+							<td class="price_discount_del text-center">
+								{if strlen($discount.code)}
+									<a
+											href="{if $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}?deleteDiscount={$discount.id_discount}"
+											class="price_discount_delete"
+											title="{l s='Delete' mod='eu_legal'}">
+										<i class="icon-trash"></i>
+									</a>
+								{/if}
 							</td>
 						</tr>
 					{/foreach}
