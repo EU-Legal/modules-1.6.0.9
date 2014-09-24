@@ -52,6 +52,8 @@ class EU_Legal extends Module {
 	
 	public function __construct() {
 		
+        $this->module_key = '7a6ec9f904879208107bb61b739e577f';
+
 		// module name, must be same as class name and modul directory name
 	 	$this->name = 'eu_legal';                
 	 	
