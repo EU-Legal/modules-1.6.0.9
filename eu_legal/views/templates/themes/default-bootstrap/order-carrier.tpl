@@ -1,26 +1,15 @@
-{*
-* 2007-2014 PrestaShop
+{**
+* EU Legal - Better security for German and EU merchants.
 *
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
+* @version   : 1.0.2
+* @date      : 2014 08 26
+* @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+* @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+* @contact   : info@onlineshop-module.de | info@silbersaiten.de
+* @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+* @license   : http://opensource.org/licenses/osl-3.0.php
+* @changelog : see changelog.txt
+* @compatibility : PS == 1.6.0.9
 *}
 {if !$opc}
 	{capture name=path}{l s='Shipping:' mod='eu_legal'}{/capture}
@@ -259,7 +248,7 @@
 								</div> <!-- end delivery_option -->
 							{/foreach}
 						</div> <!-- end delivery_options -->
-						<div class="hook_extracarrier" id="HOOK_EXTRACARRIER_{$id_address}">
+						<div class="hook_extracarrier" id="HOOK_EXTRACARRIER_{$id_address|escape:'htmlall'}">
 							{if isset($HOOK_EXTRACARRIER_ADDR) &&  isset($HOOK_EXTRACARRIER_ADDR.$id_address)}{$HOOK_EXTRACARRIER_ADDR.$id_address}{/if}
 						</div>
 						{foreachelse}
@@ -339,7 +328,7 @@
 		{if !$opc}
 				<p class="cart_navigation clearfix">
 					<input type="hidden" name="step" value="3" />
-					<input type="hidden" name="back" value="{$back}" />
+					<input type="hidden" name="back" value="{$back|escape:'htmlall'}" />
 					{if !$is_guest}
 						{if $back}
 							<a href="{$link->getPageLink('order', true, NULL, "step=1&back={$back}&multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='eu_legal'}" class="button-exclusive btn btn-default">

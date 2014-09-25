@@ -1,19 +1,17 @@
 <?php
-
 /**
-* EU Legal
-* Better security for German and EU merchants.
-* 
-* @version       : 1.0.2
-* @date          : 2014 08 26
-* @author        : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
-* @copyright     : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
-* @contact       : info@onlineshop-module.de | info@silbersaiten.de
-* @homepage      : www.onlineshop-module.de | www.silbersaiten.de
-* @license       : http://opensource.org/licenses/osl-3.0.php
-* @changelog     : see changelog.txt
-* @compatibility : PS == 1.6.0.9
-*/
+ * EU Legal - Better security for German and EU merchants.
+ *
+ * @version   : 1.0.2
+ * @date      : 2014 08 26
+ * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+ * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+ * @contact   : info@onlineshop-module.de | info@silbersaiten.de
+ * @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+ * @license   : http://opensource.org/licenses/osl-3.0.php
+ * @changelog : see changelog.txt
+ * @compatibility : PS == 1.6.0.9
+ */
 
 // no direct access to this module
 if (!defined('_PS_VERSION_'))
@@ -166,7 +164,10 @@ class EU_Legal extends Module {
 			'trustedshops' => 'Trusted Shops',
 			'bankwire' => 'EU Bankwire',
 			'cheque' => 'EU Cheque',
-			'paypal' => 'EU PayPal',
+			'hipay' => 'EU Hipay',
+            'moneybookers' => 'EU Moneybookers',
+            'ogone' => 'EU Ogone',
+            'sofortbanking' => 'EU Sofortbanking',
 			'cashondelivery' => 'EU Cash on delivery',
 						
 			/*'gc_newsletter' => 'Newsletter',
@@ -1170,7 +1171,7 @@ class EU_Legal extends Module {
 			// install all cms pages
 			foreach($this->cms_pages as $cms_page) {
 				
-				if($content = @file_get_contents($this->local_path.'cms/'.$cms_page['name'].'.txt')) {
+				if($content = @Tools::file_get_contents($this->local_path.'cms/'.$cms_page['name'].'.txt')) {
 					
 					$cms = new CMS();
 					$cms->active = true;
@@ -1464,18 +1465,18 @@ class EU_Legal extends Module {
 			$options['ds'] = $options_default['ds'];
 		
 		// DS vom Ende entfernen
-		if(substr($src, -1) == $options['ds']) $src = substr($src, 0, -1);
-		if(substr($dest, -1) == $options['ds']) $dest = substr($dest, 0, -1);
+		if(Tools::substr($src, -1) == $options['ds']) $src = Tools::substr($src, 0, -1);
+		if(Tools::substr($dest, -1) == $options['ds']) $dest = Tools::substr($dest, 0, -1);
 		
 		// DS vom Anfang entfernen
-		if(substr($src, 0, 1) == $options['ds']) $src = substr($src, 1);
-		if(substr($dest, 0, 1) == $options['ds']) $dest = substr($dest, 1);
+		if(Tools::substr($src, 0, 1) == $options['ds']) $src = Tools::substr($src, 1);
+		if(Tools::substr($dest, 0, 1) == $options['ds']) $dest = Tools::substr($dest, 1);
 		
 		// DS am Ende hinzufügen
-		if(substr($options['root'], -1) != $options['ds']) $options['root'] = $options['root'].$options['ds'];
+		if(Tools::substr($options['root'], -1) != $options['ds']) $options['root'] = $options['root'].$options['ds'];
 		
 		// DS am Anfang hinzufügen
-		if(substr($options['root'], 0, 1) != $options['ds']) $options['root'] = $options['ds'].$options['root'];
+		if(Tools::substr($options['root'], 0, 1) != $options['ds']) $options['root'] = $options['ds'].$options['root'];
 		
 		if(is_link($options['root'].$src)) {
 			

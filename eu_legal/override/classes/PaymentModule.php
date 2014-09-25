@@ -1,4 +1,18 @@
 <?php
+/**
+ * EU Legal - Better security for German and EU merchants.
+ *
+ * @version   : 1.0.2
+ * @date      : 2014 08 26
+ * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+ * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+ * @contact   : info@onlineshop-module.de | info@silbersaiten.de
+ * @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+ * @license   : http://opensource.org/licenses/osl-3.0.php
+ * @changelog : see changelog.txt
+ * @compatibility : PS == 1.6.0.9
+ */
+
 class PaymentModule extends PaymentModuleCore
 {
 	public function validateOrder($id_cart, $id_order_state, $amount_paid, $payment_method = 'Unknown', $message = null, $extra_vars = array(), $currency_special = null, $dont_touch_amount = false, $secure_key = false, Shop $shop = null)
@@ -266,7 +280,7 @@ class PaymentModule extends PaymentModuleCore
 						if (Validate::isCleanHtml($message))
 						{
 							$msg->message = $message;
-							$msg->id_order = intval($order->id);
+							$msg->id_order = (int)$order->id;
 							$msg->private = 1;
 							$msg->add();
 						}
@@ -367,9 +381,9 @@ class PaymentModule extends PaymentModuleCore
 							unset($voucher->id);
 
 							// Set a new voucher code
-							$voucher->code = empty($voucher->code) ? substr(md5($order->id.'-'.$order->id_customer.'-'.$cart_rule['obj']->id), 0, 16) : $voucher->code.'-2';
+							$voucher->code = empty($voucher->code) ? Tools::substr(md5($order->id.'-'.$order->id_customer.'-'.$cart_rule['obj']->id), 0, 16) : $voucher->code.'-2';
 							if (preg_match('/\-([0-9]{1,2})\-([0-9]{1,2})$/', $voucher->code, $matches) && $matches[1] == $matches[2])
-								$voucher->code = preg_replace('/'.$matches[0].'$/', '-'.(intval($matches[1]) + 1), $voucher->code);
+								$voucher->code = preg_replace('/'.$matches[0].'$/', '-'.((int)$matches[1] + 1), $voucher->code);
 
 							// Set the new voucher value
 							if ($voucher->reduction_tax)
@@ -577,6 +591,7 @@ class PaymentModule extends PaymentModuleCore
 							$data = array_merge($data, $extra_vars);
 
 						// Join PDF invoice
+                        $file_attachement = null;
 						if ((int)Configuration::get('PS_INVOICE') && $order_status->invoice && $order->invoice_number)
 						{
 							$pdf = new PDF($order->getInvoicesCollection(), PDF::TEMPLATE_INVOICE, $this->context->smarty);
@@ -620,7 +635,7 @@ class PaymentModule extends PaymentModuleCore
 				else
 				{
 					$error = Tools::displayError('Order creation failed');
-					PrestaShopLogger::addLog($error, 4, '0000002', 'Cart', intval($order->id_cart));
+					PrestaShopLogger::addLog($error, 4, '0000002', 'Cart', (int)$order->id_cart);
 					die($error);
 				}
 			} // End foreach $order_detail_list
@@ -631,7 +646,7 @@ class PaymentModule extends PaymentModuleCore
 		else
 		{
 			$error = Tools::displayError('Cart cannot be loaded or an order has already been placed using this cart');
-			PrestaShopLogger::addLog($error, 4, '0000001', 'Cart', intval($this->context->cart->id));
+			PrestaShopLogger::addLog($error, 4, '0000001', 'Cart', (int)$this->context->cart->id);
 			die($error);
 		}
 	}
