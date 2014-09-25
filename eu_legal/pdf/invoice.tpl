@@ -38,11 +38,11 @@
 					<tr>
 						<td style="width: 50%">
 							<span style="font-weight: bold; font-size: 10pt; color: #9E9F9E">{l s='Delivery Address' pdf='true'}</span><br />
-							 {$delivery_address|escape:'htmlall'}
+							 {$delivery_address}
 						</td>
 						<td style="width: 50%">
 							<span style="font-weight: bold; font-size: 10pt; color: #9E9F9E">{l s='Billing Address' pdf='true'}</span><br />
-							 {$invoice_address|escape:'htmlall'}
+							 {$invoice_address}
 						</td>
 					</tr>
 				</table>
@@ -52,7 +52,7 @@
 
 						<td style="width: 50%">
 							<span style="font-weight: bold; font-size: 10pt; color: #9E9F9E">{l s='Billing & Delivery Address.' pdf='true'}</span><br />
-							 {$invoice_address|escape:'htmlall'}
+							 {$invoice_address}
 						</td>
 						<td style="width: 50%">
 
@@ -73,7 +73,7 @@
 		<td style="width: 17%; padding-right: 7px; text-align: right; vertical-align: top; font-size: 7pt;">
 			<!-- CUSTOMER INFORMATION -->
 			<b>{l s='Order Reference:' pdf='true'}</b><br />
-			{$order->getUniqReference()|escape:'htmlall'}<br />
+			{$order->getUniqReference()}<br />
 			<br />
 			<b>{l s='Order Date:' pdf='true'}</b><br />
 			{dateFormat date=$order->date_add full=0}<br />
@@ -82,7 +82,7 @@
 			<table style="width: 100%;">
 			{foreach from=$order_invoice->getOrderPaymentCollection() item=payment}
 				<tr>
-					<td style="width: 50%">{$payment->payment_method|escape:'htmlall'}</td>
+					<td style="width: 50%">{$payment->payment_method}</td>
 					<td style="width: 50%">{displayPrice price=$payment->amount currency=$order->id_currency}</td>
 				</tr>
 			{foreachelse}
@@ -94,7 +94,7 @@
 			<br />
 			{if isset($carrier)}
 			<b>{l s='Carrier:' pdf='true'}</b><br />
-			{$carrier->name|escape:'htmlall'}<br />
+			{$carrier->name}<br />
 			<br />
 			{/if}				
 			<!-- / CUSTOMER INFORMATION -->
@@ -129,7 +129,7 @@
 				<!-- PRODUCTS -->
 				{foreach $order_details as $order_detail}
 				{cycle values='#FFF,#DDD' assign=bgcolor}
-				<tr style="line-height:6px;background-color:{$bgcolor|escape:'htmlall'};">
+				<tr style="line-height:6px;background-color:{$bgcolor};">
 					<td style="text-align: left; width: {if !$tax_excluded_display}35%{else}45%{/if}">{$order_detail.product_name}{if isset($order_detail.product_reference) && !empty($order_detail.product_reference)} ({l s='Reference:' pdf='true'} {$order_detail.product_reference}){/if}</td>
 					<!-- unit price tax excluded is mandatory -->
 					{if !$tax_excluded_display}
@@ -148,12 +148,12 @@
 					{if (isset($order_detail.reduction_amount) && $order_detail.reduction_amount > 0)}
 						-{displayPrice currency=$order->id_currency price=$order_detail.reduction_amount}
 					{elseif (isset($order_detail.reduction_percent) && $order_detail.reduction_percent > 0)}
-						-{$order_detail.reduction_percent|escape:'htmlall'}%
+						-{$order_detail.reduction_percent}%
 					{else}
 					--
 					{/if}
 					</td>
-					<td style="text-align: center; width: 10%">{$order_detail.product_quantity|escape:'htmlall'}</td>
+					<td style="text-align: center; width: 10%">{$order_detail.product_quantity}</td>
 					<td style="text-align: right;  width: {if !$tax_excluded_display}15%{else}25%{/if}; white-space: nowrap;">
 					{if $tax_excluded_display}
 						{displayPrice currency=$order->id_currency price=$order_detail.total_price_tax_excl}
@@ -164,12 +164,12 @@
 				</tr>
 					{foreach $order_detail.customizedDatas as $customizationPerAddress}
 						{foreach $customizationPerAddress as $customizationId => $customization}
-							<tr style="line-height:6px;background-color:{$bgcolor|escape:'htmlall'};">
+							<tr style="line-height:6px;background-color:{$bgcolor};">
 								<td style="line-height:3px; text-align: left; width: 45%; vertical-align: top">
 										<blockquote>
 											{if isset($customization.datas[$smarty.const._CUSTOMIZE_TEXTFIELD_]) && count($customization.datas[$smarty.const._CUSTOMIZE_TEXTFIELD_]) > 0}
 												{foreach $customization.datas[$smarty.const._CUSTOMIZE_TEXTFIELD_] as $customization_infos}
-													{$customization_infos.name|escape:'htmlall'}: {$customization_infos.value|escape:'htmlall'}
+													{$customization_infos.name}: {$customization_infos.value}
 													{if !$smarty.foreach.custo_foreach.last}<br />
 													{else}
 													<div style="line-height:0.4pt">&nbsp;</div>
@@ -178,7 +178,7 @@
 											{/if}
 
 											{if isset($customization.datas[$smarty.const._CUSTOMIZE_FILE_]) && count($customization.datas[$smarty.const._CUSTOMIZE_FILE_]) > 0}
-												{count($customization.datas[$smarty.const._CUSTOMIZE_FILE_])|escape:'htmlall'} {l s='image(s)' pdf='true'}
+												{count($customization.datas[$smarty.const._CUSTOMIZE_FILE_])} {l s='image(s)' pdf='true'}
 											{/if}
 										</blockquote>
 								</td>
@@ -186,7 +186,7 @@
 									<td style="text-align: right;"></td>
 								{/if}
 								<td style="text-align: right; width: 10%"></td>
-								<td style="text-align: center; width: 10%; vertical-align: top">({$customization.quantity|escape:'htmlall'})</td>
+								<td style="text-align: center; width: 10%; vertical-align: top">({$customization.quantity})</td>
 								<td style="width: 15%; text-align: right;"></td>
 							</tr>
 						{/foreach}
@@ -198,13 +198,13 @@
 				{assign var="shipping_discount_tax_incl" value="0"}
 				{foreach $cart_rules as $cart_rule}
 					{cycle values='#FFF,#DDD' assign=bgcolor}
-					<tr style="line-height:6px;background-color:{$bgcolor|escape:'htmlall'};text-align:left;">
+					<tr style="line-height:6px;background-color:{$bgcolor};text-align:left;">
 						<td style="line-height:3px;text-align:left;width:60%;vertical-align:top" colspan="{if !$tax_excluded_display}5{else}4{/if}">{$cart_rule.name}</td>
 						<td>
 							{if $tax_excluded_display}
-								- {$cart_rule.value_tax_excl|escape:'htmlall'}
+								- {$cart_rule.value_tax_excl}
 							{else}
-								- {$cart_rule.value|escape:'htmlall'}
+								- {$cart_rule.value}
 							{/if}
 						</td>
 					</tr>
@@ -284,7 +284,7 @@
 
 <div style="line-height: 1pt">&nbsp;</div>
 
-{$tax_tab|escape:'htmlall'}
+{$tax_tab}
 
 {if isset($order_invoice->note) && $order_invoice->note}
 <div style="line-height: 1pt">&nbsp;</div>
