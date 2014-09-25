@@ -59,7 +59,7 @@ class EU_Legal extends Module {
 		$this->tab = 'administration';       
 	 	
 		// version: major, minor, bugfix
-		$this->version = '1.0.2';                
+		$this->version = '1.0.3';                
 		
 		// author
 		$this->author = 'EU Legal Team'; 
