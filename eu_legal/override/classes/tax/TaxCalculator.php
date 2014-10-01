@@ -20,7 +20,8 @@ class TaxCalculator extends TaxCalculatorCore
 		$prepared = array();
 		$id_lang = (int)Context::getContext()->language->id;
 
-		foreach ($this->taxes as $tax) {
+		foreach ($this->taxes as $tax)
+		{
 			$prepared[$tax->id] = array(
 				'name' => $tax->name[$id_lang],
 				'rate' => $tax->rate

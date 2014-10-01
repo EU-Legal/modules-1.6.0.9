@@ -16,20 +16,23 @@
 class Supplier extends SupplierCore
 {
 	public static function getProducts($id_supplier, $id_lang, $p, $n, $order_by = null, $order_way = null, $get_total = false, $active = true, $active_category = true)
-	{	
+	{
 		/* 
 		* EU-Legal
 		* get standard shipping time from database pl.*
 		*/
-		
+
 		$context = Context::getContext();
 		$front = true;
 		if (!in_array($context->controller->controller_type, array('front', 'modulefront')))
 			$front = false;
 
-		if ($p < 1) $p = 1;
-	 	if (empty($order_by) || $order_by == 'position') $order_by = 'name';
-	 	if (empty($order_way)) $order_way = 'ASC';
+		if ($p < 1)
+			$p = 1;
+		if (empty($order_by) || $order_by == 'position')
+			$order_by = 'name';
+		if (empty($order_way))
+			$order_way = 'ASC';
 
 		if (!Validate::isOrderBy($order_by) || !Validate::isOrderWay($order_way))
 			die (Tools::displayError());
@@ -77,7 +80,7 @@ class Supplier extends SupplierCore
 			$order_by = 'name';
 			$alias = 'm.';
 		}
-		
+
 		/* 
 		* EU-Legal
 		* get standard shipping time from database pl.* 
@@ -104,7 +107,7 @@ class Supplier extends SupplierCore
 				LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON (p.`id_product` = pl.`id_product`
 					AND pl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('pl').')
 				LEFT JOIN `'._DB_PREFIX_.'image` i ON (i.`id_product` = p.`id_product`)'.
-				Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
+			Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
 				LEFT JOIN `'._DB_PREFIX_.'image_lang` il ON (i.`id_image` = il.`id_image`
 					AND il.`id_lang` = '.(int)$id_lang.')
 				LEFT JOIN `'._DB_PREFIX_.'supplier` s ON s.`id_supplier` = p.`id_supplier`
@@ -134,5 +137,5 @@ class Supplier extends SupplierCore
 
 		return Product::getProductsProperties($id_lang, $result);
 	}
-	
+
 }

@@ -20,7 +20,7 @@ class Module extends ModuleCore
 	 * themselves onto displayPaymentEU hook
 	 */
 	protected $is_eu_compatible = 0;
-	
+
 	/*
 	 * Identical to parent's getModuleOnDisk, except it generates "is_eu_compatible" node in module's
 	 * config.xml file. This node is later used in this very method to check if the module needs to be updated.
@@ -50,7 +50,7 @@ class Module extends ModuleCore
 
 		// Get modules directory list and memory limit
 		$modules_dir = Module::getModulesDirOnDisk();
-		
+
 		$modules_installed = array();
 		$result = Db::getInstance()->executeS('
 		SELECT m.name, m.version, mp.interest, module_shop.enable_device
@@ -114,7 +114,7 @@ class Module extends ModuleCore
 					$item->onclick_option = false;
 
 					$item->trusted = Module::isModuleTrusted($item->name);
-					
+
 					$module_list[] = $item;
 					$module_name_list[] = '\''.pSQL($item->name).'\'';
 					$modulesNameToCursor[(string)$item->name] = $item;
@@ -138,7 +138,7 @@ class Module extends ModuleCore
 					// If (false) is a trick to not load the class with "eval".
 					// This way require_once will works correctly
 					if (eval('if (false){	'.$file.' }') !== false)
-						require_once( _PS_MODULE_DIR_.$module.'/'.$module.'.php' );
+						require_once(_PS_MODULE_DIR_.$module.'/'.$module.'.php');
 					else
 						$errors[] = sprintf(Tools::displayError('%1$s (parse error in %2$s)'), $module, Tools::substr($filepath, Tools::strlen(_PS_ROOT_DIR_)));
 				}
@@ -176,17 +176,17 @@ class Module extends ModuleCore
 					$item->url = isset($tmp_module->url) ? $tmp_module->url : null;
 					$item->is_eu_compatible = isset($tmp_module->is_eu_compatible) ? $tmp_module->is_eu_compatible : 0;
 
-					$item->onclick_option  = method_exists($module, 'onclickOption') ? true : false;
+					$item->onclick_option = method_exists($module, 'onclickOption') ? true : false;
 					if ($item->onclick_option)
 					{
 						$href = Context::getContext()->link->getAdminLink('Module', true).'&module_name='.$tmp_module->name.'&tab_module='.$tmp_module->tab;
 						$item->onclick_option_content = array();
 						$option_tab = array('desactive', 'reset', 'configure', 'delete');
 						foreach ($option_tab as $opt)
-							$item->onclick_option_content[$opt] = $tmp_module->onclickOption($opt, $href);					
+							$item->onclick_option_content[$opt] = $tmp_module->onclickOption($opt, $href);
 					}
-					
-					
+
+
 					$module_list[] = $item;
 					if (!$xml_exist || $needNewConfigFile)
 					{
@@ -246,11 +246,10 @@ class Module extends ModuleCore
 							if ($m->name == $modaddons->name && !isset($m->available_on_addons))
 							{
 								$flag_found = 1;
-								if ($m->version != $modaddons->version && version_compare($m->version, $modaddons->version) === -1 && ! $m->is_eu_compatible) {
+								if ($m->version != $modaddons->version && version_compare($m->version, $modaddons->version) === -1 && !$m->is_eu_compatible)
 									$module_list[$k]->version_addons = $modaddons->version;
-								}
 							}
- 
+
 						if ($flag_found == 0)
 						{
 							$item = new stdClass();
@@ -341,8 +340,8 @@ class Module extends ModuleCore
 
 		return $module_list;
 	}
-	
-	
+
+
 	/*
 	 * Identical to parent's _generateConfigXml, except it generates "is_eu_compatible" node in module's
 	 * config.xml file.
@@ -378,5 +377,5 @@ class Module extends ModuleCore
 			@chmod($file, 0664);
 		}
 	}
-	
+
 }

@@ -21,21 +21,20 @@ class CMS extends CMSCore
 		* EU-Legal
 		* own function: returns content from CMS ID
 		*/
-		
-		if(!Validate::isUnsignedInt($id_cms))
+
+		if (!Validate::isUnsignedInt($id_cms))
 			return null;
-		
-		if(empty($id_lang))
+
+		if (empty($id_lang))
 			$id_lang = Context::getContext()->cookie->id_lang;
-		
+
 		$cms = new CMS((int)$id_cms, (int)$id_lang);
-		
-		if(Validate::isLoadedObject($cms)) {
+
+		if (Validate::isLoadedObject($cms))
 			return $cms->content;
-		}
 		else
 			return '';
-		
+
 	}
-	
+
 }

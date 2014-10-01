@@ -37,7 +37,8 @@ class HTMLTemplateInvoice extends HTMLTemplateInvoiceCore
 			'carrier' => $debug ? null : $carrier
 		);
 		
-		if (method_exists($this->order, 'getOrderTaxDetails')) {
+		if (method_exists($this->order, 'getOrderTaxDetails'))
+		{
 			$data['tax_details'] = $this->order->getOrderTaxDetails();
 			$data['is_order_slip'] = false;
 		}

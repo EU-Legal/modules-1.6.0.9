@@ -15,16 +15,16 @@
 
 class AuthController extends AuthControllerCore
 {
-	protected function sendConfirmationMail(Customer $customer) {
-		
+	protected function sendConfirmationMail(Customer $customer)
+	{
 		/*
 		* EU-Legal
 		* Password not visible
 		*/
-		
+
 		if (!Configuration::get('PS_CUSTOMER_CREATION_EMAIL'))
 			return true;
-		
+
 		return Mail::Send(
 			$this->context->language->id,
 			'account',
@@ -38,5 +38,5 @@ class AuthController extends AuthControllerCore
 			$customer->firstname.' '.$customer->lastname
 		);
 	}
-	
+
 }
