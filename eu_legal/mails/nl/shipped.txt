@@ -1,0 +1,22 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname},
+
+Bedankt voor het winkelen bij {shop_name}! 
+
+Uw bestelling {order_name} is verzonden.
+
+U ontvangt zo spoedig mogelijk een URL om de aflevering van uw
+zending te kunnen volgen. 		 
+
+U kunt uw bestelling nakijken en de factuur downloaden vanaf de
+"Bestelhistorie" [{history_url}] gedeelte van uw
+klant account pagina door te klikken op "Mijn account"
+[{my_account_url}] in onze shop. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

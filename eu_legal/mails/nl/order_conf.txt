@@ -1,0 +1,81 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname},
+
+Bedankt voor het winkelen bij {shop_name}! 
+
+BESTELLING: {order_name} Geplaatst op {date}
+
+BETALING: {payment} 		 
+
+REFERENTIE
+
+PRODUCT
+
+STUKPRIJS
+
+AANTAL
+
+TOTAALPRIJS
+
+{products_txt} 
+
+{discounts} 
+
+PRODUCTEN 
+
+{total_products} 
+
+KORTINGEN 
+
+{total_discounts} 
+
+CADEAUVERPAKKING 
+
+{total_wrapping} 
+
+VERZENDKOSTEN 
+
+{total_shipping} 
+
+TOTAAL BTW 
+
+{total_tax_paid} 
+
+TOTAAL BETAALD 
+
+{total_paid} 
+
+VERVOERDER: {carrier}
+
+BETALING: {payment} 		 
+
+{delivery_block_txt} 
+
+{invoice_block_txt} 
+
+U kunt uw bestelling nakijken en de factuur downloaden vanaf de
+"Bestelhistorie" [{history_url}] gedeelte van uw
+klant account pagina door te klikken op "Mijn account"
+[{my_account_url}] in onze shop. 
+
+Indien u hebt afgerekend zonder het aanmaken van een account, dan
+kunt u deze bestelling volgen via "deze link"
+[{guest_tracking_url}?id_order={order_name}]. 
+
+{cms_conditions_txt}
+
+{cms_revocation_txt}
+
+{cms_revocationform_txt}
+
+{cms_privacy_txt}
+
+{cms_environmental_txt}
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

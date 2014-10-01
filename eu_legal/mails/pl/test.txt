@@ -1,0 +1,15 @@
+
+[{shop_url}] 
+
+Cześć 
+
+To jest WIADOMOŚĆ TESTOWA from your shop.
+
+Jeśli możesz ją przeczytać to znaczy, że test przebiegł
+pomyślnie!. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

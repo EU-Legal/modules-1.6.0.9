@@ -1,0 +1,16 @@
+
+[{shop_url}] 
+
+Hi {firstname} {lastname}, 
+
+{employee} wanted to forward this discussion to you. 
+
+DISCUSSION HISTORY: {messages}
+
+{employee} added "{comment}" 		 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

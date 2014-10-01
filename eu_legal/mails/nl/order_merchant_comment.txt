@@ -1,0 +1,14 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+Nieuw bericht van {shop_name} omtrent bestelling {order_name}.
+
+BERICHT: {message} 		 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

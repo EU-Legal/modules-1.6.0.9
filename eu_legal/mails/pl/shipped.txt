@@ -1,0 +1,22 @@
+
+[{shop_url}] 
+
+Witaj {firstname} {lastname},
+
+Dziękujemy za zakupy {shop_name}! 
+
+Twoje zamówienie o numerze {order_name} zostało wysłane.
+
+Wkrótce otrzymasz adres URL do śledzenia postępów dostarczenia
+paczki. 		 
+
+Możesz obejrzeć swoje zamówienie i pobrać fakturę w "Historia
+zamówień" [{history_url}] logując się do konta
+klienta "Moje konto" [{my_account_url}] w naszym
+sklepie. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

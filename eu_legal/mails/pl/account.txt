@@ -1,0 +1,32 @@
+
+[{shop_url}] 
+
+Witaj {firstname} {lastname},
+
+Dziękujemy za utworzenie konta klienta na stronie {shop_name}. 
+
+Oto twoje dane logowania:
+
+ADRES E-MAIL: {email}
+
+HASŁO: {passwd} 		 
+
+Ważne wskazówki bezpieczeństwa:
+
+* Zawsze trzymaj dane konta w bezpiecznym miejscu.
+
+* Nigdy nie ujawniaj hasła nikomu.
+
+* Regularnie zmieniać hasło.
+
+* Jeśli podejrzewasz, że ktoś jest przy użyciu konta
+nielegalnie, prosimy o poinformowanie nas o tym natychmiast.
+
+You can now place orders on our shop: {shop_name}
+[{shop_url}] 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

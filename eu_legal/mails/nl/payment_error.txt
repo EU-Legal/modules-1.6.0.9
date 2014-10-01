@@ -1,0 +1,25 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+Er is een probleem met uw betaling voor uw bestelling bij {shop_name}
+met de referentie {order_name}. Neem aub zo spoedig mogelijk contact
+met ons op.
+
+UW BESTELLING KAN PAS VERWERKT WORDEN ALS DIT PROBLEEM IS OPGELOST.
+
+U kunt uw bestelling nakijken en de factuur downloaden vanaf de
+"Bestelhistorie" [{history_url}] gedeelte van uw
+klant account pagina door te klikken op "Mijn account"
+[{my_account_url}] in onze shop. 
+
+Indien u hebt afgerekend zonder het aanmaken van een account, dan
+kunt u deze bestelling volgen via "deze link"
+[{guest_tracking_url}?id_order={order_name}]. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+
