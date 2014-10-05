@@ -1,7 +1,7 @@
 {**
 * EU Legal - Better security for German and EU merchants.
 *
-* @version   : 1.0.2
+* @version   : 1.0.4
 * @date      : 2014 08 26
 * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
 * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -18,6 +18,10 @@
 	{addJsDef currencyBlank=$currencyBlank|intval}
 	{addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
 	{addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
+	{addJsDefL name=txtTOSIsNotAccepted}{l s='The service terms have not been accepted' mod='eu_legal' js=1}{/addJsDefL}
+	{addJsDefL name=txtNoPaymentMethodIsSelected}{l s='No payment method has been selected' mod='eu_legal' js=1}{/addJsDefL}
+	{addJsDefL name=txtRevocationTermIsNotAccepted}{l s='The revocation terms have not been accepted' mod='eu_legal' js=1}{/addJsDefL}
+
 	{capture name=path}{l s='Your payment method' mod='eu_legal'}{/capture}
 	<h1 class="page-heading">{l s='Please choose your payment method' mod='eu_legal'}</h1>
 {else}
@@ -85,20 +89,23 @@
 							{/if}
 						</div>
 					{/if}
-					<div {if !$opc}style="display:none" data-show-if-js{/if}>
-						<p class="carrier_title">{l s='Terms of service' mod='eu_legal'}</p>
-						<p class="checkbox">
-							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
+
+					<div {if !$opc}style="display:none" data-show-if-js{/if} class="checkbox_conditions box">
+						<h3 class="page-subheading">{l s='Terms of service' mod='eu_legal'}</h3>
+						<p class="checkbox checkbox_conditions">
+							{if isset($conditions) && $conditions}
 							<input type="checkbox" name="cgv" id="cgv" value="1"/>
 							{/if}
 							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
 							   <label for="cgv">{l s='I agree to the' mod='eu_legal'}</label> <a href="{$PS_CONDITIONS_CMS_ID_LINK}" class="iframe">{l s='terms of service'  mod='eu_legal'}</a>
 							{/if}
 							{if isset($LEGAL_CMS_ID_REVOCATION) && $LEGAL_CMS_ID_REVOCATION}
-							   <label>{l s='and'  mod='eu_legal'}</label> <a href="{$LEGAL_CMS_ID_REVOCATION_LINK}" class="iframe">{l s='terms of revocation' mod='eu_legal'}</a> {l s='adhire to them unconditionally.'  mod='eu_legal'}
+							   <label for="cgv">{l s='and'  mod='eu_legal'}</label> <a href="{$LEGAL_CMS_ID_REVOCATION_LINK}" class="iframe">{l s='terms of revocation' mod='eu_legal'}</a> 
 							{/if}
+                            <label for="cgv">{l s='adhire to them unconditionally.'  mod='eu_legal'}</label>
 						</p>
 					</div>
+
 					{if $is_partially_virtual}
 					<div {if !$opc}style="display:none" data-show-if-js{/if}>
 						<p class="carrier_title">{l s='Revocation' mod='eu_legal'}</p>
@@ -111,17 +118,18 @@
 					</div>
 					{/if}
 					{include file="$legal_theme_dir/order-summary.tpl"}
-					{include file="$legal_theme_dir/order-confirm.tpl"}
 				{/if}
 				
-				{if !$opc}
 					<p class="cart_navigation clearfix">
-						<a href="{$link->getPageLink('order', true, NULL, "step=2")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='eu_legal'}" class="button-exclusive btn btn-default">
-							<i class="icon-chevron-left"></i>
-							{l s='Continue shopping' mod='eu_legal'}
-						</a>
+						{if !$opc}
+                            <a href="{$link->getPageLink('order', true, NULL, "step=2")|escape:'html':'UTF-8'}" title="{l s='Previous' mod='eu_legal'}" class="button-exclusive btn btn-default">
+                                <i class="icon-chevron-left"></i>
+                                {l s='Continue shopping' mod='eu_legal'}
+                            </a>
+                        {/if}
+					{include file="$legal_theme_dir/order-confirm.tpl"}
 					</p>
-				{else}
+				{if $opc}
 					</div> <!-- end opc_payment_methods -->
 				{/if}
 			</div> <!-- end HOOK_TOP_PAYMENT -->

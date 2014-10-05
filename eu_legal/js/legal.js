@@ -57,12 +57,12 @@ var legal = {
 	});
 	
 	$(document).ready( function(){
-		var cgv = $("#cgv");	
+		var cgv = $("#cgv");
+		if (cgv.length == 0)
+            legal.tosApproved = true;
+        else
+            legal.tosApproved = cgv.is(":checked");
 
-		if (typeof cgv == "undefined")
-			return;
-			
-		legal.tosApproved = cgv.is(":checked");
 	    legal.updateConfirmButton();
 	});
 	
@@ -113,9 +113,23 @@ var legal = {
     },
     
     confirmOrder: function() {
-	if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
-	    $('#' + this.paymentChosen + '_payment form').submit();
-	}
+        if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
+            $('#' + this.paymentChosen + '_payment form').submit();
+        } else {
+            if (!this.paymentChosen) {
+                if (typeof txtNoPaymentMethodIsSelected !== 'undefined') {
+                    alert(txtNoPaymentMethodIsSelected);
+                }
+            } else if (!this.tosApproved) {
+                if (typeof txtTOSIsNotAccepted !== 'undefined') {
+                    alert(txtTOSIsNotAccepted);
+                }
+            } else if (!this.revocationTermsApproved) {
+                if (typeof  txtRevocationTermIsNotAccepted !== 'undefined') {
+                    alert(txtRevocationTermIsNotAccepted);
+                }
+            }
+        }
     },
     
     toggleChosenForm: function(show, undefined) {
@@ -146,12 +160,15 @@ var legal = {
     },
     
     updateConfirmButton: function() {
-	if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
-	    $('#confirmOrder').removeAttr('disabled');
-	}
-	else {
-	    $('#confirmOrder').attr('disabled', 'disabled');
-	}
+        $('#confirmOrder').removeAttr('disabled');
+        /*
+        if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
+            $('#confirmOrder').removeAttr('disabled');
+        }
+        else {
+            $('#confirmOrder').attr('disabled', 'disabled');
+        }
+        */
     },
     
     bindAjaxHandlers: function(){

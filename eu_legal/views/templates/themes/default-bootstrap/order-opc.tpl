@@ -101,6 +101,8 @@
 {addJsDefL name=txtFree}{l s='Free' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtNoPaymentMethodIsSelected}{l s='No payment method has been selected' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtRevocationTermIsNotAccepted}{l s='The revocation terms have not been accepted' mod='eu_legal' js=1}{/addJsDefL}
 
 {capture}{if $back}&mod={$back|urlencode}{/if}{/capture}
 {capture name=addressUrl}{$link->getPageLink('address', true, NULL, 'back='|cat:$back_order_page|cat:'?step=1'|cat:$smarty.capture.default)|addslashes}{/capture}
