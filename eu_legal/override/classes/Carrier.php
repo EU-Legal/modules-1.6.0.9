@@ -23,8 +23,8 @@ class Carrier extends CarrierCore
 		* Only if Cart exists and at least one product in cart, otherwise the alternative method could not be applied
 		*/
 		if (Configuration::get('LEGAL_SHIPTAXMETH') &&
-			$cart = Context::getContext()->cart &&
-			$products = $cart->getProducts() &&
+			($cart = Context::getContext()->cart) &&
+			($products = $cart->getProducts()) &&
 			!empty($products))
 			return Cart::getTaxesAverageUsed($cart->id);
 
