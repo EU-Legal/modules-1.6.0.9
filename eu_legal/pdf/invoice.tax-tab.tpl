@@ -86,7 +86,7 @@
 								{assign var=pdf_product_tax_written value=1}
 							{/if}
 						</td>
-						 <td style="width: 20%; text-align: right;">{$rate} %</td>
+						 <td style="width: 20%; text-align: right;">{$rate|round:"0"} %</td>
 						{if !$use_one_after_another_method}
 						 <td style="width: 20%; text-align: right;">
 							 {if isset($is_order_slip) && $is_order_slip}- {/if}{displayPrice currency=$order->id_currency price=$product_tax_infos.total_price_tax_excl}
@@ -106,7 +106,7 @@
 								{assign var=pdf_shipping_tax_written value=1}
 							{/if}
 						 </td>
-						 <td style="width: 20%; text-align: right;">{$shipping_tax_infos.rate} %</td>
+						 <td style="width: 20%; text-align: right;">{$shipping_tax_infos.rate|round:"0"} %</td>
 						{if !$use_one_after_another_method}
 							 <td style="width: 20%; text-align: right;">{if isset($is_order_slip) && $is_order_slip}- {/if}{displayPrice currency=$order->id_currency price=$shipping_tax_infos.total_tax_excl}</td>
 						{/if}
