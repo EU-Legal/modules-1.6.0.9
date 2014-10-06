@@ -1,0 +1,36 @@
+
+[{shop_url}] 
+
+Witaj {firstname} {lastname},
+
+Dziękujemy za zakupy {shop_name}! 
+
+Zamówienie z uwzględnieniem {order_name} zostało umieszczone
+pomyślnie i będzie WYSŁANE ZARAZ PO OTRZYMANIU PŁATNOŚCI. 
+
+Wybrałeś zapłacenie przelewem. 
+
+Oto dane bankowe do przelewu:
+
+KWOTA: {total_paid}
+
+WŁAŚCICIEL KONTA: {bankwire_owner}
+
+DANE KONTA: {bankwire_details}
+
+ADRES BANKU: {bankwire_address} 		 
+
+Możesz obejrzeć swoje zamówienie i pobrać fakturę w "Historia
+zamówień" [{history_url}] logując się do konta
+klienta "Moje konto" [{my_account_url}] w naszym
+sklepie. 
+
+Jeśli masz konto Gościa, możesz śledzić swoje zamówienie za
+pośrednictwem sekcji "Śledzenie Gościa"
+[{guest_tracking_url}] w naszym sklepie. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

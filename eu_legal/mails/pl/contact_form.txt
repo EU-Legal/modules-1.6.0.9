@@ -1,0 +1,22 @@
+
+[{shop_url}] 
+
+Twoja wiadomość do {shop_name} Obsługa klienta 
+
+Twoja wiadomość została wysłana pomyślnie.
+
+WIADOMOŚĆ: {message}
+
+ID ZAMÓWIENIA: {order_name}
+
+PRODUKT: {product_name}
+
+ZAŁĄCZONY PLIK: {attached_file} 		 
+
+Postaramy się odpowiedzieć tak szybko jak to możliwe. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

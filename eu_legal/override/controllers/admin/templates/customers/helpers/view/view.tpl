@@ -1,4 +1,16 @@
-
+{**
+* EU Legal - Better security for German and EU merchants.
+*
+* @version   : 1.0.2
+* @date      : 2014 08 26
+* @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+* @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+* @contact   : info@onlineshop-module.de | info@silbersaiten.de
+* @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+* @license   : http://opensource.org/licenses/osl-3.0.php
+* @changelog : see changelog.txt
+* @compatibility : PS == 1.6.0.9
+*}
 {extends file="helpers/view/view.tpl"}
 
 {block name="override_tpl"}
@@ -9,15 +21,15 @@
 			<div class="panel clearfix">
 				<div class="panel-heading">
 					<i class="icon-user"></i>
-					{$customer->firstname}
-					{$customer->lastname}
+					{$customer->firstname|escape:'htmlall'}
+					{$customer->lastname|escape:'htmlall'}
 					[{$customer->id|string_format:"%06d"}]
 					-
-					<a href="mailto:{$customer->email}"><i class="icon-envelope"></i>
+					<a href="mailto:{$customer->email|escape:'htmlall'}"><i class="icon-envelope"></i>
 						{$customer->email}
 					</a>
 					<div class="panel-heading-action">
-						<a class="btn btn-default" href="{$current}&amp;updatecustomer&amp;id_customer={$customer->id}&amp;token={$token}">
+						<a class="btn btn-default" href="{$current|escape:'htmlall'}&amp;updatecustomer&amp;id_customer={$customer->id|escape:'htmlall'}&amp;token={$token|escape:'htmlall'}">
 							<i class="icon-edit"></i>
 							{l s='Edit'}
 						</a>
@@ -45,7 +57,7 @@
 					<div class="row">
 						<label class="control-label col-lg-3">{l s='Registration Date'}</label>
 						<div class="col-lg-9">
-							<p class="form-control-static">{$registration_date}</p>
+							<p class="form-control-static">{$registration_date|escape:'htmlall'}</p>
 						</div>
 					</div>
 					<div class="row">
@@ -58,7 +70,7 @@
 						<div class="row">
 							<label class="control-label col-lg-3">{l s='Best Customer Rank'}</label>
 							<div class="col-lg-9">
-								<p class="form-control-static">{$count_better_customers}</p>
+								<p class="form-control-static">{$count_better_customers|escape:'htmlall'}</p>
 							</div>
 						</div>
 					{/if}
@@ -66,7 +78,7 @@
 						<div class="row">
 							<label class="control-label col-lg-3">{l s='Shop'}</label>
 							<div class="col-lg-9">
-								<p class="form-control-static">{$name_shop}</p>
+								<p class="form-control-static">{$name_shop|escape:'htmlall'}</p>
 							</div>
 						</div>
 					{/if}
@@ -75,7 +87,7 @@
 						<div class="col-lg-9">
 							<p class="form-control-static">
 								{if isset($customerLanguage)}
-									{$customerLanguage->name}
+									{$customerLanguage->name|escape:'htmlall'}
 								{else}
 									{l s='Unknown'}
 								{/if}
@@ -115,7 +127,7 @@
 					<div class="row">
 						<label class="control-label col-lg-3">{l s='Latest Update'}</label>
 						<div class="col-lg-9">
-							<p class="form-control-static">{$last_update}</p>
+							<p class="form-control-static">{$last_update|escape:'htmlall'}</p>
 						</div>
 					</div>
 					<div class="row">
@@ -141,7 +153,7 @@
 					{l s='This customer is registered as.'} <b>{l s='Guest'}</b>
 					{if !$customer_exists}
 					<form method="post" action="index.php?tab=AdminCustomers&amp;id_customer={$customer->id}&amp;token={getAdminToken tab='AdminCustomers'}">
-						<input type="hidden" name="id_lang" value="{$id_lang}" />
+						<input type="hidden" name="id_lang" value="{$id_lang|escape:'htmlall'}" />
 						<p class="text-center">
 							<input class="button" type="submit" name="submitGuestToCustomer" value="{l s='Transform to a customer account'}" />
 						</p>
@@ -156,7 +168,7 @@
 			</div>
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-file"></i> {l s='Orders'} <span class="badge">{count($orders)}</span>
+					<i class="icon-file"></i> {l s='Orders'} <span class="badge">{count($orders)|escape:'htmlall'}</span>
 				</div>
 				{if $orders AND count($orders)}
 					{assign var=count_ok value=count($orders_ok)}
@@ -166,13 +178,13 @@
 							<div class="col-lg-6">
 								<i class="icon-ok-circle icon-big"></i>
 								{l s='Valid orders:'}
-								<span class="label label-success">{$count_ok}</span>
+								<span class="label label-success">{$count_ok|escape:'htmlall'}</span>
 								{l s='for'} {$total_ok}
 							</div>
 							<div class="col-lg-6">
 								<i class="icon-exclamation-sign icon-big"></i>
 								{l s='Invalid orders:'}
-								<span class="label label-danger">{$count_ko}</span>
+								<span class="label label-danger">{$count_ko|escape:'htmlall'}</span>
 							</div>
 						</div>
 					</div>
@@ -193,12 +205,12 @@
 							<tbody>
 							{foreach $orders_ok AS $key => $order}
 								<tr onclick="document.location = '?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}'">
-									<td>{$order['id_order']}</td>
+									<td>{$order['id_order']|escape:'htmlall'}</td>
 									<td>{dateFormat date=$order['date_add'] full=0}</td>
-									<td>{$order['payment']}</td>
-									<td>{$order['order_state']}</td>
-									<td>{$order['nb_products']}</td>
-									<td>{$order['total_paid_real']}</td>
+									<td>{$order['payment']|escape:'htmlall'}</td>
+									<td>{$order['order_state']|escape:'htmlall'}</td>
+									<td>{$order['nb_products']|escape:'htmlall'}</td>
+									<td>{$order['total_paid_real']|escape:'htmlall'}</td>
 									<td>
 										<a class="btn btn-default" href="?tab=AdminOrders&amp;id_order={$order['id_order']}&amp;vieworder&amp;token={getAdminToken tab='AdminOrders'}">
 											<i class='icon-search'></i> {l s='View'}
@@ -225,12 +237,12 @@
 							<tbody>
 								{foreach $orders_ko AS $key => $order}
 								<tr onclick="document.location = '?tab=AdminOrders&id_order={$order['id_order']}&vieworder&token={getAdminToken tab='AdminOrders'}'">
-									<td>{$order['id_order']}</td>
+									<td>{$order['id_order']|escape:'htmlall'}</td>
 									<td><a href="?tab=AdminOrders&amp;id_order={$order['id_order']}&amp;vieworder&amp;token={getAdminToken tab='AdminOrders'}">{dateFormat date=$order['date_add'] full=0}</a></td>
-									<td>{$order['payment']}</td>
-									<td>{$order['order_state']}</td>
-									<td>{$order['nb_products']}</td>
-									<td>{$order['total_paid_real']}</td>
+									<td>{$order['payment']|escape:'htmlall'}</td>
+									<td>{$order['order_state']|escape:'htmlall'}</td>
+									<td>{$order['nb_products']|escape:'htmlall'}</td>
+									<td>{$order['total_paid_real']|escape:'htmlall'}</td>
 								</tr>
 								{/foreach}
 							</tbody>
@@ -245,7 +257,7 @@
 
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-shopping-cart"></i> {l s='Carts'} <span class="badge">{count($carts)}</span>
+					<i class="icon-shopping-cart"></i> {l s='Carts'} <span class="badge">{count($carts)|escape:'htmlall'}</span>
 				</div>
 				{if $carts AND count($carts)}
 					<table class="table">
@@ -260,14 +272,14 @@
 						<tbody>
 						{foreach $carts AS $key => $cart}
 							<tr onclick="document.location = '?tab=AdminCarts&id_cart={$cart['id_cart']}&viewcart&token={getAdminToken tab='AdminCarts'}'">
-								<td>{$cart['id_cart']}</td>
+								<td>{$cart['id_cart']|escape:'htmlall'}</td>
 								<td>
 									<a href="index.php?tab=AdminCarts&amp;id_cart={$cart['id_cart']}&amp;viewcart&amp;token={getAdminToken tab='AdminCarts'}">
 										{dateFormat date=$cart['date_upd'] full=0}
 									</a>
 								</td>
-								<td>{$cart['name']}</td>
-								<td>{$cart['total_price']}</td>
+								<td>{$cart['name']|escape:'htmlall'}</td>
+								<td>{$cart['total_price']|escape:'htmlall'}</td>
 							</tr>
 						{/foreach}
 						</tbody>
@@ -281,7 +293,7 @@
 			{if $products AND count($products)}
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-archive"></i> {l s='Purchased products'} <span class="badge">{count($products)}</span>
+					<i class="icon-archive"></i> {l s='Purchased products'} <span class="badge">{count($products)|escape:'htmlall'}</span>
 				</div>
 				<table class="table">
 					<thead>
@@ -297,10 +309,10 @@
 							<td>{dateFormat date=$order['date_add'] full=0}</td>
 							<td>
 								<a href="?tab=AdminOrders&amp;id_order={$product['id_order']}&amp;vieworder&amp;token={getAdminToken tab='AdminOrders'}">
-									{$product['product_name']}
+									{$product['product_name']|escape:'htmlall'}
 								</a>
 							</td>
-							<td>{$product['product_quantity']}</td>
+							<td>{$product['product_quantity']|escape:'htmlall'}</td>
 						</tr>
 						{/foreach}
 					</tbody>
@@ -310,7 +322,7 @@
 			{if count($interested)}
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-archive"></i> {l s='Purchased products'} <span class="badge">{count($interested)}</span>
+					<i class="icon-archive"></i> {l s='Purchased products'} <span class="badge">{count($interested)|escape:'htmlall'}</span>
 				</div>
 				<table class="table">
 					<thead>
@@ -321,9 +333,9 @@
 					</thead>
 					<tbody>
 					{foreach $interested as $key => $p}
-						<tr onclick="document.location = '{$p['url']}'">
-							<td>{$p['id']}</td>
-							<td><a href="{$p['url']}">{$p['name']}</a></td>
+						<tr onclick="document.location = '{$p['url']|escape:'htmlall'}'">
+							<td>{$p['id']|escape:'htmlall'}</td>
+							<td><a href="{$p['url']|escape:'htmlall'}">{$p['name']|escape:'htmlall'}</a></td>
 						</tr>
 					{/foreach}
 					</tbody>
@@ -338,10 +350,10 @@
 					<i class="icon-eye-close"></i> {l s='Add a private note'}
 				</div>
 				<div class="alert alert-info">{l s='This note will be displayed to all employees but not to customers.'}</div>
-				<form id="customer_note" class="form-horizontal" action="ajax.php" method="post" onsubmit="saveCustomerNote({$customer->id});return false;" >
+				<form id="customer_note" class="form-horizontal" action="ajax.php" method="post" onsubmit="saveCustomerNote({$customer->id|escape:'htmlall'});return false;" >
 					<div class="form-group">
 						<div class="col-lg-12">
-							<textarea name="note" id="noteContent" onkeyup="$(this).val().length > 0 ? $('#submitCustomerNote').removeAttr('disabled') : $('#submitCustomerNote').attr('disabled', 'disabled')">{$customer_note}</textarea>
+							<textarea name="note" id="noteContent" onkeyup="$(this).val().length > 0 ? $('#submitCustomerNote').removeAttr('disabled') : $('#submitCustomerNote').attr('disabled', 'disabled')">{$customer_note|escape:'htmlall'}</textarea>
 						</div>
 					</div>
 					<div class="row">
@@ -357,7 +369,7 @@
 			</div>
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-envelope"></i> {l s='Messages'} <span class="badge">{count($messages)}</span>
+					<i class="icon-envelope"></i> {l s='Messages'} <span class="badge">{count($messages)|escape:'htmlall'}</span>
 				</div>
 				{if count($messages)}
 					<table class="table">
@@ -368,13 +380,13 @@
 						</thead>
 						{foreach $messages AS $message}
 							<tr>
-								<td>{$message['status']}</td>
+								<td>{$message['status']|escape:'htmlall'}</td>
 								<td>
 									<a href="index.php?tab=AdminCustomerThreads&amp;id_customer_thread={$message.id_customer_thread}&amp;viewcustomer_thread&amp;token={getAdminToken tab='AdminCustomerThreads'}">
-										{$message['message']}...
+										{$message['message']|escape:'htmlall'}...
 									</a>
 								</td>
-								<td>{$message['date_add']}</td>
+								<td>{$message['date_add']|escape:'htmlall'}</td>
 							</tr>
 						{/foreach}
 					</table>
@@ -386,7 +398,7 @@
 			</div>
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-ticket"></i> {l s='Vouchers'} <span class="badge">{count($discounts)}</span>
+					<i class="icon-ticket"></i> {l s='Vouchers'} <span class="badge">{count($discounts)|escape:'htmlall'}</span>
 				</div>
 				{if count($discounts)}
 					<table class="table">
@@ -401,9 +413,9 @@
 						<tbody>
 					{foreach $discounts AS $key => $discount}
 							<tr>
-								<td>{$discount['id_cart_rule']}</td>
-								<td>{$discount['code']}</td>
-								<td>{$discount['name']}</td>
+								<td>{$discount['id_cart_rule']|escape:'htmlall'}</td>
+								<td>{$discount['code']|escape:'htmlall'}</td>
+								<td>{$discount['name']|escape:'htmlall'}</td>
 								<td>
 									{if $discount['active']}
 										<i class="icon-ok"></i>
@@ -449,9 +461,9 @@
 					{foreach $connections as $connection}
 						<tr>
 							<td>{dateFormat date=$connection['date_add'] full=0}</td>
-							<td>{$connection['pages']}</td>
-							<td>{$connection['time']}</td>
-							<td>{$connection['http_referer']}</td>
+							<td>{$connection['pages']|escape:'htmlall'}</td>
+							<td>{$connection['time']|escape:'htmlall'}</td>
+							<td>{$connection['http_referer']|escape:'htmlall'}</td>
 							{*<td>{$connection['ipaddress']}</td>*}
 						</tr>
 					{/foreach}
@@ -464,8 +476,8 @@
 				<div class="panel-heading">
 					<i class="icon-group"></i>
 					{l s='Groups'}
-					<span class="badge">{count($groups)}</span>
-					<a class="btn btn-default pull-right" href="{$current}&amp;updatecustomer&amp;id_customer={$customer->id}&amp;token={$token}">
+					<span class="badge">{count($groups)|escape:'htmlall'}</span>
+					<a class="btn btn-default pull-right" href="{$current|escape:'htmlall'}&amp;updatecustomer&amp;id_customer={$customer->id|escape:'htmlall'}&amp;token={$token|escape:'htmlall'}">
 						<i class="icon-edit"></i> {l s='Edit'}
 					</a>
 				</div>
@@ -480,10 +492,10 @@
 					<tbody>
 						{foreach $groups AS $key => $group}
 						<tr onclick="document.location = '?tab=AdminGroups&amp;id_group={$group['id_group']}&amp;viewgroup&amp;token={getAdminToken tab='AdminGroups'}'">
-							<td>{$group['id_group']}</td>
+							<td>{$group['id_group']|escape:'htmlall'}</td>
 							<td>
 								<a href="?tab=AdminGroups&amp;id_group={$group['id_group']}&amp;viewgroup&amp;token={getAdminToken tab='AdminGroups'}">
-									{$group['name']}
+									{$group['name']|escape:'htmlall'}
 								</a>
 							</td>
 						</tr>
@@ -517,7 +529,7 @@
 						{foreach $referrers as $referrer}
 						<tr>
 							<td>{dateFormat date=$order['date_add'] full=0}</td>
-							<td>{$referrer['name']}</td>
+							<td>{$referrer['name']|escape:'htmlall'}</td>
 							{if $shop_is_feature_active}<td>{$referrer['shop_name']}</td>{/if}
 						</tr>
 						{/foreach}
@@ -534,7 +546,7 @@
 		<div class="col-lg-12">
 			<div class="panel">
 				<div class="panel-heading">
-					<i class="icon-map-marker"></i> {l s='Addresses'} <span class="badge">{count($addresses)}</span>
+					<i class="icon-map-marker"></i> {l s='Addresses'} <span class="badge">{count($addresses)|escape:'htmlall'}</span>
 				</div>
 				{if count($addresses)}
 					<table class="table">
@@ -552,15 +564,15 @@
 							{foreach $addresses AS $key => $address}
 							<tr>
 								<td>{if $address['company']}{$address['company']}{else}--{/if}</td>
-								<td>{$address['firstname']} {$address['lastname']}</td>
-								<td>{$address['address1']} {if $address['address2']}{$address['address2']}{/if} {$address['postcode']} {$address['city']}</td>
-								<td>{$address['country']}</td>
+								<td>{$address['firstname']|escape:'htmlall'} {$address['lastname']|escape:'htmlall'}</td>
+								<td>{$address['address1']|escape:'htmlall'} {if $address['address2']}{$address['address2']|escape:'htmlall'}{/if} {$address['postcode']|escape:'htmlall'} {$address['city']|escape:'htmlall'}</td>
+								<td>{$address['country']|escape:'htmlall'}</td>
 								<td>
 									{if $address['phone']}
-										{$address['phone']}
-										{if $address['phone_mobile']}<br />{$address['phone_mobile']}{/if}
+										{$address['phone']|escape:'htmlall'}
+										{if $address['phone_mobile']}<br />{$address['phone_mobile']|escape:'htmlall'}{/if}
 									{else}
-										{if $address['phone_mobile']}<br />{$address['phone_mobile']}{else}--{/if}
+										{if $address['phone_mobile']}<br />{$address['phone_mobile']|escape:'htmlall'}{else}--{/if}
 									{/if}
 								</td>
 								<td class="text-right">

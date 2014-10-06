@@ -1,28 +1,16 @@
-{*
-* 2007-2014 PrestaShop
+{**
+* EU Legal - Better security for German and EU merchants.
 *
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
+* @version   : 1.0.2
+* @date      : 2014 08 26
+* @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+* @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+* @contact   : info@onlineshop-module.de | info@silbersaiten.de
+* @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+* @license   : http://opensource.org/licenses/osl-3.0.php
+* @changelog : see changelog.txt
+* @compatibility : PS == 1.6.0.9
 *}
-
 {if $opc}
 	{assign var="back_order_page" value="order-opc.php"}
 	{else}
@@ -39,6 +27,17 @@
 		{* eu-legal: hide if EU API enabled *}
 		{if !isset($PS_EU_PAYMENT_API) or !$PS_EU_PAYMENT_API}
 		{include file="$tpl_dir./shopping-cart.tpl"}
+		{else}
+			{*set js init vars if EU PAYMENT IS ACTIVE,(needed for guest checkout) *}
+			{strip}
+			{addJsDef currencySign=$currencySign|html_entity_decode:2:"UTF-8"}
+			{addJsDef currencyRate=$currencyRate|floatval}
+			{addJsDef currencyFormat=$currencyFormat|intval}
+			{addJsDef currencyBlank=$currencyBlank|intval}
+			{addJsDef deliveryAddress=$cart->id_address_delivery|intval}
+			{addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
+			{addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
+			{/strip}
 		{/if}
 		<!-- End Shopping Cart -->
 		{if $is_logged AND !$is_guest}
@@ -102,6 +101,8 @@
 {addJsDefL name=txtFree}{l s='Free' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtProduct}{l s='product' mod='eu_legal' js=1}{/addJsDefL}
 {addJsDefL name=txtProducts}{l s='products' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtNoPaymentMethodIsSelected}{l s='No payment method has been selected' mod='eu_legal' js=1}{/addJsDefL}
+{addJsDefL name=txtRevocationTermIsNotAccepted}{l s='The revocation terms have not been accepted' mod='eu_legal' js=1}{/addJsDefL}
 
 {capture}{if $back}&mod={$back|urlencode}{/if}{/capture}
 {capture name=addressUrl}{$link->getPageLink('address', true, NULL, 'back='|cat:$back_order_page|cat:'?step=1'|cat:$smarty.capture.default)|addslashes}{/capture}

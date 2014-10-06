@@ -2,7 +2,7 @@
 <module>
 	<name>sofortbanking</name>
 	<displayName><![CDATA[sofort&uuml;berweisung]]></displayName>
-	<version><![CDATA[2.5]]></version>
+	<version><![CDATA[2.5.1]]></version>
 	<description><![CDATA[SOFORT &Uuml;berweisung - Ihr g&uuml;nstiges Bezahlsystem. Von H&auml;ndlern empfohlen.]]></description>
 	<author><![CDATA[touchdesign]]></author>
 	<tab><![CDATA[payments_gateways]]></tab>

@@ -1,27 +1,16 @@
-{*
-* 2007-2014 PrestaShop
+/**
+* EU Legal - Better security for German and EU merchants.
 *
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
-*}
+* @version   : 1.0.2
+* @date      : 2014 08 26
+* @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+* @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+* @contact   : info@onlineshop-module.de | info@silbersaiten.de
+* @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+* @license   : http://opensource.org/licenses/osl-3.0.php
+* @changelog : see changelog.txt
+* @compatibility : PS == 1.6.0.9
+*/
 
 {if isset($product->id)}
 	<div id="product-quantities" class="panel product-tab">
@@ -101,7 +90,7 @@
 				{if isset($pack_quantity)}
 					<div class="alert alert-info">
 						<p>{l s='When a product has combinations, quantities will be based on the default combination.'}</p>
-						<p>{l s='Given the quantities of the products in this pack, the maximum quantity should be:'} {$pack_quantity}</p>
+						<p>{l s='Given the quantities of the products in this pack, the maximum quantity should be:'} {$pack_quantity|escape:'htmlall'}</p>
 					</div>	
 				{/if}
 				<div class="form-group">
@@ -115,11 +104,11 @@
 							</thead>
 							{foreach from=$attributes item=attribute}
 								<tr>
-									<td class="available_quantity" id="qty_{$attribute['id_product_attribute']}">
-										<span>{$available_quantity[$attribute['id_product_attribute']]}</span>
+									<td class="available_quantity" id="qty_{$attribute['id_product_attribute']|escape:'htmlall'}">
+										<span>{$available_quantity[$attribute['id_product_attribute']]|escape:'htmlall'}</span>
 										<input type="text" class="fixed-width-sm" value="{$available_quantity[$attribute['id_product_attribute']]|htmlentities}"/>
 									</td>
-									<td>{$product_designation[$attribute['id_product_attribute']]}</td>
+									<td>{$product_designation[$attribute['id_product_attribute']]|escape:'htmlall'}</td>
 								</tr>
 							{/foreach}
 						</table>
@@ -149,7 +138,7 @@
 								{else}
 								{l s='Deny orders'}
 								{/if} 
-								<a class="confirm_leave" href="index.php?tab=AdminPPreferences&amp;token={$token_preferences}">
+								<a class="confirm_leave" href="index.php?tab=AdminPPreferences&amp;token={$token_preferences|escape:'htmlall'}">
 									{l s='as set in the Products Preferences page'}
 								</a>
 							</label>
@@ -169,7 +158,7 @@
 			{/if}
 		{/if}
 		<div class="panel-footer">
-			<a href="{$link->getAdminLink('AdminProducts')}" class="btn btn-default"><i class="process-icon-cancel"></i> {l s='Cancel'}</a>
+			<a href="{$link->getAdminLink('AdminProducts')|escape:'htmlall'}" class="btn btn-default"><i class="process-icon-cancel"></i> {l s='Cancel'}</a>
 			<button type="submit" name="submitAddproduct" class="btn btn-default pull-right product_quantities_button"><i class="process-icon-save"></i> {l s='Save'}</button>
 			<button type="submit" name="submitAddproductAndStay" class="btn btn-default pull-right product_quantities_button"><i class="process-icon-save"></i> {l s='Save and stay'}</button>
 		</div>
@@ -192,7 +181,7 @@
 
 		{if $ps_stock_management}			
 			<div class="form-group">
-				<label class="control-label col-lg-3" for="available_now_{$default_language}">
+				<label class="control-label col-lg-3" for="available_now_{$default_language|escape:'htmlall'}">
 					{include file="controllers/products/multishop/checkbox.tpl" field="available_now" type="default" multilang="true"}
 					<span class="label-tooltip" data-toggle="tooltip"
 						title="{l s='Forbidden characters:'} &#60;&#62;;&#61;#&#123;&#125;">
@@ -207,7 +196,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-3" for="available_later_{$default_language}">
+				<label class="control-label col-lg-3" for="available_later_{$default_language|escape:'htmlall'}">
 					{include file="controllers/products/multishop/checkbox.tpl" field="available_later" type="default" multilang="true"}
 					<span class="label-tooltip" data-toggle="tooltip"
 						title="{l s='Forbidden characters:'} &#60;&#62;;&#61;#&#123;&#125;">
@@ -224,7 +213,7 @@
 			</div>
 			
 			<div class="form-group">
-				<label class="control-label col-lg-3" for="delivery_now_{$default_language}">
+				<label class="control-label col-lg-3" for="delivery_now_{$default_language|escape:'htmlall'}">
 					{include file="controllers/products/multishop/checkbox.tpl" field="delivery_now" type="default" multilang="true"}
 					<span class="label-tooltip" data-toggle="tooltip"
 						title="{l s='Forbidden characters:'} &#60;&#62;;&#61;#&#123;&#125;">
@@ -239,7 +228,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-3" for="delivery_later_{$default_language}">
+				<label class="control-label col-lg-3" for="delivery_later_{$default_language|escape:'htmlall'}">
 					{include file="controllers/products/multishop/checkbox.tpl" field="delivery_later" type="default" multilang="true"}
 					<span class="label-tooltip" data-toggle="tooltip"
 						title="{l s='Forbidden characters:'} &#60;&#62;;&#61;#&#123;&#125;">
@@ -263,7 +252,7 @@
 				</label>
 				<div class="col-lg-9">
 					<div class="input-group fixed-width-md">
-						<input id="available_date" name="available_date" value="{$product->available_date}" class="datepicker" type="text" />
+						<input id="available_date" name="available_date" value="{$product->available_date|escape:'htmlall'}" class="datepicker" type="text" />
 						<div class="input-group-addon">
 							<i class="icon-calendar-empty"></i>
 						</div>
@@ -275,7 +264,7 @@
 			{/if}
 		{/if}
 		<div class="panel-footer">
-			<a href="{$link->getAdminLink('AdminProducts')}" class="btn btn-default"><i class="process-icon-cancel"></i> {l s='Cancel'}</a>
+			<a href="{$link->getAdminLink('AdminProducts')|escape:'htmlall'}" class="btn btn-default"><i class="process-icon-cancel"></i> {l s='Cancel'}</a>
 			<button type="submit" name="submitAddproduct" class="btn btn-default pull-right product_quantities_button"><i class="process-icon-save"></i> {l s='Save'}</button>
 			<button type="submit" name="submitAddproductAndStay" class="btn btn-default pull-right product_quantities_button"><i class="process-icon-save"></i> {l s='Save and stay'}</button>
 		</div>
@@ -286,5 +275,5 @@
 	</div>
 {/if}
 <script type="text/javascript">
-	hideOtherLanguage({$default_form_language});
+	hideOtherLanguage({$default_form_language|escape:'htmlall'});
 </script>

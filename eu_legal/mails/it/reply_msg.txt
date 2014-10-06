@@ -1,0 +1,21 @@
+
+[{shop_url}] 
+
+Salve {firstname} {lastname}, 
+
+{reply} 
+
+Puoi visualizzare il tuo ordine e scaricare la eventuale fattura
+dalla sezione "Cronologia ordini" [{history_url}] nel
+tuo account utente cliccando su "Il mio account"
+[{my_account_url}] all'interno del sito. 
+
+Se hai un account utente ospite, puoi seguire le fasi del tuo
+ordine tramite "Tracking ospite"
+[{guest_tracking_url}] sul nostro sito. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

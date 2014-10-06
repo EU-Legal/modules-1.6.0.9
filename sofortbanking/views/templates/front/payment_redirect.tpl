@@ -60,7 +60,7 @@ display:table;
 <form action="{$gateway|escape:'htmlall':'UTF-8'}" method="post" name="mod_sofortbanking" class="hidden">
 	<input type="hidden" name="user_id" value="{$parameters.user_id|escape:'htmlall':'UTF-8'}" />
 	<input type="hidden" name="project_id" value="{$parameters.project_id|escape:'htmlall':'UTF-8'}" />
-	<input type="hidden" name="sender_holder" value="{$parameters.sender_holde|escape:'htmlall':'UTF-8'}" />
+	<input type="hidden" name="sender_holder" value="{$parameters.sender_holder|escape:'htmlall':'UTF-8'}" />
 	<input type="hidden" name="sender_country_id" value="{$parameters.sender_country_id|escape:'htmlall':'UTF-8'}" />
 	<input type="hidden" name="amount" value="{$parameters.amount|escape:'htmlall':'UTF-8'}" />
 	<input type="hidden" name="currency_id" value="{$parameters.currency_id|escape:'htmlall':'UTF-8'}" />

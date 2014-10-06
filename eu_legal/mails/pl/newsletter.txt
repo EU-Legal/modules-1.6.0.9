@@ -1,0 +1,12 @@
+
+[{shop_url}] 
+
+Witaj {firstname} {lastname}, 
+
+{message} 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

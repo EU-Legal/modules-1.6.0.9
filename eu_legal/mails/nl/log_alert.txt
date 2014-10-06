@@ -1,0 +1,14 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+WAARSCHUWING: er is een nieuwe log alert in de Back Office.
+
+Controleer het via "TOOLS" > "LOGS" in de Back Office. 		 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

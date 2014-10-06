@@ -47,7 +47,7 @@ class Sofortbanking extends PaymentModule
 	{
 		$this->name = 'sofortbanking';
 		$this->tab = 'payments_gateways';
-		$this->version = '2.5';
+		$this->version = '2.5.1';
 		$this->author = 'touchdesign';
 		$this->module_key = '65af9f83d2ae6fbe6dbdaa91d21f952a';
 		$this->currencies = true;
@@ -256,7 +256,7 @@ class Sofortbanking extends PaymentModule
 		return array(
 			'cta_text' => $title,
 			'logo' => $logo,
-			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true))
+			'action' => $this->context->link->getModuleLink($this->name, 'payment', array('token' => Tools::getToken(false), 'redirect' => true), true)
 		);
 	}
 

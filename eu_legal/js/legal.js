@@ -1,3 +1,17 @@
+/**
+ * EU Legal - Better security for German and EU merchants.
+ *
+ * @version   : 1.0.2
+ * @date      : 2014 08 26
+ * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+ * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+ * @contact   : info@onlineshop-module.de | info@silbersaiten.de
+ * @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+ * @license   : http://opensource.org/licenses/osl-3.0.php
+ * @changelog : see changelog.txt
+ * @compatibility : PS == 1.6.0.9
+ */
+
 var legal = {
     paymentChosen: '',
     
@@ -42,6 +56,16 @@ var legal = {
 	    legal.updateConfirmButton();
 	});
 	
+	$(document).ready( function(){
+		var cgv = $("#cgv");
+		if (cgv.length == 0)
+            legal.tosApproved = true;
+        else
+            legal.tosApproved = cgv.is(":checked");
+
+	    legal.updateConfirmButton();
+	});
+	
 	if (!!$.prototype.fancybox){
 	    $('a.iframe').fancybox({
 		'type': 'iframe',
@@ -58,19 +82,18 @@ var legal = {
 	    evt.preventDefault();
 	    // Hide currently displayed form if there is one
 	    legal.toggleChosenForm(false);
-
 	    var val = $(this).val();
 	    if (val) {
-		legal.paymentChosen = val;
-		// Display form if there is one
-		legal.toggleChosenForm(true);
+			legal.paymentChosen = val;
+			// Display form if there is one
+			legal.toggleChosenForm(true);
 
-		if (legal.localStorageEnabled()) {
-		    localStorage.setItem('preferredPaymentMethod', val);
-		}
+			if (legal.localStorageEnabled()) {
+				localStorage.setItem('preferredPaymentMethod', val);
+			}
 	    }
 	    else {
-		legal.paymentChosen = '';
+			legal.paymentChosen = '';
 	    }
 
 	    legal.updateConfirmButton();
@@ -90,9 +113,23 @@ var legal = {
     },
     
     confirmOrder: function() {
-	if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
-	    $('#' + this.paymentChosen + '_payment form').submit();
-	}
+        if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
+            $('#' + this.paymentChosen + '_payment form').submit();
+        } else {
+            if (!this.paymentChosen) {
+                if (typeof txtNoPaymentMethodIsSelected !== 'undefined') {
+                    alert(txtNoPaymentMethodIsSelected);
+                }
+            } else if (!this.tosApproved) {
+                if (typeof txtTOSIsNotAccepted !== 'undefined') {
+                    alert(txtTOSIsNotAccepted);
+                }
+            } else if (!this.revocationTermsApproved) {
+                if (typeof  txtRevocationTermIsNotAccepted !== 'undefined') {
+                    alert(txtRevocationTermIsNotAccepted);
+                }
+            }
+        }
     },
     
     toggleChosenForm: function(show, undefined) {
@@ -123,12 +160,15 @@ var legal = {
     },
     
     updateConfirmButton: function() {
-	if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
-	    $('#confirmOrder').removeAttr('disabled');
-	}
-	else {
-	    $('#confirmOrder').attr('disabled', 'disabled');
-	}
+        $('#confirmOrder').removeAttr('disabled');
+        /*
+        if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
+            $('#confirmOrder').removeAttr('disabled');
+        }
+        else {
+            $('#confirmOrder').attr('disabled', 'disabled');
+        }
+        */
     },
     
     bindAjaxHandlers: function(){

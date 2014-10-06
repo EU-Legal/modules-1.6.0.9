@@ -1,4 +1,18 @@
 <?php
+/**
+ * EU Legal - Better security for German and EU merchants.
+ *
+ * @version   : 1.0.2
+ * @date      : 2014 08 26
+ * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+ * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+ * @contact   : info@onlineshop-module.de | info@silbersaiten.de
+ * @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+ * @license   : http://opensource.org/licenses/osl-3.0.php
+ * @changelog : see changelog.txt
+ * @compatibility : PS == 1.6.0.9
+ */
+
 class Manufacturer extends ManufacturerCore
 {
 	public static function getProducts($id_manufacturer, $id_lang, $p, $n, $order_by = null, $order_way = null, $get_total = false, $active = true, $active_category = true, Context $context = null)
@@ -7,21 +21,22 @@ class Manufacturer extends ManufacturerCore
 		* EU-Legal
 		* get standard shipping time from database pl.*
 		*/
-		
+
 		if (!$context)
 			$context = Context::getContext();
 
 		$front = true;
 		if (!in_array($context->controller->controller_type, array('front', 'modulefront')))
 			$front = false;
-			
+
 		if ($p < 1)
 			$p = 1;
 
-	 	if (empty($order_by) || $order_by == 'position')
-	 		$order_by = 'name';
+		if (empty($order_by) || $order_by == 'position')
+			$order_by = 'name';
 
-	 	if (empty($order_way)) $order_way = 'ASC';
+		if (empty($order_way))
+			$order_way = 'ASC';
 
 		if (!Validate::isOrderBy($order_by) || !Validate::isOrderWay($order_way))
 			die (Tools::displayError());
@@ -43,7 +58,7 @@ class Manufacturer extends ManufacturerCore
 					SELECT cp.`id_product`
 					FROM `'._DB_PREFIX_.'category_group` cg
 					LEFT JOIN `'._DB_PREFIX_.'category_product` cp ON (cp.`id_category` = cg.`id_category`)'.
-					($active_category ? ' INNER JOIN `'._DB_PREFIX_.'category` ca ON cp.`id_category` = ca.`id_category` AND ca.`active` = 1' : '').'
+				($active_category ? ' INNER JOIN `'._DB_PREFIX_.'category` ca ON cp.`id_category` = ca.`id_category` AND ca.`active` = 1' : '').'
 					WHERE cg.`id_group` '.$sql_groups.'
 				)';
 
@@ -69,7 +84,7 @@ class Manufacturer extends ManufacturerCore
 			$alias = 'stock.';
 		else
 			$alias = 'p.';
-		
+
 		/*
 		* EU-Legal
 		* get standard shipping time from database pl.*
@@ -93,7 +108,7 @@ class Manufacturer extends ManufacturerCore
 					ON (p.`id_product` = pl.`id_product` AND pl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('pl').')
 				LEFT JOIN `'._DB_PREFIX_.'image` i
 					ON (i.`id_product` = p.`id_product`)'.
-				Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
+			Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
 				LEFT JOIN `'._DB_PREFIX_.'image_lang` il
 					ON (i.`id_image` = il.`id_image` AND il.`id_lang` = '.(int)$id_lang.')
 				LEFT JOIN `'._DB_PREFIX_.'manufacturer` m
@@ -107,7 +122,7 @@ class Manufacturer extends ManufacturerCore
 					FROM `'._DB_PREFIX_.'category_group` cg
 					LEFT JOIN `'._DB_PREFIX_.'category_product` cp
 						ON (cp.`id_category` = cg.`id_category`)'.
-					($active_category ? ' INNER JOIN `'._DB_PREFIX_.'category` ca ON cp.`id_category` = ca.`id_category` AND ca.`active` = 1' : '').'
+			($active_category ? ' INNER JOIN `'._DB_PREFIX_.'category` ca ON cp.`id_category` = ca.`id_category` AND ca.`active` = 1' : '').'
 					WHERE cg.`id_group` '.$sql_groups.'
 				)
 				GROUP BY product_shop.id_product

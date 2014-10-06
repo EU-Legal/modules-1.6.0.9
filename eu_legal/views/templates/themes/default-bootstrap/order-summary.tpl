@@ -1,3 +1,16 @@
+{**
+* EU Legal - Better security for German and EU merchants.
+*
+* @version   : 1.0.2
+* @date      : 2014 08 26
+* @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+* @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+* @contact   : info@onlineshop-module.de | info@silbersaiten.de
+* @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+* @license   : http://opensource.org/licenses/osl-3.0.php
+* @changelog : see changelog.txt
+* @compatibility : PS == 1.6.0.9
+*}
 <div id="orderSummaryWrapper">
 	{hook h="displayBeforeShoppingCartBlock"}
 	
@@ -151,7 +164,7 @@
 												<p id="title" class="title_offers">{l s='Take advantage of our offers:' mod='eu_legal'}</p>
 												<div id="display_cart_vouchers">
 												{foreach from=$displayVouchers item=voucher}
-													<span onclick="$('#discount_name').val('{$voucher.name}');return false;" class="voucher_name">{$voucher.name}</span> - {$voucher.description} <br />
+													<span onclick="$('#discount_name').val('{$voucher.name|escape:'htmlall'}');return false;" class="voucher_name">{$voucher.name|escape:'htmlall'}</span> - {$voucher.description|escape:'htmlall'} <br />
 												{/foreach}
 												</div>
 											{/if}
@@ -190,7 +203,7 @@
 					{* Then the customized datas ones*}
 					{if isset($customizedDatas.$productId.$productAttributeId)}
 						{foreach from=$customizedDatas.$productId.$productAttributeId[$product.id_address_delivery] key='id_customization' item='customization'}
-							<tr id="product_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}" class="alternate_item cart_item">
+							<tr id="product_{$product.id_product|escape:'htmlall'}_{$product.id_product_attribute|escape:'htmlall'}_{$id_customization|escape:'htmlall'}" class="alternate_item cart_item">
 								<td colspan="4">
 									{foreach from=$customization.datas key='type' item='datas'}
 										{if $type == $CUSTOMIZE_FILE}
@@ -198,7 +211,7 @@
 												<ul class="customizationUploaded">
 													{foreach from=$datas item='picture'}
 														<li>
-															<img src="{$pic_dir}{$picture.value}_small" alt="" class="customizationUploaded" />
+															<img src="{$pic_dir|escape:'htmlall'}{$picture.value|escape:'htmlall'}_small" alt="" class="customizationUploaded" />
 														</li>
 													{/foreach}
 												</ul>
@@ -212,7 +225,7 @@
 														{else}
 															{l s='Text #%s:' mod='eu_legal' sprintf=$smarty.foreach.typedText.index+1}
 														{/if}
-														{$textField.value}
+														{$textField.value|escape:'htmlall'}
 													</li>
 												{/foreach}
 											</ul>
@@ -220,7 +233,7 @@
 									{/foreach}
 								</td>
 								<td class="cart_quantity text-center">
-									{$customization.quantity}
+									{$customization.quantity|escape:'htmlall'}
 								</td>
 								<td class="cart_delete">
 									<div>
@@ -243,7 +256,7 @@
 					{assign var='ignoreProductLast' value=isset($customizedDatas.$productId.$productAttributeId)}
 					{assign var='cannotModify' value=0}
 					{* Display the gift product line *}
-					{include file="./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}
+					{include file="$tpl_dir./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}
 				{/foreach}
 			</tbody>
 	
@@ -251,9 +264,9 @@
 				<tbody>
 					{foreach from=$discounts item=discount name=discountLoop}
 						<tr class="cart_discount {if $smarty.foreach.discountLoop.last}last_item{elseif $smarty.foreach.discountLoop.first}first_item{else}item{/if}" id="cart_discount_{$discount.id_discount}">
-							<td class="cart_discount_description" colspan="2">{$discount.description}</td>												
-							<td class="cart_discount_name">{$discount.name}</td>
-							<td class="cart_discount_price" colspan="2">
+							<td class="cart_discount_description" colspan="2">{$discount.description|escape:'htmlall'}</td>
+							<td class="cart_discount_name">{$discount.name|escape:'htmlall'}</td>
+							<td class="cart_discount_price" colspan="3">
 								<span class="price-discount">
 									{if $discount.value_real > 0}
 										{if !$priceDisplay}
@@ -263,6 +276,16 @@
 										{/if}
 									{/if}
 								</span>
+							</td>
+							<td class="price_discount_del text-center">
+								{if strlen($discount.code)}
+									<a
+											href="{if $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}?deleteDiscount={$discount.id_discount}"
+											class="price_discount_delete"
+											title="{l s='Delete' mod='eu_legal'}">
+										<i class="icon-trash"></i>
+									</a>
+								{/if}
 							</td>
 						</tr>
 					{/foreach}
