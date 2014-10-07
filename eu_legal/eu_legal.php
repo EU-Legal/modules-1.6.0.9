@@ -2,7 +2,7 @@
 /**
  * EU Legal - Better security for German and EU merchants.
  *
- * @version   : 1.0.2
+ * @version   : 1.0.4
  * @date      : 2014 08 26
  * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
  * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
@@ -151,6 +151,10 @@ class EU_Legal extends Module
 			/*'bankwire',
 			'cheque',*/
 			'ganalytics',
+			'avalaratax',
+			'attributewizardpro',
+			'crossselling',
+			'carriercompare',
 		);
 
 		// modules must install 
