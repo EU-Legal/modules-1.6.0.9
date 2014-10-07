@@ -1230,16 +1230,16 @@ class EU_Legal extends Module
 				$this->_errors[] = $this->l('Please select a theme.');
 			else
 			{
-				if (!is_dir(_PS_ALL_THEMES_DIR_.$theme.'/mails/de/') && !mkdir(_PS_ALL_THEMES_DIR_.$theme.'/mails/de/', 0755, true))
+				if (!is_dir(_PS_ALL_THEMES_DIR_.$theme.'/mails/') && !mkdir(_PS_ALL_THEMES_DIR_.$theme.'/mails/', 0755, true))
 					$this->_errors[] = $this->l('Could not create mail dir.');
 				else
 				{
 					try
 					{
-						$this->rcopy('modules/'.$this->name.'/mails/de/', 'themes/'.$theme.'/mails/de/', array('root' => _PS_ROOT_DIR_));
+						$this->rcopy('modules/'.$this->name.'/mails/', 'themes/'.$theme.'/mails/', array('root' => _PS_ROOT_DIR_));
 					} catch (Exception $e)
 					{
-						$this->_errors[] = $this->l('Could not copy').': modules/'.$this->name.'/mails/de/';
+						$this->_errors[] = $this->l('Could not copy').': modules/'.$this->name.'/mails/';
 					}
 
 				}
