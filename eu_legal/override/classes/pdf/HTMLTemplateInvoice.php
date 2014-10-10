@@ -43,6 +43,11 @@ class HTMLTemplateInvoice extends HTMLTemplateInvoiceCore
 			$data['is_order_slip'] = false;
 		}
 
+		if (Module::isInstalled('smallscaleenterprise') && (int)Configuration::get('USTG_ACTIVE') == 1)
+		{
+			$data['USTG'] = true;
+		}
+
 		if ($debug)
 			return $data;
 

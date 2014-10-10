@@ -43,6 +43,11 @@
 			<span class="shipping_info">
 				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)}{if $seo_active && $show_fancy }?content_only=1{else if !$seo_active && $show_fancy}&content_only=1{/if}" {if $show_fancy} class="iframeEULegal" {/if} >{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
 			</span>
+			{if isset($ustgdisp) && $ustgdisp.inpage}
+			<div class="ustg">
+				{l s='According to paragraph 19 and VAT is not displayed in the invoice' mod='eu_legal'}
+			</div>
+			{/if}
 		</span>
 	{else}
 		<span class="tax-shipping-info eu-legal">
@@ -54,6 +59,11 @@
 			<span class="shipping_info">
 				{if $cms_id_shipping}<a href="{$link->getCMSLink($cms_id_shipping)}{if $seo_active && $show_fancy }?content_only=1{else if !$seo_active && $show_fancy}&content_only=1{/if}" {if $show_fancy } class="iframeEULegal" {/if}>{l s='excl. shipping' mod='eu_legal'}</a>{else}{l s='excl. shipping' mod='eu_legal'}{/if}
 			</span>
+			{if isset($ustgdisp) && $ustgdisp.inlist}
+			<div class="ustg">
+				{l s='According to paragraph 19 and VAT is not displayed in the invoice' mod='eu_legal'}
+			</div>
+			{/if}
 		</span>
 	{/if}
 	
