@@ -1,4 +1,4 @@
-/**
+{**
 * EU Legal - Better security for German and EU merchants.
 *
 * @version   : 1.0.2
@@ -10,7 +10,7 @@
 * @license   : http://opensource.org/licenses/osl-3.0.php
 * @changelog : see changelog.txt
 * @compatibility : PS == 1.6.0.9
-*/
+*}
 
 {if isset($product->id)}
 	<div id="product-quantities" class="panel product-tab">
