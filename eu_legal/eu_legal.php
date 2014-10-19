@@ -166,6 +166,7 @@ class EU_Legal extends Module
 			'gc_ganalytics' => 'Google Analytics',
 			'trustedshops' => 'Trusted Shops',
 			'bankwire' => 'EU Bankwire',
+			'paypal'=> 'EU Paypal',
 			'cheque' => 'EU Cheque',
 			'hipay' => 'EU Hipay',
 			'moneybookers' => 'EU Moneybookers',
