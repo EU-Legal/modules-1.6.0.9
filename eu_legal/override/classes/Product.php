@@ -1,41 +1,53 @@
 <?php
+/**
+ * EU Legal - Better security for German and EU merchants.
+ *
+ * @version   : 1.0.2
+ * @date      : 2014 08 26
+ * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+ * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+ * @contact   : info@onlineshop-module.de | info@silbersaiten.de
+ * @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+ * @license   : http://opensource.org/licenses/osl-3.0.php
+ * @changelog : see changelog.txt
+ * @compatibility : PS == 1.6.0.9
+ */
+
 class Product extends ProductCore
 {
 	public $delivery_now;
 	public $delivery_later;
-	
+
 	public function __construct($id_product = null, $full = false, $id_lang = null, $id_shop = null, Context $context = null)
 	{
 		/*
 		* EU-Legal
 		* add standard shipping time
 		*/
-		
-		self::$definition['fields']['delivery_now']   = array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255);
+
+		self::$definition['fields']['delivery_now'] = array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'isGenericName', 'size' => 255);
 		self::$definition['fields']['delivery_later'] = array('type' => self::TYPE_STRING, 'lang' => true, 'validate' => 'IsGenericName', 'size' => 255);
-		
+
 		parent::__construct($id_product, $full, $id_lang, $id_shop, $context);
-		
+
 		if (!$context)
 			$context = Context::getContext();
-		
+
 		$id_lang = empty($id_lang) ? $context->language->id : $id_lang;
-		
+
 		if ($full && $this->id)
 		{
-			$this->delivery_now   = !empty($this->delivery_now)   ? $this->delivery_now   : Configuration::get('LEGAL_DELIVERY_NOW',   (int)$id_lang);
+			$this->delivery_now = !empty($this->delivery_now) ? $this->delivery_now : Configuration::get('LEGAL_DELIVERY_NOW', (int)$id_lang);
 			$this->delivery_later = !empty($this->delivery_later) ? $this->delivery_later : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
 		}
 	}
 
 	public static function getNewProducts($id_lang, $page_number = 0, $nb_products = 10, $count = false, $order_by = null, $order_way = null, Context $context = null)
 	{
-		
 		/*
 		* EU-Legal
 		* get standard shipping time from database pl.*
 		*/
-		
 		if (!$context)
 			$context = Context::getContext();
 
@@ -43,11 +55,15 @@ class Product extends ProductCore
 		if (!in_array($context->controller->controller_type, array('front', 'modulefront')))
 			$front = false;
 
-		if ($page_number < 0) $page_number = 0;
-		if ($nb_products < 1) $nb_products = 10;
-		if (empty($order_by) || $order_by == 'position') $order_by = 'date_add';
-		if (empty($order_way)) $order_way = 'DESC';
-		if ($order_by == 'id_product' || $order_by == 'price' || $order_by == 'date_add'  || $order_by == 'date_upd')
+		if ($page_number < 0)
+			$page_number = 0;
+		if ($nb_products < 1)
+			$nb_products = 10;
+		if (empty($order_by) || $order_by == 'position')
+			$order_by = 'date_add';
+		if (empty($order_way))
+			$order_way = 'DESC';
+		if ($order_by == 'id_product' || $order_by == 'price' || $order_by == 'date_add' || $order_by == 'date_upd')
 			$order_by_prefix = 'p';
 		else if ($order_by == 'name')
 			$order_by_prefix = 'pl';
@@ -86,10 +102,11 @@ class Product extends ProductCore
 		}
 
 		$sql = new DbQuery();
-		
-		/* 
+
+		/*
 		* EU-Legal
-		* get standard shipping time from database pl.* */
+		* get standard shipping time from database pl.
+		*/
 		$sql->select(
 			'p.*, product_shop.*, stock.out_of_stock, IFNULL(stock.quantity, 0) as quantity, pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`,
 			pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`, MAX(image_shop.`id_image`) id_image, il.`legend`, m.`name` AS manufacturer_name,
@@ -145,15 +162,13 @@ class Product extends ProductCore
 		Product::cacheFrontFeatures($products_ids, $id_lang);
 		return Product::getProductsProperties((int)$id_lang, $result);
 	}
-	
+
 	public static function getRandomSpecial($id_lang, $beginning = false, $ending = false, Context $context = null)
 	{
-		
 		/*
 		* EU-Legal
 		* get standard shipping time from database pl.*
 		*/
-		
 		if (!$context)
 			$context = Context::getContext();
 
@@ -168,7 +183,7 @@ class Product extends ProductCore
 		{
 			$ids_product = ' AND (';
 			foreach ($product_reductions as $product_reduction)
-				$ids_product .= '( product_shop.`id_product` = '.(int)$product_reduction['id_product'].($product_reduction['id_product_attribute'] ? ' AND product_attribute_shop.`id_product_attribute`='.(int)$product_reduction['id_product_attribute'] :'').') OR';
+				$ids_product .= '( product_shop.`id_product` = '.(int)$product_reduction['id_product'].($product_reduction['id_product_attribute'] ? ' AND product_attribute_shop.`id_product_attribute`='.(int)$product_reduction['id_product_attribute'] : '').') OR';
 			$ids_product = rtrim($ids_product, 'OR').')';
 
 			$groups = FrontController::getCurrentCustomerGroups();
@@ -196,10 +211,11 @@ class Product extends ProductCore
 
 			if (!$id_product = $result['id_product'])
 				return false;
-			
-			/* 
+
+			/*
 			* EU-Legal
-			* get standard shipping time from database pl.* */
+			* get standard shipping time from database pl.
+			*/
 			$sql = 'SELECT p.*, product_shop.*, stock.`out_of_stock` out_of_stock, pl.`description`, pl.`description_short`,
 						pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`, pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`, pl.`delivery_now`, pl.`delivery_later`,
 						p.`ean13`, p.`upc`, MAX(image_shop.`id_image`) id_image, il.`legend`,
@@ -213,7 +229,7 @@ class Product extends ProductCore
 					)
 					'.Shop::addSqlAssociation('product', 'p').'
 					LEFT JOIN `'._DB_PREFIX_.'image` i ON (i.`id_product` = p.`id_product`)'.
-					Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
+				Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
 					LEFT JOIN `'._DB_PREFIX_.'image_lang` il ON (i.`id_image` = il.`id_image` AND il.`id_lang` = '.(int)$id_lang.')
 					'.Product::sqlStock('p', 0).'
 					WHERE p.id_product = '.(int)$id_product.'
@@ -230,25 +246,27 @@ class Product extends ProductCore
 		else
 			return false;
 	}
-	
-	public static function getPricesDrop($id_lang, $page_number = 0, $nb_products = 10, $count = false,
-		$order_by = null, $order_way = null, $beginning = false, $ending = false, Context $context = null)
+
+	public static function getPricesDrop($id_lang, $page_number = 0, $nb_products = 10, $count = false, $order_by = null, $order_way = null, $beginning = false, $ending = false, Context $context = null)
 	{
-		
 		/*
 		* EU-Legal
-		* get standard shipping time from database pl.*
+		* get standard shipping time from database pl.
 		*/
-		
 		if (!Validate::isBool($count))
 			die(Tools::displayError());
 
-		if (!$context) $context = Context::getContext();
-		if ($page_number < 0) $page_number = 0;
-		if ($nb_products < 1) $nb_products = 10;
-		if (empty($order_by) || $order_by == 'position') $order_by = 'price';
-		if (empty($order_way)) $order_way = 'DESC';
-		if ($order_by == 'id_product' || $order_by == 'price' || $order_by == 'date_add'  || $order_by == 'date_upd')
+		if (!$context)
+			$context = Context::getContext();
+		if ($page_number < 0)
+			$page_number = 0;
+		if ($nb_products < 1)
+			$nb_products = 10;
+		if (empty($order_by) || $order_by == 'position')
+			$order_by = 'price';
+		if (empty($order_way))
+			$order_way = 'DESC';
+		if ($order_by == 'id_product' || $order_by == 'price' || $order_by == 'date_add' || $order_by == 'date_upd')
 			$order_by_prefix = 'p';
 		else if ($order_by == 'name')
 			$order_by_prefix = 'pl';
@@ -292,7 +310,7 @@ class Product extends ProductCore
 			'.((!$beginning && !$ending) ? 'AND p.`id_product` IN('.((is_array($tab_id_product) && count($tab_id_product)) ? implode(', ', $tab_id_product) : 0).')' : '').'
 			'.$sql_groups);
 		}
-		
+
 		if (strpos($order_by, '.') > 0)
 		{
 			$order_by = explode('.', $order_by);
@@ -322,7 +340,7 @@ class Product extends ProductCore
 			AND pl.`id_lang` = '.(int)$id_lang.Shop::addSqlRestrictionOnLang('pl').'
 		)
 		LEFT JOIN `'._DB_PREFIX_.'image` i ON (i.`id_product` = p.`id_product`)'.
-		Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
+			Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
 		LEFT JOIN `'._DB_PREFIX_.'image_lang` il ON (i.`id_image` = il.`id_image` AND il.`id_lang` = '.(int)$id_lang.')
 		LEFT JOIN `'._DB_PREFIX_.'manufacturer` m ON (m.`id_manufacturer` = p.`id_manufacturer`)
 		WHERE product_shop.`active` = 1
@@ -344,28 +362,27 @@ class Product extends ProductCore
 
 		return Product::getProductsProperties($id_lang, $result);
 	}
-	
+
 	public static function getProductProperties($id_lang, $row, Context $context = null)
 	{
-		
 		/* 
 		* EU-Legal
-		* get standard shipping time from database pl.*
+		* get standard shipping time from database pl.
 		*/
-		
 		if (!$row['id_product'])
 			return false;
-		
+
 		$row = parent::getProductProperties($id_lang, $row, $context);
-		
-		/* 
+
+		/*
 		* EU-Legal
-		* get standard shipping time from database */
-		$row['delivery_now']   = !empty($row['delivery_now'])   ? $row['delivery_now']   : Configuration::get('LEGAL_DELIVERY_NOW',   (int)$id_lang);
+		* get standard shipping time from database
+		*/
+		$row['delivery_now'] = !empty($row['delivery_now']) ? $row['delivery_now'] : Configuration::get('LEGAL_DELIVERY_NOW', (int)$id_lang);
 		$row['delivery_later'] = !empty($row['delivery_later']) ? $row['delivery_later'] : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
-		
+
 		return $row;
-		
+
 	}
-	
+
 }

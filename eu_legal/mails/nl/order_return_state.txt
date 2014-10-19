@@ -1,0 +1,18 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+Uw retourzending (#{id_order_return}) status is bijgewerkt, de nieuwe
+status is: "{state_order_return}" "{state_order_return}"
+
+U kunt uw bestelling nakijken en de factuur downloaden vanaf de
+"Bestelhistorie" [{history_url}] gedeelte van uw
+klant account pagina door te klikken op "Mijn account"
+[{my_account_url}] in onze shop. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

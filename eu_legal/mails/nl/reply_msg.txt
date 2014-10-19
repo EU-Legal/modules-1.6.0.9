@@ -1,0 +1,20 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname}, 
+
+{reply} 
+
+U kunt uw bestelling nakijken en de factuur downloaden vanaf de
+"Bestelhistorie" [{history_url}] gedeelte van uw
+klant account pagina door te klikken op "Mijn account"
+[{my_account_url}] in onze shop. 
+
+Met een gast account kunt de bestelling volgen via "Bestelling
+volgen" [{guest_tracking_url}] in onze webshop. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

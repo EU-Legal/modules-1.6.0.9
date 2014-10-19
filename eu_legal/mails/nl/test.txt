@@ -1,0 +1,14 @@
+
+[{shop_url}] 
+
+Hallo 
+
+Dit is een TEST E-MAIL van uw webshop.
+
+Indien u deze kan lezen was de test succesvol!. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

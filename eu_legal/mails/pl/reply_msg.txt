@@ -1,0 +1,21 @@
+
+[{shop_url}] 
+
+Witaj {firstname} {lastname}, 
+
+{reply} 
+
+Możesz obejrzeć swoje zamówienie i pobrać fakturę w "Historia
+zamówień" [{history_url}] logując się do konta
+klienta "Moje konto" [{my_account_url}] w naszym
+sklepie. 
+
+Jeśli masz konto Gościa, możesz śledzić swoje zamówienie za
+pośrednictwem sekcji "Śledzenie Gościa"
+[{guest_tracking_url}] w naszym sklepie. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] wspierany przez
+PrestaShop(tm) [http://www.prestashop.com/] 
+

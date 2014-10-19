@@ -1,0 +1,33 @@
+
+[{shop_url}] 
+
+Hallo {firstname} {lastname},
+
+Bedankt voor het winkelen bij {shop_name}! 
+
+Uw bestelling met referentie nr. {order_name} is succesvol
+geplaatst EN WORDT VERZONDEN NA ONTVANGST VAN UW BETALING. 
+
+U heeft gekozen om via een cheque te betalen. 
+
+Gebruik hiervoor de volgende gegevens:
+
+BEDRAG: {total_paid}
+
+BESTELLING TOTAALBEDRAG: {cheque_name}
+
+VERSCHULDIGD I.V.M. EEN BESTELLING AAN: {cheque_address} 		 
+
+U kunt uw bestelling nakijken en de factuur downloaden vanaf de
+"Bestelhistorie" [{history_url}] gedeelte van uw
+klant account pagina door te klikken op "Mijn account"
+[{my_account_url}] in onze shop. 
+
+Met een gast account kunt de bestelling volgen via "Bestelling
+volgen" [{guest_tracking_url}] in onze webshop. 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] gebouwd met
+PrestaShop(tm) [http://www.prestashop.com/] 
+

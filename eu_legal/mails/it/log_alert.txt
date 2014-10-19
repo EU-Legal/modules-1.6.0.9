@@ -1,0 +1,15 @@
+
+[{shop_url}] 
+
+Salve {firstname} {lastname}, 
+
+ATTENZIONE: hai ricevuto un nuovo avviso nel Back Office.
+
+Puoi controllarlo nella sezione "STRUMENTI" > "LOGS" del tuo Back
+Office. 		 
+
+{cms_legal_txt}
+
+{shop_name} [{shop_url}] powered by
+PrestaShop(tm) [http://www.prestashop.com/] 
+

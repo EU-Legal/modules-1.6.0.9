@@ -1,4 +1,18 @@
 <?php
+/**
+ * EU Legal - Better security for German and EU merchants.
+ *
+ * @version   : 1.0.2
+ * @date      : 2014 08 26
+ * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
+ * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
+ * @contact   : info@onlineshop-module.de | info@silbersaiten.de
+ * @homepage  : www.onlineshop-module.de | www.silbersaiten.de
+ * @license   : http://opensource.org/licenses/osl-3.0.php
+ * @changelog : see changelog.txt
+ * @compatibility : PS == 1.6.0.9
+ */
+
 class Module extends ModuleCore
 {
 	/* Added by eu_legal module - a boolean value to let the Module class know if a
@@ -6,7 +20,7 @@ class Module extends ModuleCore
 	 * themselves onto displayPaymentEU hook
 	 */
 	protected $is_eu_compatible = 0;
-	
+
 	/*
 	 * Identical to parent's getModuleOnDisk, except it generates "is_eu_compatible" node in module's
 	 * config.xml file. This node is later used in this very method to check if the module needs to be updated.
@@ -36,7 +50,7 @@ class Module extends ModuleCore
 
 		// Get modules directory list and memory limit
 		$modules_dir = Module::getModulesDirOnDisk();
-		
+
 		$modules_installed = array();
 		$result = Db::getInstance()->executeS('
 		SELECT m.name, m.version, mp.interest, module_shop.enable_device
@@ -54,7 +68,7 @@ class Module extends ModuleCore
 				break;
 			}
 
-			$iso = substr(Context::getContext()->language->iso_code, 0, 2);
+			$iso = Tools::substr(Context::getContext()->language->iso_code, 0, 2);
 
 			// Check if config.xml module file exists and if it's not outdated
 
@@ -89,10 +103,10 @@ class Module extends ModuleCore
 					$item->warning = '';
 					foreach ($xml_module as $k => $v)
 						$item->$k = (string)$v;
-					$item->displayName = stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->displayName), (string)$xml_module->name));
-					$item->description = stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->description), (string)$xml_module->name));
-					$item->author = stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->author), (string)$xml_module->name));
-					$item->is_eu_compatible = stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->is_eu_compatible), (string)$xml_module->name));
+					$item->displayName = Tools::stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->displayName), (string)$xml_module->name));
+					$item->description = Tools::stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->description), (string)$xml_module->name));
+					$item->author = Tools::stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->author), (string)$xml_module->name));
+					$item->is_eu_compatible = Tools::stripslashes(Translate::getModuleTranslation((string)$xml_module->name, Module::configXmlStringFormat($xml_module->is_eu_compatible), (string)$xml_module->name));
 					if (isset($xml_module->confirmUninstall))
 						$item->confirmUninstall = Translate::getModuleTranslation((string)$xml_module->name, html_entity_decode(Module::configXmlStringFormat($xml_module->confirmUninstall)), (string)$xml_module->name);
 
@@ -100,10 +114,10 @@ class Module extends ModuleCore
 					$item->onclick_option = false;
 
 					$item->trusted = Module::isModuleTrusted($item->name);
-					
+
 					$module_list[] = $item;
 					$module_name_list[] = '\''.pSQL($item->name).'\'';
-					$modulesNameToCursor[strval($item->name)] = $item;
+					$modulesNameToCursor[(string)$item->name] = $item;
 				}
 			}
 
@@ -115,7 +129,7 @@ class Module extends ModuleCore
 				{
 					// Get content from php file
 					$filepath = _PS_MODULE_DIR_.$module.'/'.$module.'.php';
-					$file = trim(file_get_contents(_PS_MODULE_DIR_.$module.'/'.$module.'.php'));
+					$file = trim(Tools::file_get_contents(_PS_MODULE_DIR_.$module.'/'.$module.'.php'));
 					if (substr($file, 0, 5) == '<?php')
 						$file = substr($file, 5);
 					if (substr($file, -2) == '?>')
@@ -124,9 +138,9 @@ class Module extends ModuleCore
 					// If (false) is a trick to not load the class with "eval".
 					// This way require_once will works correctly
 					if (eval('if (false){	'.$file.' }') !== false)
-						require_once( _PS_MODULE_DIR_.$module.'/'.$module.'.php' );
+						require_once(_PS_MODULE_DIR_.$module.'/'.$module.'.php');
 					else
-						$errors[] = sprintf(Tools::displayError('%1$s (parse error in %2$s)'), $module, substr($filepath, strlen(_PS_ROOT_DIR_)));
+						$errors[] = sprintf(Tools::displayError('%1$s (parse error in %2$s)'), $module, Tools::substr($filepath, Tools::strlen(_PS_ROOT_DIR_)));
 				}
 
 				// If class exists, we just instanciate it
@@ -142,7 +156,7 @@ class Module extends ModuleCore
 					$item->version = $tmp_module->version;
 					$item->tab = $tmp_module->tab;
 					$item->displayName = $tmp_module->displayName;
-					$item->description = stripslashes($tmp_module->description);
+					$item->description = Tools::stripslashes($tmp_module->description);
 					$item->author = $tmp_module->author;
 					$item->limited_countries = $tmp_module->limited_countries;
 					$item->parent_class = get_parent_class($module);
@@ -153,8 +167,8 @@ class Module extends ModuleCore
 					$item->currencies = isset($tmp_module->currencies) ? $tmp_module->currencies : null;
 					$item->currencies_mode = isset($tmp_module->currencies_mode) ? $tmp_module->currencies_mode : null;
 					$item->confirmUninstall = isset($tmp_module->confirmUninstall) ? html_entity_decode($tmp_module->confirmUninstall) : null;
-					$item->description_full = stripslashes($tmp_module->description_full);
-					$item->additional_description = isset($tmp_module->additional_description) ? stripslashes($tmp_module->additional_description) : null;
+					$item->description_full = Tools::stripslashes($tmp_module->description_full);
+					$item->additional_description = isset($tmp_module->additional_description) ? Tools::stripslashes($tmp_module->additional_description) : null;
 					$item->compatibility = isset($tmp_module->compatibility) ? (array)$tmp_module->compatibility : null;
 					$item->nb_rates = isset($tmp_module->nb_rates) ? (array)$tmp_module->nb_rates : null;
 					$item->avg_rate = isset($tmp_module->avg_rate) ? (array)$tmp_module->avg_rate : null;
@@ -162,17 +176,17 @@ class Module extends ModuleCore
 					$item->url = isset($tmp_module->url) ? $tmp_module->url : null;
 					$item->is_eu_compatible = isset($tmp_module->is_eu_compatible) ? $tmp_module->is_eu_compatible : 0;
 
-					$item->onclick_option  = method_exists($module, 'onclickOption') ? true : false;
+					$item->onclick_option = method_exists($module, 'onclickOption') ? true : false;
 					if ($item->onclick_option)
 					{
 						$href = Context::getContext()->link->getAdminLink('Module', true).'&module_name='.$tmp_module->name.'&tab_module='.$tmp_module->tab;
 						$item->onclick_option_content = array();
 						$option_tab = array('desactive', 'reset', 'configure', 'delete');
 						foreach ($option_tab as $opt)
-							$item->onclick_option_content[$opt] = $tmp_module->onclickOption($opt, $href);					
+							$item->onclick_option_content[$opt] = $tmp_module->onclickOption($opt, $href);
 					}
-					
-					
+
+
 					$module_list[] = $item;
 					if (!$xml_exist || $needNewConfigFile)
 					{
@@ -183,7 +197,7 @@ class Module extends ModuleCore
 					unset($tmp_module);
 				}
 				else
-					$errors[] = sprintf(Tools::displayError('%1$s (class missing in %2$s)'), $module, substr($filepath, strlen(_PS_ROOT_DIR_)));
+					$errors[] = sprintf(Tools::displayError('%1$s (class missing in %2$s)'), $module, Tools::substr($filepath, Tools::strlen(_PS_ROOT_DIR_)));
 			}
 		}
 
@@ -232,11 +246,10 @@ class Module extends ModuleCore
 							if ($m->name == $modaddons->name && !isset($m->available_on_addons))
 							{
 								$flag_found = 1;
-								if ($m->version != $modaddons->version && version_compare($m->version, $modaddons->version) === -1 && ! $m->is_eu_compatible) {
+								if ($m->version != $modaddons->version && version_compare($m->version, $modaddons->version) === -1 && !$m->is_eu_compatible)
 									$module_list[$k]->version_addons = $modaddons->version;
-								}
 							}
- 
+
 						if ($flag_found == 0)
 						{
 							$item = new stdClass();
@@ -247,8 +260,8 @@ class Module extends ModuleCore
 							$item->version = strip_tags((string)$modaddons->version);
 							$item->tab = strip_tags((string)$modaddons->tab);
 							$item->displayName = strip_tags((string)$modaddons->displayName);
-							$item->description = stripslashes(strip_tags((string)$modaddons->description));
-							$item->description_full = stripslashes(strip_tags((string)$modaddons->description_full));
+							$item->description = Tools::stripslashes(strip_tags((string)$modaddons->description));
+							$item->description_full = Tools::stripslashes(strip_tags((string)$modaddons->description_full));
 							$item->author = strip_tags((string)$modaddons->author);
 							$item->limited_countries = array();
 							$item->parent_class = '';
@@ -259,8 +272,8 @@ class Module extends ModuleCore
 							$item->available_on_addons = 1;
 							$item->trusted = Module::isModuleTrusted($item->name);
 							$item->active = 0;
-							$item->description_full = stripslashes($modaddons->description_full);
-							$item->additional_description = isset($modaddons->additional_description) ? stripslashes($modaddons->additional_description) : null;
+							$item->description_full = Tools::stripslashes($modaddons->description_full);
+							$item->additional_description = isset($modaddons->additional_description) ? Tools::stripslashes($modaddons->additional_description) : null;
 							$item->compatibility = isset($modaddons->compatibility) ? (array)$modaddons->compatibility : null;
 							$item->nb_rates = isset($modaddons->nb_rates) ? (array)$modaddons->nb_rates : null;
 							$item->avg_rate = isset($modaddons->avg_rate) ? (array)$modaddons->avg_rate : null;
@@ -327,8 +340,8 @@ class Module extends ModuleCore
 
 		return $module_list;
 	}
-	
-	
+
+
 	/*
 	 * Identical to parent's _generateConfigXml, except it generates "is_eu_compatible" node in module's
 	 * config.xml file.
@@ -353,7 +366,7 @@ class Module extends ModuleCore
 </module>';
 		if (is_writable(_PS_MODULE_DIR_.$this->name.'/'))
 		{
-			$iso = substr(Context::getContext()->language->iso_code, 0, 2);
+			$iso = Tools::substr(Context::getContext()->language->iso_code, 0, 2);
 			$file = _PS_MODULE_DIR_.$this->name.'/'.($iso == 'en' ? 'config.xml' : 'config_'.$iso.'.xml');
 			if (!@file_put_contents($file, $xml))
 				if (!is_writable($file))
@@ -364,5 +377,5 @@ class Module extends ModuleCore
 			@chmod($file, 0664);
 		}
 	}
-	
+
 }

@@ -54,9 +54,6 @@
 		</tr>
 	</table>
 	<!--  / TAX DETAILS -->
-	{if isset($USTG) && $USTG}
-	<p>{l s='According to 19 and VAT is not displayed in the invoice.' pdf='true'}</p>
-	{/if}
 {else}
 	{if $tax_exempt || ((isset($product_tax_breakdown) && $product_tax_breakdown|@count > 0) || (isset($ecotax_tax_breakdown) && $ecotax_tax_breakdown|@count > 0))}
 	<!--  TAX DETAILS -->
@@ -120,7 +117,7 @@
 							{if $ecotax_tax_infos.ecotax_tax_excl > 0}
 							<tr style="line-height:6px;background-color:{cycle values='#FFF,#DDD'};">
 								<td style="width: 30%">{l s='Ecotax' pdf='true'}</td>
-								<td style="width: 20%; text-align: right;">{$ecotax_tax_infos.rate  } %</td>
+								<td style="width: 20%; text-align: right;">{$ecotax_tax_infos.rate} %</td>
 								{if !$use_one_after_another_method}
 									<td style="width: 20%; text-align: right;">{if isset($is_order_slip) && $is_order_slip}- {/if}{displayPrice currency=$order->id_currency price=$ecotax_tax_infos.ecotax_tax_excl}</td>
 								{/if}
@@ -136,4 +133,7 @@
 	</table>
 	<!--  / TAX DETAILS -->
 	{/if}
+{/if}
+{if isset($USTG) && $USTG}
+	<p>{l s='Conformable to § 19 UStG this invoice does not indicate VAT.' pdf='true'}</p>
 {/if}
