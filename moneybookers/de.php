@@ -87,3 +87,4 @@ $_MODULE['<{moneybookers}prestashop>moneybookers_a190bc880b04cf478e0370d1b315a5a
 $_MODULE['<{moneybookers}prestashop>moneybookers_852d04b5f455aaf5264e9a8c561ced71'] = '1 Block für jedes Logo';
 $_MODULE['<{moneybookers}prestashop>moneybookers_d4dccb8ca2dac4e53c01bd9954755332'] = 'Speichern Sie die Einstellungen';
 $_MODULE['<{moneybookers}prestashop>moneybookers_27266fe4d37bf06589c7c6dbf2d5c067'] = 'Zahlung mit';
+$_MODULE['<{moneybookers}prestashop>moneybookers_0fb85448411ca3ec9c1eeac3611a014d'] = 'Zahlung per';

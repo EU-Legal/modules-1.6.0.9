@@ -40,7 +40,7 @@ class Cheque extends PaymentModule
 	{
 		$this->name = 'cheque';
 		$this->tab = 'payments_gateways';
-		$this->version = '2.4';
+		$this->version = '2.5';
 		$this->author = 'PrestaShop';
 		$this->controllers = array('payment', 'validation');
 
@@ -61,7 +61,6 @@ class Cheque extends PaymentModule
 		$this->displayName = $this->l('Payments by check');
 		$this->description = $this->l('This module allows you to accept payments by check.');
 		$this->confirmUninstall = $this->l('Are you sure you want to delete these details?');
-		$this->ps_versions_compliancy = array('min' => '1.5.6.1', 'max' => _PS_VERSION_);
 
 		if ((!isset($this->chequeName) || !isset($this->address) || empty($this->chequeName) || empty($this->address)))
 			$this->warning = $this->l('The "Pay to the order of" and "Address" fields must be configured before using this module.');

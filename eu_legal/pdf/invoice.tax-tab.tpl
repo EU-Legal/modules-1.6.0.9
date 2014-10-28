@@ -54,9 +54,6 @@
 		</tr>
 	</table>
 	<!--  / TAX DETAILS -->
-	{if isset($USTG) && $USTG}
-	<p>{l s='Conformable to § 19 UStG this invoice does not indicate VAT.' pdf='true'}</p>
-	{/if}
 {else}
 	{if $tax_exempt || ((isset($product_tax_breakdown) && $product_tax_breakdown|@count > 0) || (isset($ecotax_tax_breakdown) && $ecotax_tax_breakdown|@count > 0))}
 	<!--  TAX DETAILS -->
@@ -136,4 +133,7 @@
 	</table>
 	<!--  / TAX DETAILS -->
 	{/if}
+{/if}
+{if isset($USTG) && $USTG}
+	<p>{l s='Conformable to § 19 UStG this invoice does not indicate VAT.' pdf='true'}</p>
 {/if}

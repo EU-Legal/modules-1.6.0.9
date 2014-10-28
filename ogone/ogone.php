@@ -35,8 +35,8 @@ class Ogone extends PaymentModule
 	{
 		$this->name = 'ogone';
 		$this->tab = 'payments_gateways';
-		$this->version = '2.9';
-		$this->author = 'PrestaShop';
+		$this->version = '2.10';
+		$this->author = ' Ingenico Payment Services';
 		$this->module_key = '787557338b78e1705f2a4cb72b1dbb84';
 		
 		$this->is_eu_compatible = 1;
@@ -111,7 +111,7 @@ class Ogone extends PaymentModule
 		return $this->_html.'
 		<fieldset><legend><img src="../modules/'.$this->name.'/logo.gif" /> '.$this->l('Help').'</legend>
 			<p>
-				<img src="../modules/'.$this->name.'/ogone.png" alt="ogone logo" style="float: left; margin: 0 5px 5px 0;"/>
+				<img src="../modules/'.$this->name.'/ingenico.png" alt="ogone logo" style="float: left; margin: 0 5px 5px 0;"/>
 				'.$this->l('Ogone Payment Services is a leading European Payment Service Provider with international reach.').'
 				'.sprintf($this->l('More than %1$s35,000 businesses worldwide%2$s trust Ogone to manage and secure their online payments, help prevent fraud and drive their business.'), '<span style="color: #127ac1; font-weight: bold">', '</span>').'
 				'.sprintf($this->l('Ogone is connected through certified links with more than %1$s200 different banks and acquirers%2$s and hence is able to provide over %1$s80 international, alternative and prominent local payment methods%2$s in Europe, Asia, Latin America and the Middle East.'), '<span style="color: #127ac1; font-weight: bold">', '</span>').'
@@ -216,7 +216,7 @@ class Ogone extends PaymentModule
 
 		$ogoneParams['AMOUNT'] = number_format((float)(number_format($params['cart']->getOrderTotal(true, Cart::BOTH), 2, '.', '')), 2, '.', '') * 100;
 		$ogoneParams['CURRENCY'] = $currency->iso_code;
-		$ogoneParams['LANGUAGE'] = $lang->iso_code.'_'.strtoupper($lang->iso_code);
+		$ogoneParams['LANGUAGE'] = $lang->iso_code.'_'.Tools::strtoupper($lang->iso_code);
 		$ogoneParams['CN'] = $customer->lastname;
 		$ogoneParams['EMAIL'] = $customer->email;
 		$ogoneParams['OWNERZIP'] = $address->postcode;
@@ -230,8 +230,8 @@ class Ogone extends PaymentModule
 		ksort($ogoneParams);
 		$shasign = '';
 		foreach ($ogoneParams as $key => $value)
-			$shasign .= strtoupper($key).'='.$value.Configuration::get('OGONE_SHA_IN');
-		$ogoneParams['SHASign'] = strtoupper(sha1($shasign));
+			$shasign .= Tools::strtoupper($key).'='.$value.Configuration::get('OGONE_SHA_IN');
+		$ogoneParams['SHASign'] = Tools::strtoupper(sha1($shasign));
 		
 		$this->context->smarty->assign('ogone_params', $ogoneParams);
 		$this->context->smarty->assign('OGONE_MODE', Configuration::get('OGONE_MODE'));
@@ -275,7 +275,7 @@ class Ogone extends PaymentModule
 		$this->context->smarty->assign('ogone_params', $ogoneParams);
 		$this->context->smarty->assign('OGONE_MODE', Configuration::get('OGONE_MODE'));
 		
-		$logo = $this->_path ."ogone.png";
+		$logo = $this->_path ."ogone.gif";
 		return array(
 				'cta_text' => $this->l('Ogone'),
 				'logo' => $logo,

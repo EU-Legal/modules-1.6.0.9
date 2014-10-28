@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>cheque</name>
+	<displayName><![CDATA[Scheck]]></displayName>
+	<version><![CDATA[2.5]]></version>
+	<description><![CDATA[Modul Zahlung per Scheck]]></description>
+	<author><![CDATA[PrestaShop]]></author>
+	<tab><![CDATA[payments_gateways]]></tab>
+	<confirmUninstall><![CDATA[Möchten Sie wirklich die Details löschen?]]></confirmUninstall>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+	<is_eu_compatible>1</is_eu_compatible>
+</module>

@@ -2,9 +2,9 @@
 <module>
 	<name>ogone</name>
 	<displayName><![CDATA[Ogone]]></displayName>
-	<version><![CDATA[2.9]]></version>
+	<version><![CDATA[2.10]]></version>
 	<description><![CDATA[Mit &uuml;ber 80 verschiedenen Zahlungsmethoden und &uuml;ber 200 Akzeptanzpartnern, hilft Ogone Ihnen bei der Verwaltung, dem Collecting und der Sicherung Ihrer Online und Mobile Zahlungen.]]></description>
-	<author><![CDATA[PrestaShop]]></author>
+	<author><![CDATA[ Ingenico Payment Services]]></author>
 	<tab><![CDATA[payments_gateways]]></tab>
 	<is_configurable>1</is_configurable>
 	<need_instance>1</need_instance>

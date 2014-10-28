@@ -1,2 +1,12 @@
-Legal - Cangelog
+EU Legal - Changelog PrestaShop Module
 
+_201410281328
+Update Payment Modules
+bankwire       1.0.1
+cashondelivery 0.7.3
+cheque         2.5
+hipay          1.6.6
+moneybookers   1.6.8
+ogone          2.10
+paypal         3.7.2
+sofortbanking  2.5.1

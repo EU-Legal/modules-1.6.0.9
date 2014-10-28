@@ -136,3 +136,4 @@ table#cart_summary {
 table.payment-summary tbody.active td {
 	background-color: #E8E8E8;
 }
+div.ustg {   font-size: 80%; line-height: normal;  white-space: normal;}

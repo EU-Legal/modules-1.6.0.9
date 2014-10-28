@@ -33,9 +33,10 @@ class CashOnDelivery extends PaymentModule
 	{
 		$this->name = 'cashondelivery';
 		$this->tab = 'payments_gateways';
-		$this->version = '0.5';
+		$this->version = '0.7.3';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 1;
+		$this->controllers = array('validation');
 		$this->is_eu_compatible = 1;
 		
 		$this->currencies = false;
@@ -44,7 +45,6 @@ class CashOnDelivery extends PaymentModule
 
 		$this->displayName = $this->l('Cash on delivery (COD)');
 		$this->description = $this->l('Accept cash on delivery payments');
-		$this->ps_versions_compliancy = array('min' => '1.5.6.1', 'max' => _PS_VERSION_);
 
 		/* For 1.4.3 and less compatibility */
 		$updateConfig = array('PS_OS_CHEQUE', 'PS_OS_PAYMENT', 'PS_OS_PREPARATION', 'PS_OS_SHIPPING', 'PS_OS_CANCELED', 'PS_OS_REFUND', 'PS_OS_ERROR', 'PS_OS_OUTOFSTOCK', 'PS_OS_BANKWIRE', 'PS_OS_PAYPAL', 'PS_OS_WS_PAYMENT');
@@ -69,12 +69,18 @@ class CashOnDelivery extends PaymentModule
 		global $smarty;
 
 		// Check if cart has product download
-		foreach ($params['cart']->getProducts() AS $product)
+		$i = 0;
+		$products = $params['cart']->getProducts();
+		$total = count($products);
+		foreach ($products as $key => $product)
 		{
 			$pd = ProductDownload::getIdFromIdProduct((int)($product['id_product']));
 			if ($pd AND Validate::isUnsignedInt($pd))
-				return false;
+				$i++;
 		}
+
+		if ($i && $total == $i)
+			return false;		
 
 		$smarty->assign(array(
 			'this_path' => $this->_path, //keep for retro compat
