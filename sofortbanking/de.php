@@ -85,3 +85,4 @@ $_MODULE['<{sofortbanking}prestashop>payment_return_64430ad2835be8ad60c59e7d44e4
 $_MODULE['<{sofortbanking}prestashop>payment_9cf51f6755e5294b00e246667b59261d'] = 'SOFORT Überweisung  Einfach sicher zahlen. Mit dem TÜV-zertifiziertem Bezahlsystem SOFORT Überweisung können Sie dank PIN&TAN, ohne Registrierung, einfach und sicher mit Ihren gewohnten Online-Banking-Daten zahlen. Mehr hier: https://documents.sofort.com/de/sue/kundeninformationen';
 $_MODULE['<{sofortbanking}prestashop>payment_b30c30f4388b0c9ab0fe47be29149a18'] = 'Kaufen mit dem Käuferschutz der SOFORT Bank';
 $_MODULE['<{sofortbanking}prestashop>payment_a0aeadb20782e6a291c33715a07c5839'] = 'Einfach und sicher bezahlen mit SOFORT Überweisung.';
+$_MODULE['<{sofortbanking}prestashop>sofortbanking_a0aeadb20782e6a291c33715a07c5839'] = 'Zahlung per SOFORT Überweisung';

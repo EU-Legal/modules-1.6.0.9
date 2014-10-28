@@ -101,7 +101,7 @@ class SofortbankingPaymentModuleFrontController extends ModuleFrontController
 			'mod_lang' => $this->isSupportedLang()
 		));
 
-		$this->setTemplate((Configuration::get('SOFORTBANKING_REDIRECT') == 'Y' || Tools::getIsset('redirect')
+		$this->setTemplate((Configuration::get('SOFORTBANKING_REDIRECT') == 'Y'
 			? 'payment_redirect.tpl' : 'payment_execution.tpl'));
 	}
 }

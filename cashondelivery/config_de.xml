@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>cashondelivery</name>
+	<displayName><![CDATA[Nachnahme (COD)]]></displayName>
+	<version><![CDATA[0.7.3]]></version>
+	<description><![CDATA[Zahlungen per Nachnahme akzeptieren]]></description>
+	<author><![CDATA[PrestaShop]]></author>
+	<tab><![CDATA[payments_gateways]]></tab>
+	<is_configurable>0</is_configurable>
+	<need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+</module>
