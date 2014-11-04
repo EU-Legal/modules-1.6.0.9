@@ -16,10 +16,9 @@
 	{else}
 	{assign var="back_order_page" value="order.php"}
 {/if}
-
+{capture name=path}{l s='Your shopping cart' mod='eu_legal'}{/capture}
+<h1 id="cart_title" class="page-heading">{l s='Your shopping cart' mod='eu_legal'}</h1>
 {if $PS_CATALOG_MODE}
-	{capture name=path}{l s='Your shopping cart' mod='eu_legal'}{/capture}
-	<h2 id="cart_title">{l s='Your shopping cart' mod='eu_legal'}</h2>
 	<p class="alert alert-warning">{l s='Your new order was not accepted.' mod='eu_legal'}</p>
 {else}
 	{if $productNumber}
