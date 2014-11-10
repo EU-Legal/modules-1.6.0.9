@@ -274,13 +274,13 @@
 						{if $opc}
 							<hr style="" />
 						{/if}
-							<p class="carrier_title">{l s='Recycled packaging' mod='eu_legal'}</p>
-							<p class="checkbox gift">
-								<input type="checkbox" name="recyclable" id="recyclable" value="1" {if $recyclable == 1}checked="checked"{/if} />
-								<label for="recyclable">
-									{l s='I would like to receive my order in recycled packaging.' mod='eu_legal'}
-								</label>
-							</p>
+						<p class="carrier_title">{l s='Recycled packaging' mod='eu_legal'}</p>
+						<p class="checkbox recyclable">
+							<input type="checkbox" name="recyclable" id="recyclable" value="1" {if $recyclable == 1}checked="checked"{/if} />
+							<label for="recyclable">
+								{l s='I would like to receive my order in recycled packaging.' mod='eu_legal'}
+							</label>
+						</p>
 					{/if}
 					{if $giftAllowed}
 						{if $opc}
@@ -319,6 +319,9 @@
 				{/if}
 			{/if}
 			{if (!isset($PS_EU_PAYMENT_API) || !$PS_EU_PAYMENT_API) && $conditions AND $cms_id}
+				{if $opc}
+					<hr style="" />
+				{/if}
 				<p class="carrier_title">{l s='Terms of service' mod='eu_legal'}</p>
 				<p class="checkbox">
 					<input type="checkbox" name="cgv" id="cgv" value="1" {if $checkedTOS}checked="checked"{/if} />
