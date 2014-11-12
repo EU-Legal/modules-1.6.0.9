@@ -73,14 +73,14 @@
 							{/if}
 							<form action="{if $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}" method="post" id="voucher">
 								<fieldset>
-									<h4>{l s='Vouchers'}</h4>
+									<h4>{l s='Vouchers' mod='eu_legal'}</h4>
 									<input type="text" class="discount_name form-control" id="discount_name" name="discount_name" value="{if isset($discount_name) && $discount_name}{$discount_name}{/if}" />
 									<input type="hidden" name="submitDiscount" />
-									<button type="submit" name="submitAddDiscount" class="button btn btn-default button-small"><span>{l s='OK'}</span></button>
+									<button type="submit" name="submitAddDiscount" class="button btn btn-default button-small"><span>{l s='OK' mod='eu_legal'}</span></button>
 								</fieldset>
 							</form>
 							{if $displayVouchers}
-								<p id="title" class="title-offers">{l s='Take advantage of our exclusive offers:'}</p>
+								<p id="title" class="title-offers">{l s='Take advantage of our exclusive offers:' mod='eu_legal'}</p>
 								<div id="display_cart_vouchers">
 									{foreach $displayVouchers as $voucher}
 										{if $voucher.code != ''}<span class="voucher_name" data-code="{$voucher.code|escape:'html':'UTF-8'}">{$voucher.code|escape:'html':'UTF-8'}</span> - {/if}{$voucher.name}<br />
