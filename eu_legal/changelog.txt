@@ -1,5 +1,8 @@
 EU Legal - Changelog PrestaShop Module
 
+_201411181119
+paypal		3.8.0
+
 _201410281328
 Update Payment Modules
 bankwire       1.0.1
