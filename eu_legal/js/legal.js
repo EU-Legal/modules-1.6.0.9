@@ -78,11 +78,21 @@ var legal = {
     },
     
     bindPaymentOptionClick: function() {
-	$(document).on('change', 'input:radio[name=payment_option]', function(evt){
+	$(document).on('change click', 'input:radio[name=payment_option], .payment-option', function(evt){
 	    evt.preventDefault();
 	    // Hide currently displayed form if there is one
 	    legal.toggleChosenForm(false);
-	    var val = $(this).val();
+		
+		var val = $(this).val();
+		//handle row click instead of direct radio button
+		if( $(this).hasClass("payment-option") )
+		{
+			var $rowClickedInput = $(this).find("input:radio[name=payment_option]");
+			$rowClickedInput.prop('checked',true);
+			val = $rowClickedInput.val();
+			$.uniform.update("input[name=payment_option]");
+		}
+		
 	    if (val) {
 			legal.paymentChosen = val;
 			// Display form if there is one
