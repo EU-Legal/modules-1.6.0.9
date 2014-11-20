@@ -77,6 +77,15 @@ function findCombinationLegal() {
 		if (combinationMatchForm)
 		{
 			
+			// Unit price are the price per piece, per Kg, per m²
+			// It doesn't modify the price, it's only for display
+			if (productUnitPriceRatio > 0)
+			{
+				unit_price = priceWithDiscountsDisplay / productUnitPriceRatio;
+				$('.unit-price-display').text(formatCurrency(unit_price * currencyRate, currencyFormat, currencySign, currencyBlank));
+				$('.unit-price.eu-legal').show();
+			}
+			
 			var weight_combination = combinationsFromController[combinations[combination]['idCombination']]['weight'];
 			
 			$('.weight-info .weight-value').text(parseFloat(product_weight) + parseFloat(weight_combination));

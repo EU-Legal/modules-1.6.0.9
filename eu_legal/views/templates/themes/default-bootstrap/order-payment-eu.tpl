@@ -27,7 +27,7 @@
 </style>
 
 <div class="panel">
-	<h2>{l s='Payment Options' mod='eu_legal'}</h2>
+	<h2 class="page-subheading">{l s='Payment Options' mod='eu_legal'}</h2>
 	{if $payment_options}
 		<table class="table payment-summary">
 			{foreach from=$payment_options item=option key=payment_name}
