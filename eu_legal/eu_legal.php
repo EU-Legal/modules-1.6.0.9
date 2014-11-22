@@ -2,8 +2,8 @@
 /**
  * EU Legal - Better security for German and EU merchants.
  *
- * @version   : 1.0.5
- * @date      : 2014 10 28
+ * @version   : 1.0.6
+ * @date      : 2014 11 18
  * @author    : Markus Engel/Chris Gurk @ Onlineshop-Module.de | George June/Alexey Dermenzhy @ Silbersaiten.de
  * @copyright : 2014 Onlineshop-Module.de | 2014 Silbersaiten.de
  * @contact   : info@onlineshop-module.de | info@silbersaiten.de
@@ -59,7 +59,7 @@ class EU_Legal extends Module
 		$this->tab = 'administration';
 
 		// version: major, minor, bugfix
-		$this->version = '1.0.5';
+		$this->version = '1.0.6';
 
 		// author
 		$this->author = 'EU Legal Team';
