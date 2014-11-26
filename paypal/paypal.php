@@ -83,7 +83,7 @@ class PayPal extends PaymentModule
 	{
 		$this->name = 'paypal';
 		$this->tab = 'payments_gateways';
-		$this->version = '3.8.0';
+		$this->version = '3.8.1';
 		$this->author = 'PrestaShop';
 
 		$this->currencies = true;
@@ -378,9 +378,12 @@ class PayPal extends PaymentModule
 		else
 			Tools::addCSS(_MODULE_DIR_.$this->name.'/css/paypal.css');
 
-		$process = '<script type="text/javascript">'.$this->fetchTemplate('js/paypal.js').'</script>';
-
 		$smarty = $this->context->smarty;
+		$smarty->assign(array(
+			'ssl_enabled' => Configuration::get('PS_SSL_ENABLED'),
+		));
+		
+		$process = '<script type="text/javascript">'.$this->fetchTemplate('js/paypal.js').'</script>';
 
 		if ((
 			(method_exists($smarty, 'getTemplateVars') && ($smarty->getTemplateVars('page_name') == 'authentication' || $smarty->getTemplateVars('page_name') == 'order-opc' ))
@@ -700,7 +703,7 @@ class PayPal extends PaymentModule
 		/* Only execute if you use PayPal API for payment */
 		if (((int)Configuration::get('PAYPAL_PAYMENT_METHOD') != HSS) && $this->isPayPalAPIAvailable())
 		{
-			if ((isset($params['module']) && $params['module'] != $this->name) || !$this->context->cookie->paypal_token || !$this->context->cookie->paypal_payer_id)
+			if ($params['module'] != $this->name || !$this->context->cookie->paypal_token || !$this->context->cookie->paypal_payer_id)
 				return false;
 			Tools::redirect('modules/'.$this->name.'/express_checkout/submit.php?confirm=1&token='.$this->context->cookie->paypal_token.'&payerID='.$this->context->cookie->paypal_payer_id);
 		}
@@ -1460,6 +1463,8 @@ class PayPal extends PaymentModule
 
 			if (count($transaction) > 0)
 				PayPalOrder::saveOrder((int)$this->currentOrder, $transaction);
+				
+			$this->setPayPalAsConfigured();	
 		}
 	}
 
