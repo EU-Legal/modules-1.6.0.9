@@ -1671,7 +1671,6 @@ class EU_Legal extends Module
 		if (defined('T_DOC_COMMENT'))
 			$commentTokens[] = T_DOC_COMMENT;
 
-
 		$tokens = token_get_all($str);
 
 		foreach ($tokens as $token)
@@ -1680,10 +1679,9 @@ class EU_Legal extends Module
 			{
 				if (in_array($token[0], $commentTokens))
 					continue;
-
-				$token = $token[1];
-			}
-			$newStr .= ltrim($token);
+				$newStr .= $token[1];
+			} else
+				$newStr .= $token;
 		}
 		return $newStr;
 	}
