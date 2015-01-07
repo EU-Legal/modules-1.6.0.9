@@ -583,7 +583,7 @@ class Cart extends CartCore
 				}
 
 				// If the cart rule offers a reduction, the amount is prorated (with the products in the package)
-				if ($cart_rule['obj']->reduction_percent > 0 || $cart_rule['obj']->reduction_amount > 0)
+				if ($cart_rule['obj']->reduction_percent != 0 || $cart_rule['obj']->reduction_amount != 0)
 					$order_total_discount += Tools::ps_round($cart_rule['obj']->getContextualValue($with_taxes, $virtual_context, CartRule::FILTER_ACTION_REDUCTION, $package, $use_cache), 2);
 			}
 			$order_total_discount = min(Tools::ps_round($order_total_discount, 2), $wrapping_fees + $order_total_products + $shipping_fees);
