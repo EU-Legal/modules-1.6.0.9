@@ -383,12 +383,13 @@ class PayPal extends PaymentModule
 			'ssl_enabled' => Configuration::get('PS_SSL_ENABLED'),
 		));
 		
-
-		$smarty->assign(array(
-			'ssl_enabled' => Configuration::get('PS_SSL_ENABLED'),
-		));
-		
+<<<<<<< HEAD
 		$process = '<script type="text/javascript">'.$this->fetchTemplate('js/paypal.js').'</script>';
+=======
+
+		$process = '<script type="text/javascript">'.$this->fetchTemplate('js/paypal.js').'</script>';
+
+>>>>>>> dev
 
 		if ((
 			(method_exists($smarty, 'getTemplateVars') && ($smarty->getTemplateVars('page_name') == 'authentication' || $smarty->getTemplateVars('page_name') == 'order-opc' ))
@@ -1468,8 +1469,13 @@ class PayPal extends PaymentModule
 
 			if (count($transaction) > 0)
 				PayPalOrder::saveOrder((int)$this->currentOrder, $transaction);
+<<<<<<< HEAD
 				
 			$this->setPayPalAsConfigured();	
+=======
+
+			$this->setPayPalAsConfigured();
+>>>>>>> dev
 		}
 	}
 

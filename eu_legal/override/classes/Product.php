@@ -35,7 +35,7 @@ class Product extends ProductCore
 
 		$id_lang = empty($id_lang) ? $context->language->id : $id_lang;
 
-		if ($full && $this->id)
+		if ($this->id)
 		{
 			$this->delivery_now = !empty($this->delivery_now) ? $this->delivery_now : Configuration::get('LEGAL_DELIVERY_NOW', (int)$id_lang);
 			$this->delivery_later = !empty($this->delivery_later) ? $this->delivery_later : Configuration::get('LEGAL_DELIVERY_LATER', (int)$id_lang);
