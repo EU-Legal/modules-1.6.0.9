@@ -90,7 +90,7 @@
 						</div>
 					{/if}
 
-					<div {if !$opc}style="display:none" data-show-if-js{/if} class="checkbox_conditions box">
+					<div {if !$opc}style="display:none" data-show-if-js{/if} class="checkbox_conditions box" id="tos">
 						<h3 class="page-subheading">{l s='Terms of service' mod='eu_legal'}</h3>
 						<p class="checkbox checkbox_conditions">
 							{if isset($conditions) && $conditions}

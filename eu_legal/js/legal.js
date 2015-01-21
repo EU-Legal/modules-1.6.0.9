@@ -121,21 +121,30 @@ var legal = {
 	}
     },
     
-    confirmOrder: function() {
+     confirmOrder: function() {
         if (this.paymentChosen && this.tosApproved && this.revocationTermsApproved) {
             $('#' + this.paymentChosen + '_payment form').submit();
         } else {
             if (!this.paymentChosen) {
                 if (typeof txtNoPaymentMethodIsSelected !== 'undefined') {
                     alert(txtNoPaymentMethodIsSelected);
+					$('html, body').animate({
+						scrollTop: $('#HOOK_PAYMENT').offset().top + 'px'
+					}, 'fast');
                 }
             } else if (!this.tosApproved) {
                 if (typeof txtTOSIsNotAccepted !== 'undefined') {
-                    alert(txtTOSIsNotAccepted);
+					alert(txtTOSIsNotAccepted);
+					$('html, body').animate({
+						scrollTop: $('#tos').offset().top + 'px'
+					}, 'fast');
                 }
             } else if (!this.revocationTermsApproved) {
                 if (typeof  txtRevocationTermIsNotAccepted !== 'undefined') {
-                    alert(txtRevocationTermIsNotAccepted);
+					alert(txtRevocationTermIsNotAccepted);
+					$('html, body').animate({
+						scrollTop: $('#tos').offset().top + 'px'
+					}, 'fast');
                 }
             }
         }
