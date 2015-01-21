@@ -88,7 +88,9 @@ var legal = {
 		var $rowClickedInput = $(this).find("input:radio[name=payment_option]");
 		$rowClickedInput.prop('checked',true);
 		val = $rowClickedInput.val();
-		$.uniform.update("input[name=payment_option]");
+		
+		if( typeof $.uniform != "undefined")
+			$.uniform.update("input[name=payment_option]");
 		
 	    if (val) {
 			legal.paymentChosen = val;
