@@ -46,7 +46,7 @@ var legal = {
 	    }
 	}
 	
-	$(document).on('change', '#cgv', function(){
+	$(document).on('change', '#cgv-legal', function(){
 	    legal.tosApproved = $(this).is(':checked');
 	});
 	
@@ -55,7 +55,7 @@ var legal = {
 	});
 	
 	$(document).ready( function(){
-		var cgv = $("#cgv");
+		var cgv = $("#cgv-legal");
 		if (cgv.length == 0)
             legal.tosApproved = true;
         else

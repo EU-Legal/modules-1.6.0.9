@@ -94,10 +94,10 @@
 						<h3 class="page-subheading">{l s='Terms of service' mod='eu_legal'}</h3>
 						<p class="checkbox checkbox_conditions">
 							{if isset($conditions) && $conditions}
-							<input type="checkbox" name="cgv" id="cgv" value="1"/>
+							<input type="checkbox" name="cgv" id="cgv-legal" value="1"/>
 							{/if}
 							{if isset($PS_CONDITIONS_CMS_ID) && $PS_CONDITIONS_CMS_ID}
-							   <label for="cgv">{l s='I agree to the' mod='eu_legal'}</label> <a href="{$PS_CONDITIONS_CMS_ID_LINK}" class="iframe">{l s='terms of service'  mod='eu_legal'}</a>
+							   <label for="cgv-legal">{l s='I agree to the' mod='eu_legal'}</label> <a href="{$PS_CONDITIONS_CMS_ID_LINK}" class="iframe">{l s='terms of service'  mod='eu_legal'}</a>
 							{/if}
 							{if isset($LEGAL_CMS_ID_REVOCATION) && $LEGAL_CMS_ID_REVOCATION}
 							   <label for="cgv">{l s='and'  mod='eu_legal'}</label> <a href="{$LEGAL_CMS_ID_REVOCATION_LINK}" class="iframe">{l s='terms of revocation' mod='eu_legal'}</a> 
