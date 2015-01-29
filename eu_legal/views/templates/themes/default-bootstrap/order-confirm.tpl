@@ -12,7 +12,7 @@
 * @compatibility : PS == 1.6.0.9
 *}
 
-		<button {if !$opc}data-show-if-js style="display:none"{/if} id="confirmOrder" disabled onclick="javascript:legal.confirmOrder()" type="button" class="button btn btn-default standard-checkout button-medium"><span>{l s='Order With Obligation To Pay' mod='eu_legal'}</span></button>
+		<button {if !$opc}data-show-if-js style="display:none"{/if} id="confirmOrder" onclick="javascript:legal.confirmOrder()" type="button" class="button btn btn-default standard-checkout button-medium"><span>{l s='Order With Obligation To Pay' mod='eu_legal'}</span></button>
 		{if !$opc}
 			<label
 				data-hide-if-js
