@@ -21,4 +21,4 @@ $_ERRORS['ce053e3cb814880c6997e963c0c57731'] = 'Sie müssen die AGB akzeptieren.
 $_ERRORS['da07b51b9ec0cdc448967a0cd6bacd62'] = 'Bitte wählen Sie Ihre Adresse aus.';
 $_ERRORS['deec1d85e431dfa0f76e48cfd764f8d5'] = 'Steuernummer nicht gefunden';
 $_ERRORS['e4def6854bc0def276577c7356c6906e'] = 'Land der Lieferadresse kann nicht geladen werden';
-$_ERRORS['f872281f035e53f732b58c058a797f30'] = 'Es ist ein Mindesbetrag von %d füe eine Bestellung erforderlich.';
+$_ERRORS['f872281f035e53f732b58c058a797f30'] = 'Es ist ein Mindestbetrag von %d für eine Bestellung erforderlich.';
